@@ -35,7 +35,7 @@ The production output is fully static in `dist/` and does not require a Node ser
 
 ## Architecture
 
-- Astro renders the header, editorial explanation, complete eight-scenario archive, methodology, sources, and footer as static HTML.
+- Astro renders the header, complete eight-scenario archive, methodology, sources, and footer as static HTML.
 - React is used only for `src/components/FutureSimulator.tsx`, hydrated with `client:load`.
 - `src/lib/futureModel.ts` contains the pure scoring, indicator, driver, guard, and counterfactual functions.
 - `src/lib/shareState.ts` owns compact query-string serialization and safe parsing.

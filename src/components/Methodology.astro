@@ -3,132 +3,116 @@
   class="methodology"
   aria-labelledby="methodology-heading"
 >
-  <header class="methodology-header">
-    <div>
-      <p class="section-label">Methodology & limitations</p>
-      <h2 id="methodology-heading">
-        A transparent thought tool, not a prediction engine
-      </h2>
-    </div>
+  <header>
+    <h2 id="methodology-heading">How the model works</h2>
     <p>
-      The model deliberately exposes its assumptions. Its weights are normative
-      design choices—not empirically validated coefficients, probabilities, or a
-      social index.
+      The sliders feed a deliberately simple illustrative model. Its weights are
+      transparent design choices, not empirical predictions.
     </p>
   </header>
 
-  <div class="method-grid">
-    <div class="formula-column">
-      <h3>The scoring sequence</h3>
-      <ol>
-        <li>
-          <span>Institutional capacity</span>
-          <code>
-            0.21(ownership) + 0.18(democracy) + 0.16(social dividend) +
-            0.13(worker power) + 0.13(civil liberties) + 0.11(universal access)
-            + 0.08(open infrastructure)
-          </code>
-        </li>
-        <li>
-          <span>Automation amplifier</span>
-          <code>0.55 + 0.90 × (automation / 100)</code>
-        </li>
-        <li>
-          <span>Internal outcome position</span>
-          <code
-            >clamp(50 + (institutional capacity − 50) × amplifier, 0, 100)</code
-          >
-        </li>
-      </ol>
-      <p class="formula-note">
-        The internal position selects a scenario band, but the number itself is
-        not shown as a probability or validated measure. Low automation
-        compresses the possible range toward the middle. High automation makes
-        both strong and weak institutions more consequential.
-      </p>
-    </div>
+  <details>
+    <summary>View methodology and formulas</summary>
+    <div class="method-body">
+      <section aria-labelledby="sequence-heading">
+        <h3 id="sequence-heading">Scoring sequence</h3>
+        <ol class="formula-list">
+          <li>
+            <strong>Institutional capacity</strong>
+            <code>
+              0.21(ownership) + 0.18(democracy) + 0.16(social dividend) +
+              0.13(worker power) + 0.13(civil liberties) + 0.11(universal
+              access) + 0.08(open infrastructure)
+            </code>
+          </li>
+          <li>
+            <strong>Automation amplifier</strong>
+            <code>0.55 + 0.90 × (automation / 100)</code>
+          </li>
+          <li>
+            <strong>Outcome position</strong>
+            <code
+              >clamp(50 + (institutional capacity − 50) × amplifier, 0, 100)</code
+            >
+          </li>
+        </ol>
+        <p>
+          Low automation compresses the range toward the middle. High automation
+          makes the selected institutions more consequential.
+        </p>
+      </section>
 
-    <div class="limits-column">
-      <h3>What the model leaves out</h3>
-      <ul>
-        <li>
-          Feedback loops between technology, wealth, law, culture, conflict, and
-          public opinion.
-        </li>
-        <li>
-          International differences, ecological constraints, demographic change,
-          and transition speed.
-        </li>
-        <li>
-          How institutions work in practice rather than how they are described
-          formally.
-        </li>
-        <li>
-          Interactions, thresholds, and path dependence beyond the single
-          explicit tail-risk guard.
-        </li>
-      </ul>
-      <p>
-        The purpose is to make assumptions visible and discussable. Visitors
-        should challenge the weights, categories, and missing variables rather
-        than treating them as settled science.
-      </p>
-    </div>
-  </div>
+      <section aria-labelledby="limits-heading">
+        <h3 id="limits-heading">Limitations</h3>
+        <ul>
+          <li>Weights and categories are normative choices.</li>
+          <li>Real societies contain feedback loops and path dependence.</li>
+          <li>
+            The model omits culture, ecology, conflict, and international
+            variation.
+          </li>
+          <li>Formal institutions may work differently in practice.</li>
+        </ul>
+        <p>
+          The aim is to make assumptions visible and discussable. The weights,
+          categories, and omissions should be challenged.
+        </p>
+      </section>
 
-  <div class="guard-note">
-    <span aria-hidden="true">!</span>
-    <div>
-      <h3>Why the darkest scenario has an additional guard</h3>
-      <p>
-        “Eliminationist Regime” appears in the live model only when near-total
-        automation coincides with extremely concentrated ownership,
-        authoritarian rule, destroyed civil liberties, negligible bargaining
-        power, minimal social claims, and a result below the lowest threshold.
-        Genocide also requires political ideology, dehumanization, institutions,
-        perpetrators, and the destruction of restraints. AI does not
-        automatically produce it. The concern is narrower: extreme automation
-        and surveillance could remove some practical barriers to mass coercion
-        if every relevant democratic and moral protection failed as well.
-      </p>
-    </div>
-  </div>
+      <section class="guard-note" aria-labelledby="guard-heading">
+        <h3 id="guard-heading">Extreme tail-risk guard</h3>
+        <p>
+          Eliminationist Regime appears only when automation is at least 85;
+          ownership, democracy, and civil liberties are 12 or lower; social
+          dividend and worker power are 15 or lower; and the outcome position is
+          below 12.
+        </p>
+        <p>
+          Genocide also requires dehumanizing ideology, institutions,
+          perpetrators, and destroyed restraints. AI does not produce it on its
+          own; extreme automation could remove practical barriers to coercion
+          only if those protections failed as well.
+        </p>
+      </section>
 
-  <details class="indicator-formulas">
-    <summary>See the five structural indicator formulas</summary>
-    <div>
-      <p>
-        <code>Material abundance = 0.65 automation + 0.35 universal access</code
-        >
-      </p>
-      <p>
-        <code
-          >Shared prosperity = 0.40 ownership + 0.25 social dividend + 0.20
-          worker power + 0.15 universal access</code
-        >
-      </p>
-      <p>
-        <code
-          >Personal autonomy = 0.35 democracy + 0.30 civil liberties + 0.20
-          worker power + 0.15 universal access</code
-        >
-      </p>
-      <p>
-        <code
-          >Political security = 0.55 democracy + 0.30 civil liberties + 0.15
-          ownership</code
-        >
-      </p>
-      <p>
-        <code
-          >Freedom from compulsory work = automation × [0.30 + 0.70 ×
-          ((ownership + social dividend + universal access) / 300)]</code
-        >
-      </p>
-      <p>
-        Every indicator is clamped to 0–100. These are conceptual composites for
-        the interface, not measurements or forecasts.
-      </p>
+      <section class="indicator-formulas" aria-labelledby="indicator-heading">
+        <h3 id="indicator-heading">Structural indicators</h3>
+        <ul>
+          <li>
+            <code
+              >Material abundance = 0.65 automation + 0.35 universal access</code
+            >
+          </li>
+          <li>
+            <code
+              >Shared prosperity = 0.40 ownership + 0.25 social dividend + 0.20
+              worker power + 0.15 universal access</code
+            >
+          </li>
+          <li>
+            <code
+              >Personal autonomy = 0.35 democracy + 0.30 civil liberties + 0.20
+              worker power + 0.15 universal access</code
+            >
+          </li>
+          <li>
+            <code
+              >Political security = 0.55 democracy + 0.30 civil liberties + 0.15
+              ownership</code
+            >
+          </li>
+          <li>
+            <code
+              >Freedom from compulsory work = automation × [0.30 + 0.70 ×
+              ((ownership + social dividend + universal access) / 300)]</code
+            >
+          </li>
+        </ul>
+        <p>
+          Every indicator is clamped to 0–100. These are conceptual composites,
+          not measurements.
+        </p>
+      </section>
     </div>
   </details>
 </section>
@@ -136,208 +120,168 @@
 <style>
   .methodology {
     width: min(calc(100% - 2.5rem), 72rem);
-    padding: clamp(4.5rem, 8vw, 7.5rem) 0;
+    padding: clamp(3.2rem, 6vw, 4.8rem) 0;
     margin: 0 auto;
     border-top: 1px solid var(--border-strong);
   }
 
-  .methodology-header {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
-    align-items: end;
-    gap: clamp(2rem, 6vw, 6rem);
+  .methodology > header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2rem;
   }
 
-  .section-label {
-    margin: 0 0 0.65rem;
-    color: var(--active-ink);
-    font-size: 0.72rem;
-    font-weight: 780;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .methodology-header h2 {
-    max-width: 18ch;
+  .methodology h2 {
+    flex: 0 0 auto;
     margin: 0;
-    font-size: clamp(2.15rem, 4.8vw, 4rem);
-    letter-spacing: -0.06em;
-    line-height: 0.98;
+    font-size: clamp(1.65rem, 3vw, 2.35rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
   }
 
-  .methodology-header > p {
+  .methodology > header p {
+    max-width: 43rem;
     margin: 0;
     color: var(--ink-muted);
-    font-size: 0.92rem;
-    line-height: 1.62;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    text-align: right;
   }
 
-  .method-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(17rem, 0.65fr);
-    gap: clamp(2rem, 5vw, 4.5rem);
-    padding-top: 2.4rem;
-    margin-top: 2.4rem;
+  .methodology > details {
+    margin-top: 1rem;
     border-top: 1px solid var(--border-strong);
+    border-bottom: 1px solid var(--border-strong);
   }
 
-  h3 {
-    margin: 0;
-    font-size: 1rem;
-    letter-spacing: -0.015em;
-  }
-
-  .formula-column ol {
-    display: grid;
-    gap: 1rem;
-    padding: 0;
-    margin: 1rem 0 0;
-    list-style: none;
-    counter-reset: formula;
-  }
-
-  .formula-column li {
-    display: grid;
-    grid-template-columns: 10rem minmax(0, 1fr);
-    gap: 1rem;
-    padding: 0.85rem 0;
-    border-top: 1px solid var(--border);
-    counter-increment: formula;
-  }
-
-  .formula-column li > span {
+  .methodology > details > summary {
+    display: flex;
+    align-items: center;
+    min-height: 3.25rem;
     color: var(--ink);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     font-weight: 760;
-    line-height: 1.4;
+    cursor: pointer;
+  }
+
+  .methodology > details > summary::marker {
+    color: var(--active-accent);
+  }
+
+  .method-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(17rem, 0.8fr);
+    gap: 1.8rem 3rem;
+    padding: 0.5rem 0 1.5rem;
+  }
+
+  .method-body h3 {
+    margin: 0 0 0.65rem;
+    font-size: 0.88rem;
+    letter-spacing: -0.01em;
+  }
+
+  .formula-list {
+    display: grid;
+    gap: 0.6rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .formula-list li {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: 0.8rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .formula-list strong {
+    font-size: 0.72rem;
   }
 
   code {
     color: var(--ink-muted);
     font-family:
       ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
-    font-size: 0.72rem;
-    line-height: 1.6;
+    font-size: 0.7rem;
+    line-height: 1.55;
     white-space: normal;
   }
 
-  .formula-note,
-  .limits-column p {
-    margin: 1rem 0 0;
+  .method-body p,
+  .method-body ul {
     color: var(--ink-muted);
-    font-size: 0.8rem;
-    line-height: 1.58;
-  }
-
-  .limits-column {
-    padding-left: 1.6rem;
-    border-left: 1px solid var(--border-strong);
-  }
-
-  .limits-column ul {
-    padding-left: 1.05rem;
-    margin: 1rem 0 0;
-    color: var(--ink-muted);
-    font-size: 0.76rem;
-    line-height: 1.55;
-  }
-
-  .limits-column li + li {
-    margin-top: 0.55rem;
-  }
-
-  .limits-column li::marker {
-    color: var(--active-accent);
-  }
-
-  .guard-note {
-    display: grid;
-    grid-template-columns: 2.3rem minmax(0, 1fr);
-    gap: 0.9rem;
-    padding: 1.2rem 1.3rem;
-    margin-top: 2rem;
-    border: 1px solid #c8a09a;
-    border-radius: 0.7rem;
-    background: #f3e8e4;
-  }
-
-  .guard-note > span {
-    display: grid;
-    width: 2rem;
-    height: 2rem;
-    place-items: center;
-    border: 1px solid #9b4b3c;
-    border-radius: 50%;
-    color: #663128;
-    font-weight: 800;
-  }
-
-  .guard-note h3 {
-    color: #5e3029;
-  }
-
-  .guard-note p {
-    max-width: 61rem;
-    margin: 0.5rem 0 0;
-    color: #624945;
-    font-size: 0.8rem;
-    line-height: 1.58;
-  }
-
-  .indicator-formulas {
-    margin-top: 1rem;
-    border-top: 1px solid var(--border-strong);
-    border-bottom: 1px solid var(--border-strong);
-  }
-
-  .indicator-formulas summary {
-    display: flex;
-    align-items: center;
-    min-height: 3.25rem;
-    color: var(--ink);
-    font-size: 0.76rem;
-    font-weight: 760;
-    cursor: pointer;
-  }
-
-  .indicator-formulas > div {
-    padding: 0 0 1rem;
-  }
-
-  .indicator-formulas p {
-    margin: 0.4rem 0;
-    color: var(--ink-muted);
-    font-size: 0.74rem;
+    font-size: 0.75rem;
     line-height: 1.5;
   }
 
-  @media (max-width: 780px) {
+  .method-body p {
+    margin: 0.7rem 0 0;
+  }
+
+  .method-body ul {
+    padding-left: 1rem;
+    margin: 0;
+  }
+
+  .method-body li + li {
+    margin-top: 0.28rem;
+  }
+
+  .method-body li::marker {
+    color: var(--active-accent);
+  }
+
+  .guard-note,
+  .indicator-formulas {
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .guard-note {
+    border-left: 3px solid #9b4b3c;
+    padding-left: 0.9rem;
+  }
+
+  .guard-note h3 {
+    color: #663128;
+  }
+
+  .indicator-formulas ul {
+    padding: 0;
+    list-style: none;
+  }
+
+  .indicator-formulas li + li {
+    margin-top: 0.42rem;
+  }
+
+  @media (max-width: 760px) {
     .methodology {
       width: min(calc(100% - 2rem), 72rem);
     }
 
-    .methodology-header,
-    .method-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
+    .methodology > header {
+      display: block;
     }
 
-    .limits-column {
-      padding-top: 1.5rem;
-      padding-left: 0;
-      border-top: 1px solid var(--border-strong);
-      border-left: 0;
+    .methodology > header p {
+      margin-top: 0.45rem;
+      text-align: left;
+    }
+
+    .method-body {
+      grid-template-columns: 1fr;
     }
   }
 
-  @media (max-width: 520px) {
-    .formula-column li {
+  @media (max-width: 500px) {
+    .formula-list li {
       grid-template-columns: 1fr;
-      gap: 0.35rem;
-    }
-
-    .guard-note {
-      grid-template-columns: 1fr;
+      gap: 0.25rem;
     }
   }
 

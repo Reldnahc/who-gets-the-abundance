@@ -4,35 +4,12 @@ import styles from "./FutureSimulator.module.css";
 const indicatorDefinitions: ReadonlyArray<{
   key: keyof StructuralIndicators;
   label: string;
-  description: string;
 }> = [
-  {
-    key: "materialAbundance",
-    label: "Material abundance",
-    description: "Productive capability combined with practical access.",
-  },
-  {
-    key: "sharedProsperity",
-    label: "Shared prosperity",
-    description:
-      "How broadly ownership, income, and essential access are shared.",
-  },
-  {
-    key: "personalAutonomy",
-    label: "Personal autonomy",
-    description: "Room to choose, refuse, organize, and live without coercion.",
-  },
-  {
-    key: "politicalSecurity",
-    label: "Political security",
-    description: "Protection against arbitrary rule and durable exclusion.",
-  },
-  {
-    key: "freedomFromCompulsoryWork",
-    label: "Freedom from compulsory work",
-    description:
-      "Whether automation becomes real freedom from labor for survival.",
-  },
+  { key: "materialAbundance", label: "Material abundance" },
+  { key: "sharedProsperity", label: "Shared prosperity" },
+  { key: "personalAutonomy", label: "Personal autonomy" },
+  { key: "politicalSecurity", label: "Political security" },
+  { key: "freedomFromCompulsoryWork", label: "Freedom from compulsory work" },
 ];
 
 interface IndicatorBarsProps {
@@ -55,14 +32,9 @@ export function IndicatorBars({ indicators }: IndicatorBarsProps) {
         return (
           <div className={styles.indicator} key={indicator.key}>
             <div className={styles.indicatorLabelRow}>
-              <div>
-                <span className={styles.indicatorLabel}>{indicator.label}</span>
-                <span className={styles.indicatorDescription}>
-                  {indicator.description}
-                </span>
-              </div>
+              <span className={styles.indicatorLabel}>{indicator.label}</span>
               <span className={styles.indicatorValue}>
-                <strong>{value}</strong> / 100 · {level(value)}
+                {level(value)} <strong>{value}</strong>
               </span>
             </div>
             <div

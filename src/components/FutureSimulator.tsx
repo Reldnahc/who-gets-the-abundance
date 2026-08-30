@@ -13,7 +13,7 @@ import {
 import { buildShareUrl, parseState } from "../lib/shareState";
 import { FutureSpectrum } from "./FutureSpectrum";
 import styles from "./FutureSimulator.module.css";
-import { OutcomePanel } from "./OutcomePanel";
+import { OutcomeDetails, OutcomePanel } from "./OutcomePanel";
 import { SimulatorControls } from "./SimulatorControls";
 
 const TRANSITION_DURATION = 260;
@@ -121,7 +121,9 @@ export default function FutureSimulator() {
     );
 
     const urlTimer = window.setTimeout(() => {
-      window.history.replaceState(null, "", shareUrl);
+      const browserUrl = new URL(shareUrl);
+      browserUrl.hash = window.location.hash;
+      window.history.replaceState(null, "", browserUrl);
     }, 220);
     const announcementTimer = window.setTimeout(() => {
       setAnnouncement(`Current illustrative outcome: ${scenario.name}.`);
@@ -170,6 +172,9 @@ export default function FutureSimulator() {
           onApply={applyInputs}
           onReset={() => applyInputs(businessAsUsual)}
         />
+        <div className={styles.outcomeDetailsSlot}>
+          <OutcomeDetails scenario={scenario} />
+        </div>
       </div>
     </div>
   );

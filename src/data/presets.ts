@@ -49,7 +49,7 @@ export const presets: readonly SimulatorPreset[] = [
   },
   {
     id: "business-as-usual",
-    name: "Business as Usual",
+    name: "Mixed Baseline",
     values: businessAsUsual,
   },
   {

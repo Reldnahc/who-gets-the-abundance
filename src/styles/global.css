@@ -48,9 +48,7 @@ body {
   min-height: 100vh;
   margin: 0;
   overflow-x: hidden;
-  background:
-    radial-gradient(circle at 86% 4%, var(--active-soft), transparent 25rem),
-    var(--page);
+  background: var(--page);
   color: var(--ink);
   transition: background-color 240ms ease;
 }
@@ -85,7 +83,7 @@ summary:focus-visible {
 
 .simulator-shell {
   width: min(calc(100% - 2.5rem), var(--page-max));
-  padding-top: 1rem;
+  padding-top: 0.75rem;
   margin: 0 auto;
 }
 

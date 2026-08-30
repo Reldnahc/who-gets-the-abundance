@@ -18,15 +18,9 @@ export function FutureSpectrum({
 
   return (
     <section className={styles.spectrum} aria-labelledby="spectrum-heading">
-      <div className={styles.spectrumHeadingRow}>
-        <div>
-          <p className={styles.eyebrow}>Future spectrum</p>
-          <h2 id="spectrum-heading" className={styles.spectrumTitle}>
-            One capability, different settlements
-          </h2>
-        </div>
-        <p className={styles.spectrumHint}>Select a label to try an example.</p>
-      </div>
+      <h2 id="spectrum-heading" className={styles.spectrumTitle}>
+        Possible futures
+      </h2>
 
       <div className={styles.spectrumPlot}>
         <div
@@ -47,7 +41,7 @@ export function FutureSpectrum({
         <div
           className={styles.spectrumSegments}
           role="group"
-          aria-label="Scenario examples"
+          aria-label="Try a representative scenario"
         >
           {scenarios.map((scenario, index) => {
             const current = scenario.id === scenarioId;
@@ -55,7 +49,9 @@ export function FutureSpectrum({
               <button
                 key={scenario.id}
                 type="button"
-                className={`${styles.spectrumSegment} ${current ? styles.currentSegment : ""}`}
+                className={`${styles.spectrumSegment} ${
+                  current ? styles.currentSegment : ""
+                }`}
                 aria-pressed={current}
                 onClick={() => onSelect(scenarioExamples[scenario.id])}
               >

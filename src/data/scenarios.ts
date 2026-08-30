@@ -56,35 +56,35 @@ export const scenarios: readonly Scenario[] = [
     minimum: 0,
     maximum: 12,
     summary:
-      "An extreme political collapse turns near-total automation and surveillance into instruments of dispossession and mass killing.",
+      "Near-total automation serves an eliminationist state after ownership, rights, democratic checks, and ordinary people’s leverage have collapsed.",
     snapshot:
-      "Public notices still describe the system as a program of security and renewal. In practice, automated logistics, weapons, identification systems, and sealed supply networks have made the governing coalition materially independent of most residents. Courts, opposition media, and independent civic organizations were dismantled before the final escalation. Official ideology now classifies targeted groups as irredeemable threats. People outside the favored category lose legal status and access; organized perpetrators use the automated state to carry out mass killing and extermination. This is not technology acting on its own, nor a secret plan attributed to today’s institutions. It is a tail-risk political collapse in which dehumanization, willing perpetrators, and the destruction of every restraint combine with unusually powerful tools.",
+      "Automated production and security systems make the governing coalition less dependent on the wider population. Courts, opposition media, and civic organizations have already been dismantled. An official ideology strips targeted groups of legal status and access to necessities, while organized perpetrators carry out mass killing. The technology did not choose this path; dehumanization, willing institutions, and the destruction of every restraint did.",
     employment:
-      "Human labor is largely unnecessary to the ruling system, removing a practical source of bargaining power for most people.",
+      "Most labor is unnecessary to the regime, removing a crucial source of public leverage.",
     ownership:
-      "Automated production, compute, land, and security infrastructure are controlled by a closed governing class.",
+      "A closed governing class controls production, land, compute, and security.",
     politicalStructure:
-      "Authoritarian institutions enforce an eliminationist ideology after courts, opposition, and civic restraints have failed.",
+      "An authoritarian state enforces eliminationist ideology without independent checks.",
     necessities:
-      "Access is deliberately withdrawn from targeted groups and reserved for protected populations and regime functions.",
+      "The regime deliberately denies necessities to targeted groups.",
     autonomy:
-      "Legal personhood, movement, privacy, and political voice are absent for people the regime has marked as disposable.",
+      "Targeted people lose legal status, movement, privacy, and political voice.",
     livingStandards:
-      "Extraordinary productive capacity coexists with intentional deprivation; output is severed from any claim to universal welfare.",
+      "Vast output coexists with deliberate deprivation and extermination.",
     primaryRisks: [
-      "State-directed dehumanization escalating into extermination",
-      "Automated surveillance and force reducing practical barriers to mass coercion",
-      "A self-sufficient ruling system no longer constrained by dependence on the wider population",
+      "State-directed dehumanization and mass killing",
+      "Automated coercion at vast scale",
+      "Rule without dependence on public consent",
     ],
     toward: [
-      "Near-total automation under extremely concentrated ownership",
-      "Eliminationist ideology, organized perpetrators, and systematic dehumanization",
-      "The joint destruction of democracy, civil liberties, public claims, and bargaining power",
+      "Near-total automation under closed ownership",
+      "Eliminationist ideology and organized perpetrators",
+      "Collapse of rights, democracy, and public claims",
     ],
     away: [
-      "Independent courts, media, civic institutions, and enforceable human rights",
-      "Broad economic ownership and universal, unconditional access to necessities",
-      "Democratic control of surveillance, security, and automated infrastructure",
+      "Independent courts, media, and civic institutions",
+      "Enforceable rights and universal access",
+      "Democratic control of security infrastructure",
     ],
     accent: {
       category: "tail-risk",
@@ -102,35 +102,35 @@ export const scenarios: readonly Scenario[] = [
     minimum: 12,
     maximum: 24,
     summary:
-      "Concentrated automation and surveillance let a governing coalition suppress opposition and exclude disfavored groups from public life.",
+      "Automation, surveillance, and concentrated power suppress opposition and exclude disfavored groups from resources and public life.",
     snapshot:
-      "In 2042, public services are fast for residents whose identity records remain in good standing. A teacher in a disfavored district, however, finds that transit permissions, medical appointments, and work credentials can be suspended after an automated security review. Most production continues with little human labor, so strikes and boycotts carry less leverage than they once did. Independent journalists operate from abroad, while local associations require state approval. Food and housing exist in abundance, but access is rationed through political categories. Detention, forced displacement, and severe persecution are routine possibilities. The system is stable not because everyone supports it, but because surveillance, concentrated resources, and weak institutions make organized opposition extraordinarily dangerous.",
+      "Public services are efficient for residents whose records remain in good standing. For others, transit, healthcare, work credentials, and housing can disappear after an automated security review. Production needs little human labor, so strikes carry less leverage. Food and shelter are plentiful, but political status determines access. Surveillance makes organizing dangerous, while detention, displacement, and severe persecution remain constant threats.",
     employment:
-      "Employment is limited and politically filtered; losing approved status can end both work and access to essential systems.",
+      "Work is scarce, politically filtered, and tied to approved status.",
     ownership:
-      "The state or an aligned ownership bloc controls the automated economy and its critical data systems.",
+      "The state or an allied bloc controls production and data systems.",
     politicalStructure:
-      "Opposition is suppressed, participation is selective, and automated surveillance reinforces one-party or coalition rule.",
+      "Opposition is suppressed and surveillance reinforces authoritarian rule.",
     necessities:
-      "Basic provision is technically ample but conditional, unequal, and withdrawable from disfavored populations.",
+      "Provision is ample for favored groups and withdrawable from others.",
     autonomy:
-      "Movement, association, expression, and private life are sharply constrained by pervasive monitoring and coercion.",
+      "Movement, association, expression, and privacy are sharply constrained.",
     livingStandards:
-      "Favored groups may live comfortably while political status, not productive scarcity, determines who benefits.",
+      "Political status, rather than scarcity, determines who benefits.",
     primaryRisks: [
-      "Mass deprivation, detention, forced displacement, and severe persecution",
-      "Political classification becoming a gatekeeper for necessities",
-      "Automated surveillance making dissent easier to identify and punish",
+      "Detention, displacement, and severe persecution",
+      "Political control of basic necessities",
+      "Automated punishment of dissent",
     ],
     toward: [
-      "High automation paired with authoritarian government and concentrated ownership",
-      "Weak privacy, due process, and independent civic institutions",
-      "Conditional access systems that turn political compliance into economic survival",
+      "Authoritarian rule with concentrated ownership",
+      "Weak due process and civic institutions",
+      "Conditional access tied to compliance",
     ],
     away: [
-      "Enforceable civil liberties, due process, and plural political participation",
-      "Independent channels for essentials that cannot be revoked for dissent",
-      "Distributed control over compute, communications, and productive infrastructure",
+      "Enforceable rights and plural participation",
+      "Unconditional access to essentials",
+      "Distributed control of critical infrastructure",
     ],
     accent: {
       category: "danger",
@@ -143,40 +143,38 @@ export const scenarios: readonly Scenario[] = [
     id: "automated-neo-feudalism",
     slug: "automated-neo-feudalism",
     name: "Automated Neo-Feudalism",
-    shortName: "Neo-feudal",
+    shortName: "Feudal",
     range: "24–35.99",
     minimum: 24,
     maximum: 36,
     summary:
-      "A narrow ownership class controls the automated foundations of life while formal rights survive without much practical leverage.",
+      "A narrow ownership class controls the automated foundations of life while formal rights survive without practical leverage.",
     snapshot:
-      "By 2044, elections still happen and contracts still promise equal treatment. Yet a small set of holding networks owns most housing, energy storage, medical systems, and high-value compute. A family can leave one service territory, but the alternatives share owners, identity standards, and risk models. Human work remains available in care, status services, and local maintenance, although its withdrawal rarely disrupts production. Residents petition platform landlords for repairs, education credits, and business access with little ability to negotiate terms. Many people avoid destitution through thin public benefits, but building assets or entering a high-opportunity network is difficult. Formal citizenship remains; practical independence has become something closer to a licensed privilege.",
+      "Elections and contracts still promise equal treatment, but a few holding networks own most housing, energy, healthcare, and compute. Human work continues in care and local services, yet withdrawing it rarely disrupts production. Residents petition platform landlords for repairs, education credits, and business access with little power to negotiate. Basic benefits prevent destitution, while independent wealth and meaningful exit remain rare.",
     employment:
-      "Human work persists at the margins, but owners need little labor and workers cannot bargain for a meaningful share of output.",
+      "Work persists, but owners need too little labor for effective bargaining.",
     ownership:
-      "A small hereditary or self-reproducing asset class controls land, compute, housing, and automated production.",
+      "A self-reproducing asset class controls land, compute, and production.",
     politicalStructure:
-      "Formal democratic rights coexist with deep private power and heavy influence over the rules that shape daily life.",
+      "Formal democracy coexists with dominant private power.",
     necessities:
-      "A minimal floor may exist, while good housing, care, education, and compute depend on patron-like private institutions.",
-    autonomy:
-      "People retain legal rights but face few viable exits from the organizations that mediate opportunity and survival.",
-    livingStandards:
-      "Some automated goods are inexpensive, yet rents and gatekeeping capture gains before they become durable household security.",
+      "A thin floor exists; good services depend on private gatekeepers.",
+    autonomy: "Legal rights remain, but viable exits are scarce.",
+    livingStandards: "Cheap goods coexist with high rents and entrenched rank.",
     primaryRisks: [
-      "Private governance displacing meaningful public accountability",
-      "Asset inheritance hardening into durable social rank",
-      "Formal freedoms becoming difficult to exercise without economic independence",
+      "Private governance without accountability",
+      "Inherited assets becoming permanent rank",
+      "Rights without economic independence",
     ],
     toward: [
-      "Highly concentrated ownership of land, compute, housing, and essential networks",
-      "Weak labor leverage as automated systems need fewer people",
-      "Public institutions too thin to provide credible alternatives",
+      "Concentrated ownership of essential systems",
+      "Weak leverage in a low-labor economy",
+      "Public institutions without credible alternatives",
     ],
     away: [
-      "Competitive and interoperable infrastructure with real exit rights",
-      "Broad ownership, public options, and anti-monopoly enforcement",
-      "Universal access to the foundations required for independent participation",
+      "Broad ownership and strong public options",
+      "Interoperability and real exit rights",
+      "Universal access to essential infrastructure",
     ],
     accent: {
       category: "rust",
@@ -189,40 +187,38 @@ export const scenarios: readonly Scenario[] = [
     id: "corporate-dependency",
     slug: "corporate-dependency",
     name: "Corporate Dependency",
-    shortName: "Dependency",
+    shortName: "Depend.",
     range: "36–47.99",
     minimum: 36,
     maximum: 48,
     summary:
-      "Life is materially stable, but access and opportunity increasingly depend on a few firms or tightly integrated public-private systems.",
+      "Life is materially stable, but access and opportunity depend on a few firms or tightly integrated public-private systems.",
     snapshot:
-      "In 2039, one household dashboard manages rent, health coverage, training credits, energy, and the family’s allocation of personal compute. The package is reliable and cheaper than the separate services it replaced. It is also tied to a platform account whose terms change with little negotiation. After a parent leaves an approved employer, several benefits shift to a narrower tier and an appeal takes months. Local government offers a fallback, but it uses the same vendors and identity rails. Most people are fed, housed, and connected; open deprivation is uncommon. Still, changing jobs, organizing at work, or challenging an automated decision can put too many parts of ordinary life at risk at once.",
-    employment:
-      "Jobs are fewer and more monitored, with benefit bundles making workers dependent even when their labor retains some value.",
+      "One household account manages rent, health coverage, training, energy, and personal compute. The bundle is reliable and affordable, but its terms are hard to challenge. When a parent leaves an approved employer, several benefits drop to a narrower tier. Government offers a fallback using the same vendors and identity rails. Most people are secure, yet changing jobs or contesting an automated decision risks too much at once.",
+    employment: "Fewer, monitored jobs come bundled with essential benefits.",
     ownership:
-      "A small number of dominant firms and public-private consortia own the systems through which most services are delivered.",
+      "Dominant firms and public-private consortia own service infrastructure.",
     politicalStructure:
-      "Elections and regulation persist, but institutions rely heavily on vendors they struggle to audit or replace.",
+      "Elected governments depend on vendors they struggle to audit.",
     necessities:
-      "Provision is generally stable yet often conditional on employment, membership, reputation, or behavioral compliance.",
-    autonomy:
-      "People retain choices on paper, while high switching costs and linked services make refusal economically costly.",
+      "Provision is stable but often conditional on membership or work.",
+    autonomy: "High switching costs make refusal economically costly.",
     livingStandards:
-      "Automation supports comfortable consumption, but insecurity and weak negotiating power limit who can convert it into freedom.",
+      "Comfortable consumption comes with fragile security and weak leverage.",
     primaryRisks: [
-      "Essential benefits becoming leverage for private or bureaucratic compliance",
-      "Vendor lock-in weakening democratic oversight and individual exit",
-      "Nominal abundance masking fragile household security",
+      "Benefits used to enforce compliance",
+      "Vendor lock-in weakening public oversight",
+      "Stable consumption without durable security",
     ],
     toward: [
-      "Monopoly infrastructure and bundled access to necessities",
-      "Weak public alternatives and limited worker bargaining power",
-      "Rules that permit essential access to depend on platform or employment status",
+      "Bundled access through monopoly systems",
+      "Weak public alternatives and bargaining power",
+      "Benefits tied to platforms or employment",
     ],
     away: [
-      "Portable benefits, open standards, data rights, and meaningful due process",
-      "Strong public options and enforcement against abusive concentration",
-      "Universal access that is independent of a single employer or platform",
+      "Portable benefits and open standards",
+      "Strong public options and data rights",
+      "Access independent of employer or platform",
     ],
     accent: {
       category: "orange",
@@ -240,35 +236,32 @@ export const scenarios: readonly Scenario[] = [
     minimum: 48,
     maximum: 61,
     summary:
-      "Production expands and many goods become cheaper, while ownership, security, and decision-making power continue to concentrate.",
+      "Production expands and many goods get cheaper while ownership, security, and decision-making power keep concentrating.",
     snapshot:
-      "By 2040, a modest income buys astonishing software, customized tutoring, routine diagnostics, and manufactured goods. Measured output is high. Housing near opportunity, trusted human care, political influence, and ownership stakes remain scarce. A logistics coordinator uses capable systems to do what once required a department, but works on renewable contracts and receives no claim on the capital that made the gains possible. Her children enjoy better tools than any previous generation and face a weaker path to stable assets. Public services soften the worst shocks without changing who makes investment decisions. Daily life is materially richer and institutionally thinner: people consume more capability while holding less durable power over the systems around them.",
-    employment:
-      "Employment remains important but less secure, with a smaller share of gains flowing through wages and long-term careers.",
-    ownership:
-      "Productive assets and strategic decisions are concentrated even as products become broadly affordable.",
+      "A modest income buys powerful software, tutoring, diagnostics, and manufactured goods. Housing near opportunity, trusted care, political influence, and ownership stakes remain scarce. One worker now does a department’s former workload on a renewable contract, without any claim on the capital behind the gains. Her family consumes more capability than previous generations but has less security and little say over the systems around them.",
+    employment: "Jobs remain important but less secure and less rewarded.",
+    ownership: "Assets and strategic decisions remain concentrated.",
     politicalStructure:
-      "Democratic institutions function, but wealth concentration gives a narrow group persistent agenda-setting power.",
+      "Democracy functions under persistent pressure from concentrated wealth.",
     necessities:
-      "Many essentials improve in price or quality, while housing, care, and premium access remain uneven and insecure.",
-    autonomy:
-      "Consumer choice expands faster than workplace voice, asset ownership, or influence over consequential automated systems.",
+      "Many essentials improve, while housing and care remain uneven.",
+    autonomy: "Consumer choice grows faster than voice or ownership.",
     livingStandards:
-      "Typical material consumption rises, but productivity growth does not reliably become stability, time, or shared wealth.",
+      "Consumption rises without equal gains in security, time, or wealth.",
     primaryRisks: [
-      "A widening gap between inexpensive consumption and costly security",
-      "Concentrated wealth converting into durable political influence",
-      "Households becoming richer in services but poorer in ownership and leverage",
+      "Cheap consumption masking costly insecurity",
+      "Wealth becoming durable political power",
+      "Households gaining services but losing leverage",
     ],
     toward: [
-      "Rapid automation with middling redistribution and bargaining institutions",
-      "Asset appreciation accruing faster than wages or public claims",
-      "Policies that equate cheaper output with broadly shared welfare",
+      "Automation with middling distribution",
+      "Assets outpacing wages and public claims",
+      "Cheaper output treated as shared welfare",
     ],
     away: [
-      "Mechanisms that spread ownership and the returns to productive capital",
-      "Stronger bargaining institutions, social dividends, and universal services",
-      "Democratic oversight of major investment and deployment decisions",
+      "Broader ownership of productive capital",
+      "Stronger bargaining and social dividends",
+      "Public oversight of major deployments",
     ],
     accent: {
       category: "amber",
@@ -281,40 +274,38 @@ export const scenarios: readonly Scenario[] = [
     id: "broad-productivity-boom",
     slug: "broad-productivity-boom",
     name: "Broad Productivity Boom",
-    shortName: "Productivity",
+    shortName: "Boom",
     range: "61–73.99",
     minimum: 61,
     maximum: 74,
     summary:
-      "AI mostly augments workers and improves services, producing real but uneven gains within a society where employment remains central.",
+      "AI augments workers and improves services, producing real but uneven gains while employment remains central.",
     snapshot:
-      "In 2037, a community clinic serves twice as many patients with the same staff. Automated documentation and diagnostic support leave nurses more time for care, while a regional agreement gives employees a say in monitoring and staffing. Similar gains reach construction, translation, logistics, and public administration. Wages rise in many fields and some workweeks shorten, though workers in poorly organized sectors cycle through disruptions and retraining. Public benefits catch part of the transition, but most households still need a job for security and status. The economy feels more capable rather than fundamentally reorganized: services work better, skilled teams do more, and living standards improve, yet ownership remains uneven and freedom from compulsory work is still limited.",
-    employment:
-      "Employment remains the main route to income and belonging, with AI more often changing jobs than eliminating them outright.",
+      "A community clinic serves twice as many patients with the same staff. Automated documentation gives nurses more time for care, and a regional agreement limits monitoring. Similar gains reach construction, logistics, and public administration. Wages rise in many fields and some workweeks shrink, though poorly protected workers face repeated disruption. Life improves, but most households still need a job for income, security, and status.",
+    employment: "AI changes jobs more often than it removes them.",
     ownership:
-      "Private ownership remains dominant, tempered by pensions, employee stakes, taxation, and some public investment.",
+      "Private ownership dominates, tempered by pensions and public investment.",
     politicalStructure:
-      "Democratic governments and social dialogue shape deployment unevenly but retain meaningful influence.",
+      "Democratic governments retain uneven but meaningful influence.",
     necessities:
-      "Public and market services improve, though access still varies by income, region, and employment status.",
-    autonomy:
-      "Workers gain useful tools and some time, but employer decisions and job dependence still structure much of adult life.",
+      "Services improve, though access still varies by income and region.",
+    autonomy: "Better tools coexist with continued dependence on employers.",
     livingStandards:
-      "Productivity supports broader wage and service gains, with visible gaps between well-governed and weakly protected sectors.",
+      "Productivity lifts wages and services unevenly across sectors.",
     primaryRisks: [
-      "Uneven transitions leaving specific workers and regions behind",
-      "Productivity gains outrunning wage growth or reduced working time",
-      "Temporary augmentation becoming a path to later concentration",
+      "Workers and regions left behind",
+      "Productivity outrunning wages or free time",
+      "Augmentation leading to later concentration",
     ],
     toward: [
-      "Capable assistive systems combined with partial worker voice and redistribution",
-      "Investment in public services, skills, and diffusion beyond frontier firms",
-      "Competition that keeps useful infrastructure available to many organizations",
+      "Assistive systems with some worker voice",
+      "Investment in public services and diffusion",
+      "Competition among infrastructure providers",
     ],
     away: [
-      "Broader ownership and stronger claims on the returns to automation",
-      "Universal access that makes transitions less dependent on employment",
-      "Institutions that convert productivity into time as well as income",
+      "Broader claims on automation returns",
+      "Universal security beyond employment",
+      "Shorter hours alongside higher output",
     ],
     accent: {
       category: "slate",
@@ -332,87 +323,83 @@ export const scenarios: readonly Scenario[] = [
     minimum: 74,
     maximum: 88,
     summary:
-      "Large AI gains flow through wages, public services, shorter hours, social dividends, and ownership that reaches beyond a narrow investor class.",
+      "AI gains flow through wages, services, shorter hours, social dividends, and ownership beyond a narrow investor class.",
     snapshot:
-      "In 2041, a transit engineer works a four-day week and receives both wages and a modest annual dividend from a public investment fund. Her pension, a worker trust, and private savings all hold stakes in the automated systems used across the region. Firms still compete, fail, and pursue profit; labor agreements and public rules set boundaries for monitoring, safety, and gain-sharing. Healthcare and education no longer depend on a particular employer, which makes changing jobs less risky. Some communities adapt faster than others, and disputes over taxes, intellectual property, energy, and migration remain vigorous. The difference is leverage: ordinary citizens possess enough income, services, votes, and ownership to bargain over how productivity changes their lives.",
+      "A transit engineer works four days a week and receives wages plus a public-fund dividend. Her pension and worker trust hold stakes in the automated systems used across the region. Firms still compete, while labor agreements shape monitoring and gain-sharing. Healthcare and education no longer depend on a particular employer. Disputes remain, but ordinary citizens have enough income, services, votes, and ownership to bargain over change.",
     employment:
-      "Paid work remains common but hours fall, bargaining improves, and job loss is less likely to threaten basic security.",
-    ownership:
-      "Private firms coexist with worker funds, pensions, cooperatives, public stakes, and broadly held productive assets.",
+      "Paid work remains common, but hours fall and security improves.",
+    ownership: "Private, worker, cooperative, and public ownership coexist.",
     politicalStructure:
-      "Competitive democracy has enough administrative capacity and public trust to govern powerful systems.",
-    necessities:
-      "Strong universal services and portable benefits provide a reliable floor alongside market choice.",
+      "Democratic institutions can set and enforce meaningful rules.",
+    necessities: "Strong public services make access broadly reliable.",
     autonomy:
-      "People can change jobs, organize, create, care for others, or refuse intrusive systems without courting destitution.",
+      "Economic security makes refusal and participation more practical.",
     livingStandards:
-      "Productivity gains appear in better services, higher incomes, social dividends, and more discretionary time.",
+      "Productivity becomes higher income, better services, and more time.",
     primaryRisks: [
-      "Governance failing to keep pace with complex private and public systems",
-      "Regional or generational gaps persisting beneath strong averages",
-      "Successful institutions being weakened by capture or complacency",
+      "Uneven gains across regions",
+      "Ownership drifting back toward concentration",
+      "Public systems becoming slow or captured",
     ],
     toward: [
-      "Broad capital ownership and enforceable worker participation",
-      "Universal services, social dividends, and capable democratic government",
-      "Open infrastructure that lets smaller firms and public institutions participate",
+      "Broad ownership and strong bargaining",
+      "Universal services and social dividends",
+      "Accountable, competitive infrastructure",
     ],
     away: [
-      "Erosion of civic trust, bargaining power, or fiscal capacity",
-      "Re-concentration of infrastructure and productive ownership",
-      "Access systems that become conditional, exclusionary, or difficult to contest",
+      "Concentrated capital and weakened labor",
+      "Essential services tied to employment",
+      "Opaque deployment without public oversight",
     ],
     accent: {
       category: "blue-teal",
-      color: "#3f7d82",
-      soft: "#e1eeee",
-      ink: "#28585c",
+      color: "#3f7880",
+      soft: "#e2ecea",
+      ink: "#28565c",
     },
   },
   {
     id: "optional-work-abundance",
     slug: "optional-work-abundance",
     name: "Optional-Work Abundance",
-    shortName: "Optional work",
+    shortName: "Optional",
     range: "88–100",
     minimum: 88,
     maximum: 100,
     summary:
-      "Automation handles much undesirable labor while broad ownership, rights, and universal provision make work genuinely optional.",
+      "Automation handles much undesirable labor while broad ownership and universal security make paid work genuinely optional.",
     snapshot:
-      "In 2048, basic housing, healthcare, food, education, transit, energy, and a useful share of compute are guaranteed without an employment test. A resident spends two mornings each week coordinating a watershed project and another helping an independent game studio; neither role is required to keep her home. Automated production funds a social dividend through public, cooperative, and widely distributed private ownership. Paid work, craft, caregiving, entrepreneurship, and prestige have not disappeared, but unemployment no longer implies social failure. Politics remains demanding. Communities debate ecological limits, scarce locations, attention, unequal recognition, and how much authority to delegate to machines. Abundance has widened freedom, not ended governance or the human search for purpose.",
-    employment:
-      "Paid work is available and often meaningful, but survival, civic standing, and access to opportunity do not depend on holding a job.",
+      "A resident chooses a paid role restoring wetlands for two days a week, then spends time caring for family and composing music. Housing, healthcare, education, energy, and basic compute are guaranteed without employment tests. Automated systems are owned through public funds, cooperatives, pensions, and private stakes. Work still carries craft and status, but no longer decides who deserves to live securely. Allocation, ecological limits, and meaning remain active political questions.",
+    employment: "Paid work is available but no longer required for survival.",
     ownership:
-      "Automated productive wealth is distributed across public funds, cooperatives, households, and competitive private enterprise.",
+      "Automated production is broadly held through diverse institutions.",
     politicalStructure:
-      "Strong democratic institutions govern shared systems while preserving pluralism, due process, and meaningful local choice.",
-    necessities:
-      "A generous universal floor covers the practical foundations of participation without behavioral or employment conditions.",
+      "Democratic governance sets limits and resolves allocation disputes.",
+    necessities: "Housing, care, education, energy, and compute are universal.",
     autonomy:
-      "People have substantial control over time, association, privacy, place, and whether to sell their labor.",
+      "People control more of their time and can refuse harmful conditions.",
     livingStandards:
-      "High productivity becomes broad security and discretionary time, while scarce ecological and positional goods still require allocation.",
+      "Productivity becomes security, time, services, and wider opportunity.",
     primaryRisks: [
-      "Meaning, status, and belonging remaining unequal after material scarcity falls",
-      "Democratic oversight becoming too slow or superficial for complex systems",
-      "Environmental costs and genuinely scarce goods being hidden by material abundance",
+      "Ecological pressure from abundant production",
+      "New status hierarchies replacing job hierarchies",
+      "Complacency weakening public institutions",
     ],
     toward: [
-      "Very high automation combined with broad ownership and strong public claims",
-      "Universal necessities, civil liberties, and democratic control of consequential systems",
-      "Institutions that distribute time and agency rather than consumption alone",
+      "Broad ownership of automated production",
+      "Universal services and social dividends",
+      "Strong rights and democratic accountability",
     ],
     away: [
-      "Concentration of productive assets or the infrastructure beneath universal provision",
-      "Conditional benefits, weakened privacy, or exclusion from political decisions",
-      "Treating technical capacity as a substitute for ongoing democratic governance",
+      "Conditional access tied to work or compliance",
+      "Capture of shared assets by narrow interests",
+      "Opaque systems without public challenge",
     ],
     accent: {
       category: "teal",
-      color: "#23766f",
-      soft: "#dfeee9",
-      ink: "#18534e",
+      color: "#287b73",
+      soft: "#deeeea",
+      ink: "#17554f",
     },
   },
 ] as const;

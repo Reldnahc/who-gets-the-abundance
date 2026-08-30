@@ -19,125 +19,108 @@
 
 .simulatorGrid {
   display: grid;
-  grid-template-columns: minmax(19.5rem, 0.72fr) minmax(0, 1.7fr);
+  grid-template-columns: minmax(22rem, 0.82fr) minmax(0, 1.68fr);
   align-items: start;
+  overflow: clip;
   border: 1px solid var(--border-strong);
-  border-radius: 1.15rem;
+  border-radius: 0.95rem;
   background: var(--surface);
-  box-shadow: 0 18px 55px rgb(37 35 29 / 7%);
+  box-shadow: 0 14px 42px rgb(37 35 29 / 6%);
 }
 
 .outcome {
   grid-column: 2;
   grid-row: 1;
   min-width: 0;
-  border-radius: 0 1.15rem 1.15rem 0;
-  overflow: hidden;
+}
+
+.outcomeDetailsSlot {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
 }
 
 .controls {
   grid-column: 1;
-  grid-row: 1;
+  grid-row: 1 / span 2;
   position: sticky;
-  top: 0.75rem;
-  max-height: calc(100vh - 1.5rem);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: 1.25rem 1.2rem 1.1rem;
+  top: 0.65rem;
+  align-self: start;
+  min-width: 0;
+  padding: 0.95rem 1rem 0.85rem;
   border-right: 1px solid var(--border-strong);
-  border-radius: 1.15rem 0 0 1.15rem;
   background: var(--panel);
-  scrollbar-color: var(--border-strong) transparent;
-  scrollbar-width: thin;
-}
-
-.controls::-webkit-scrollbar {
-  width: 8px;
-}
-
-.controls::-webkit-scrollbar-thumb {
-  border: 2px solid transparent;
-  border-radius: 99px;
-  background: var(--border-strong);
-  background-clip: padding-box;
-}
-
-.eyebrow,
-.sectionKicker {
-  margin: 0 0 0.35rem;
-  color: var(--scenario-ink);
-  font-size: 0.72rem;
-  font-weight: 760;
-  letter-spacing: 0.085em;
-  line-height: 1.2;
-  text-transform: uppercase;
-  transition: color 240ms ease;
 }
 
 .controlsIntro {
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding-bottom: 0.65rem;
 }
 
 .controlsIntro h2 {
+  flex: 0 0 auto;
   margin: 0;
-  font-size: 1.16rem;
-  letter-spacing: -0.02em;
+  font-size: 1rem;
+  letter-spacing: -0.018em;
   line-height: 1.2;
 }
 
-.controlsIntro > p:last-child {
-  margin: 0.55rem 0 0;
+.controlsIntro p {
+  max-width: 14rem;
+  margin: 0;
   color: var(--ink-muted);
-  font-size: 0.82rem;
-  line-height: 1.5;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  text-align: right;
 }
 
 .presetGroup {
-  padding: 0.95rem 0 1rem;
+  padding: 0.65rem 0 0.7rem;
   margin: 0;
   border: 0;
+  border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
 
 .presetGroup legend {
   padding: 0;
-  margin-bottom: 0.55rem;
-  color: var(--ink-soft);
-  font-size: 0.72rem;
-  font-weight: 720;
-  letter-spacing: 0.035em;
+  margin-bottom: 0.42rem;
+  color: var(--ink);
+  font-size: 0.76rem;
+  font-weight: 750;
 }
 
 .presetList {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.32rem;
 }
 
 .presetButton {
-  min-height: 2.55rem;
-  padding: 0.48rem 0.58rem;
+  min-height: 1.95rem;
+  padding: 0.3rem;
   border: 1px solid var(--border-strong);
-  border-radius: 0.58rem;
-  background: rgb(255 255 255 / 72%);
-  color: var(--ink);
+  border-radius: 0.48rem;
+  background: rgb(255 255 255 / 66%);
+  color: var(--ink-muted);
   font: inherit;
-  font-size: 0.72rem;
+  font-size: 0.69rem;
   font-weight: 680;
-  line-height: 1.2;
-  text-align: left;
+  line-height: 1.15;
   cursor: pointer;
   transition:
-    border-color 200ms ease,
-    background-color 200ms ease,
-    color 200ms ease,
-    transform 200ms ease;
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
 }
 
 .presetButton:hover {
   border-color: var(--scenario-accent);
-  background: var(--scenario-soft);
+  color: var(--ink);
 }
 
 .presetButton:active {
@@ -147,8 +130,30 @@
 .presetButton[aria-pressed="true"] {
   border-color: var(--scenario-accent);
   background: var(--scenario-soft);
-  box-shadow: inset 3px 0 0 var(--scenario-accent);
   color: var(--scenario-ink);
+}
+
+.controlGroups {
+  display: grid;
+  gap: 0.25rem;
+  padding-top: 0.4rem;
+}
+
+.controlGroup {
+  min-width: 0;
+}
+
+.controlGroup + .controlGroup {
+  padding-top: 0.3rem;
+  border-top: 1px solid var(--border);
+}
+
+.controlGroup h3 {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.74rem;
+  font-weight: 780;
+  letter-spacing: 0.015em;
 }
 
 .controlList {
@@ -156,61 +161,51 @@
 }
 
 .control {
-  padding: 0.9rem 0 0.85rem;
-  border-bottom: 1px solid var(--border);
+  min-width: 0;
+  padding: 0.14rem 0 0.18rem;
 }
 
 .controlLabelRow {
   display: flex;
-  align-items: flex-start;
+  align-items: baseline;
   justify-content: space-between;
-  gap: 0.7rem;
+  gap: 0.65rem;
 }
 
 .controlLabelRow label {
-  display: flex;
-  align-items: baseline;
-  gap: 0.42rem;
-  max-width: 68%;
-  font-size: 0.81rem;
-  font-weight: 740;
-  line-height: 1.25;
+  min-width: 0;
+  font-size: 0.76rem;
+  font-weight: 710;
+  line-height: 1.18;
   cursor: pointer;
-}
-
-.controlNumber {
-  flex: 0 0 auto;
-  color: var(--ink-faint);
-  font-size: 0.62rem;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.05em;
 }
 
 .controlValue {
   display: flex;
+  flex: 0 0 auto;
   align-items: baseline;
   gap: 0.35rem;
   color: var(--ink-muted);
-  font-size: 0.67rem;
-  line-height: 1.2;
+  font-size: 0.68rem;
+  line-height: 1;
   white-space: nowrap;
 }
 
 .controlValue strong {
-  min-width: 1.75rem;
+  min-width: 1.4rem;
   color: var(--scenario-ink);
-  font-size: 0.92rem;
+  font-size: 0.78rem;
   font-variant-numeric: tabular-nums;
   text-align: right;
-  transition: color 240ms ease;
+  transition: color 220ms ease;
 }
 
 .range {
   --range-fill: 50%;
   width: 100%;
-  height: 2rem;
+  height: 1.35rem;
   padding: 0;
-  margin: 0.28rem 0 0;
+  margin: 0.05rem 0 0;
   appearance: none;
   background: transparent;
   cursor: pointer;
@@ -219,7 +214,7 @@
 
 .range::-webkit-slider-runnable-track {
   width: 100%;
-  height: 0.38rem;
+  height: 0.32rem;
   border: 1px solid rgb(35 34 30 / 10%);
   border-radius: 99px;
   background: linear-gradient(
@@ -229,22 +224,21 @@
     #d9d7d0 var(--range-fill),
     #d9d7d0 100%
   );
-  transition: background 220ms ease;
 }
 
 .range::-webkit-slider-thumb {
-  width: 1.22rem;
-  height: 1.22rem;
-  margin-top: -0.46rem;
+  width: 1.08rem;
+  height: 1.08rem;
+  margin-top: -0.4rem;
   appearance: none;
   border: 3px solid var(--surface);
   border-radius: 50%;
   background: var(--scenario-ink);
   box-shadow:
     0 0 0 1px var(--scenario-ink),
-    0 2px 5px rgb(30 29 26 / 22%);
+    0 2px 4px rgb(30 29 26 / 20%);
   transition:
-    background-color 220ms ease,
+    background-color 180ms ease,
     box-shadow 180ms ease,
     transform 180ms ease;
 }
@@ -256,32 +250,29 @@
 .range:focus-visible::-webkit-slider-thumb {
   box-shadow:
     0 0 0 2px var(--surface),
-    0 0 0 5px var(--focus),
-    0 2px 5px rgb(30 29 26 / 22%);
+    0 0 0 5px var(--focus);
 }
 
 .range::-moz-range-track {
-  height: 0.38rem;
+  height: 0.32rem;
   border: 1px solid rgb(35 34 30 / 10%);
   border-radius: 99px;
   background: #d9d7d0;
 }
 
 .range::-moz-range-progress {
-  height: 0.38rem;
+  height: 0.32rem;
   border-radius: 99px;
   background: var(--scenario-accent);
 }
 
 .range::-moz-range-thumb {
-  width: 1rem;
-  height: 1rem;
+  width: 0.9rem;
+  height: 0.9rem;
   border: 3px solid var(--surface);
   border-radius: 50%;
   background: var(--scenario-ink);
-  box-shadow:
-    0 0 0 1px var(--scenario-ink),
-    0 2px 5px rgb(30 29 26 / 22%);
+  box-shadow: 0 0 0 1px var(--scenario-ink);
 }
 
 .range:focus-visible::-moz-range-thumb {
@@ -294,41 +285,30 @@
   display: flex;
   justify-content: space-between;
   gap: 0.8rem;
-  margin-top: -0.13rem;
+  margin-top: -0.18rem;
   color: var(--ink-soft);
-  font-size: 0.62rem;
-  line-height: 1.22;
-}
-
-.endpoints span {
-  max-width: 47%;
+  font-size: 0.68rem;
+  line-height: 1.1;
 }
 
 .endpoints span:last-child {
   text-align: right;
 }
 
-.controlDescription {
-  margin: 0.48rem 0 0 1.4rem;
-  color: var(--ink-muted);
-  font-size: 0.68rem;
-  line-height: 1.4;
-}
-
 .resetButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.42rem;
+  gap: 0.38rem;
   width: 100%;
-  min-height: 2.75rem;
-  margin-top: 0.9rem;
+  min-height: 2.35rem;
+  margin-top: 0.6rem;
   border: 1px solid var(--border-strong);
-  border-radius: 0.6rem;
+  border-radius: 0.52rem;
   background: transparent;
   color: var(--ink);
   font: inherit;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 740;
   cursor: pointer;
 }
@@ -344,44 +324,23 @@
 }
 
 .spectrum {
-  padding: 1.3rem clamp(1rem, 3vw, 2.1rem) 1.1rem;
+  padding: 0.9rem clamp(1rem, 2.6vw, 1.6rem) 0.7rem;
   border-bottom: 1px solid var(--border);
-  background:
-    linear-gradient(125deg, var(--scenario-soft), rgb(255 255 255 / 0%) 62%),
-    var(--surface);
-  transition: background-color 240ms ease;
-}
-
-.spectrumHeadingRow,
-.sectionHeadingRow,
-.outcomeHeader,
-.indicatorLabelRow {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
+  background: color-mix(in srgb, var(--scenario-soft) 46%, var(--surface));
+  transition: background-color 220ms ease;
 }
 
 .spectrumTitle {
   margin: 0;
-  font-size: clamp(1rem, 1.6vw, 1.18rem);
-  letter-spacing: -0.02em;
+  font-size: 1rem;
+  letter-spacing: -0.018em;
   line-height: 1.2;
-}
-
-.spectrumHint {
-  max-width: 12rem;
-  margin: 0.15rem 0 0;
-  color: var(--ink-muted);
-  font-size: 0.7rem;
-  line-height: 1.35;
-  text-align: right;
 }
 
 .spectrumPlot {
   position: relative;
-  padding-top: 1.9rem;
-  margin-top: 1rem;
+  padding-top: 1.55rem;
+  margin-top: 0.55rem;
 }
 
 .spectrumMarker {
@@ -394,17 +353,17 @@
 
 .spectrumMarker span {
   display: block;
-  padding: 0.23rem 0.42rem;
-  border-radius: 0.35rem;
+  padding: 0.2rem 0.38rem;
+  border-radius: 0.3rem;
   background: var(--scenario-ink);
   color: #fff;
   font-size: 0.58rem;
   font-weight: 800;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.055em;
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
-  transition: background-color 240ms ease;
+  transition: background-color 220ms ease;
 }
 
 .spectrumMarker::after {
@@ -413,48 +372,47 @@
   left: 50%;
   width: 0;
   height: 0;
-  border-top: 0.34rem solid var(--scenario-ink);
-  border-right: 0.3rem solid transparent;
-  border-left: 0.3rem solid transparent;
+  border-top: 0.3rem solid var(--scenario-ink);
+  border-right: 0.27rem solid transparent;
+  border-left: 0.27rem solid transparent;
   content: "";
   transform: translateX(-50%);
-  transition: border-color 240ms ease;
 }
 
 .spectrumTrack {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  height: 0.58rem;
+  height: 0.5rem;
   overflow: hidden;
   border: 1px solid rgb(36 34 30 / 16%);
   border-radius: 99px;
-  background: #ddd;
 }
 
 .spectrumTrack span {
-  opacity: 0.88;
+  opacity: 0.9;
 }
 
 .spectrumSegments {
   display: grid;
   grid-template-columns: repeat(8, minmax(0, 1fr));
-  margin-top: 0.48rem;
+  margin-top: 0.38rem;
 }
 
 .spectrumSegment {
   position: relative;
   min-width: 0;
-  min-height: 3.75rem;
-  padding: 0.42rem 0.28rem 0.35rem;
+  min-height: 3.25rem;
+  padding: 0.33rem 0.25rem 0.28rem;
+  overflow-wrap: anywhere;
   border: 0;
   border-right: 1px solid var(--border);
   border-radius: 0;
   background: transparent;
   color: var(--ink-muted);
   font: inherit;
-  font-size: 0.62rem;
-  font-weight: 620;
-  line-height: 1.18;
+  font-size: 0.64rem;
+  font-weight: 630;
+  line-height: 1.16;
   text-align: left;
   cursor: pointer;
 }
@@ -470,9 +428,9 @@
 
 .spectrumSegment::after {
   position: absolute;
-  right: 0.25rem;
+  right: 0.2rem;
   bottom: 0;
-  left: 0.25rem;
+  left: 0.2rem;
   height: 2px;
   border-radius: 9px;
   background: transparent;
@@ -491,11 +449,11 @@
 
 .segmentIndex {
   display: block;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.15rem;
   color: var(--ink-faint);
-  font-size: 0.52rem;
+  font-size: 0.55rem;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 
 .segmentLong {
@@ -509,173 +467,164 @@
 .spectrumEndpoints {
   display: flex;
   justify-content: space-between;
-  margin-top: 0.38rem;
+  margin-top: 0.25rem;
   color: var(--ink-soft);
-  font-size: 0.61rem;
+  font-size: 0.66rem;
   font-weight: 650;
 }
 
 .outcomeContent {
-  padding: clamp(1.25rem, 3.4vw, 2.45rem);
+  padding: clamp(1.15rem, 2.6vw, 1.65rem);
 }
 
 .outcomeHeader {
-  align-items: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.2rem;
 }
 
 .outcomeHeader h2 {
-  max-width: 16ch;
+  max-width: 18ch;
   margin: 0;
   color: var(--ink);
-  font-size: clamp(2rem, 4.2vw, 3.75rem);
-  font-weight: 760;
-  letter-spacing: -0.055em;
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
+  font-weight: 770;
+  letter-spacing: -0.052em;
   line-height: 0.98;
   text-wrap: balance;
 }
 
+.outcomeSummary {
+  max-width: 48rem;
+  margin: 0.62rem 0 0;
+  color: var(--ink-muted);
+  font-size: clamp(0.98rem, 1.35vw, 1.1rem);
+  font-weight: 520;
+  letter-spacing: -0.008em;
+  line-height: 1.42;
+}
+
 .notForecast {
   flex: 0 0 auto;
-  padding: 0.42rem 0.58rem;
+  padding: 0.36rem 0.52rem;
   border: 1px solid
-    color-mix(in srgb, var(--scenario-accent) 36%, var(--border));
+    color-mix(in srgb, var(--scenario-accent) 34%, var(--border));
   border-radius: 99px;
   background: var(--scenario-soft);
   color: var(--scenario-ink);
-  font-size: 0.64rem;
-  font-weight: 760;
+  font-size: 0.67rem;
+  font-weight: 740;
   line-height: 1.2;
   text-align: center;
   transition:
-    color 240ms ease,
-    background-color 240ms ease,
-    border-color 240ms ease;
+    color 220ms ease,
+    background-color 220ms ease,
+    border-color 220ms ease;
 }
 
-.outcomeSummary {
-  max-width: 49rem;
-  margin: 1rem 0 0;
-  color: var(--ink-muted);
-  font-size: clamp(1.08rem, 1.8vw, 1.32rem);
-  font-weight: 510;
-  letter-spacing: -0.015em;
-  line-height: 1.46;
-}
-
-.snapshot {
-  max-width: 55rem;
-  padding: 1.15rem 1.25rem 1.2rem;
-  margin-top: 1.55rem;
-  border-left: 4px solid var(--scenario-accent);
+.tailRiskNote {
+  max-width: 62rem;
+  padding: 0.68rem 0.78rem;
+  margin: 0.9rem 0 0;
+  border-left: 3px solid var(--scenario-accent);
   background: var(--scenario-soft);
-  transition:
-    border-color 240ms ease,
-    background-color 240ms ease;
+  color: var(--scenario-ink);
+  font-size: 0.76rem;
+  font-weight: 620;
+  line-height: 1.45;
 }
 
-.snapshot > p:last-child {
+.outcomeDashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(17rem, 0.92fr);
+  gap: clamp(1.3rem, 3vw, 2.5rem);
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.glanceSection h3,
+.indicatorSection h3,
+.forcesSection h3,
+.leversSection h3 {
   margin: 0;
-  color: var(--ink);
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: 0.82rem;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
 }
 
-.whyBlock {
-  max-width: 55rem;
-  padding-top: 1.35rem;
+.glanceList {
+  display: grid;
+  margin: 0.52rem 0 0;
 }
 
-.whyBlock > p:not(.sectionKicker) {
-  margin: 0;
-  color: var(--ink-muted);
-  font-size: 0.92rem;
-  line-height: 1.58;
+.glanceList > div {
+  display: grid;
+  grid-template-columns: 3.55rem minmax(0, 1fr);
+  gap: 0.65rem;
+  padding: 0.42rem 0;
+  border-top: 1px solid var(--border);
 }
 
-.whyBlock .capabilityNote {
-  padding: 0.75rem 0.9rem;
-  margin-top: 0.8rem;
-  border: 1px solid var(--border);
-  border-radius: 0.55rem;
-  background: var(--wash);
-}
-
-.capabilityNote strong {
-  color: var(--ink);
-}
-
-.analysisSection,
-.leversSection,
-.profileSection {
-  padding-top: 1.65rem;
-  margin-top: 1.65rem;
-  border-top: 1px solid var(--border-strong);
-}
-
-.sectionHeadingRow {
-  align-items: end;
-  margin-bottom: 1rem;
-}
-
-.sectionHeadingRow h3 {
-  margin: 0;
-  font-size: clamp(1.13rem, 1.8vw, 1.38rem);
-  letter-spacing: -0.025em;
-  line-height: 1.2;
-}
-
-.sectionHeadingRow > p {
-  max-width: 18rem;
-  margin: 0;
-  color: var(--ink-muted);
+.glanceList dt,
+.profileGrid dt {
+  color: var(--scenario-ink);
   font-size: 0.7rem;
+  font-weight: 760;
+  line-height: 1.35;
+}
+
+.glanceList dd,
+.profileGrid dd {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.74rem;
   line-height: 1.4;
-  text-align: right;
 }
 
 .indicatorList {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.42rem;
+  margin-top: 0.52rem;
 }
 
 .indicatorLabelRow {
-  gap: 1.2rem;
-  margin-bottom: 0.36rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.18rem;
 }
 
 .indicatorLabel {
-  display: block;
+  min-width: 0;
   color: var(--ink);
-  font-size: 0.82rem;
-  font-weight: 740;
-}
-
-.indicatorDescription {
-  display: block;
-  max-width: 35rem;
-  margin-top: 0.09rem;
-  color: var(--ink-muted);
-  font-size: 0.66rem;
-  line-height: 1.35;
+  font-size: 0.7rem;
+  font-weight: 680;
+  line-height: 1.2;
 }
 
 .indicatorValue {
   flex: 0 0 auto;
   color: var(--ink-muted);
-  font-size: 0.66rem;
+  font-size: 0.64rem;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
 .indicatorValue strong {
+  display: inline-block;
+  min-width: 1.35rem;
+  margin-left: 0.15rem;
   color: var(--scenario-ink);
-  font-size: 0.82rem;
-  transition: color 240ms ease;
+  font-size: 0.7rem;
+  text-align: right;
 }
 
 .indicatorTrack {
   position: relative;
-  height: 0.52rem;
+  height: 0.42rem;
   overflow: hidden;
   border-radius: 99px;
   background: #deddd7;
@@ -697,133 +646,113 @@
   height: 100%;
   border-right: 2px solid var(--scenario-ink);
   border-radius: inherit;
-  background: color-mix(in srgb, var(--scenario-accent) 78%, #fff);
+  background: var(--scenario-accent);
   transition:
     width 260ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 240ms ease,
-    border-color 240ms ease;
+    background-color 220ms ease,
+    border-color 220ms ease;
 }
 
-.driverColumns {
+.changeGrid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(1rem, 3vw, 2rem);
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 0.82fr);
+  gap: clamp(1.3rem, 3vw, 2.5rem);
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border);
 }
 
-.driverColumns > div + div {
-  padding-left: clamp(1rem, 3vw, 2rem);
-  border-left: 1px solid var(--border);
+.driverChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.38rem;
+  margin-top: 0.55rem;
 }
 
-.driverColumns h4 {
-  margin: 0 0 0.7rem;
-  color: var(--ink-soft);
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.driverList {
-  display: grid;
-  gap: 0.78rem;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.driverList li {
-  display: grid;
-  grid-template-columns: 1.45rem 1fr;
-  gap: 0.48rem;
+.driverChip,
+.neutralChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  min-height: 1.85rem;
+  padding: 0.3rem 0.48rem;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--wash);
   color: var(--ink-muted);
-  font-size: 0.76rem;
-  line-height: 1.48;
+  font-size: 0.68rem;
+  font-weight: 670;
+  line-height: 1.15;
 }
 
-.driverList strong {
-  display: block;
-  margin-bottom: 0.1rem;
-  color: var(--ink);
-  font-size: 0.8rem;
-}
-
-.driverMark {
-  display: grid;
-  width: 1.35rem;
-  height: 1.35rem;
-  place-items: center;
-  border: 1px solid var(--border-strong);
-  border-radius: 50%;
-  background: var(--scenario-soft);
+.driverChip span {
   color: var(--scenario-ink);
   font-size: 0.8rem;
-  font-weight: 800;
-  transition:
-    color 240ms ease,
-    background-color 240ms ease;
+  font-weight: 850;
 }
 
-.emptyDriver {
-  max-width: 25rem;
-  margin: 0;
+.protective {
+  background: color-mix(in srgb, var(--scenario-soft) 58%, var(--surface));
+}
+
+.risk {
+  border-style: dashed;
+}
+
+.capabilitySignal {
+  margin: 0.42rem 0 0;
   color: var(--ink-muted);
-  font-size: 0.76rem;
-  line-height: 1.48;
+  font-size: 0.68rem;
+  line-height: 1.35;
 }
 
-.leversSection {
-  padding: 1.4rem;
-  border: 1px solid
-    color-mix(in srgb, var(--scenario-accent) 28%, var(--border));
-  border-radius: 0.8rem;
-  background: linear-gradient(135deg, var(--scenario-soft), #fff 80%);
-  transition:
-    border-color 240ms ease,
-    background-color 240ms ease;
+.compactHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.7rem;
 }
 
-.leversSection .sectionHeadingRow {
-  margin-bottom: 0.65rem;
-}
-
-.leverIntro {
-  max-width: 48rem;
-  margin: 0;
+.compactHeading span {
   color: var(--ink-muted);
-  font-size: 0.8rem;
-  line-height: 1.52;
+  font-size: 0.64rem;
+  line-height: 1.25;
+  text-align: right;
 }
 
 .leverButtons {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.65rem;
-  margin-top: 0.9rem;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
 }
 
 .leverButtons button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.8rem;
-  min-height: 3.25rem;
-  padding: 0.65rem 0.75rem;
+  gap: 0.55rem;
+  min-height: 2.55rem;
+  padding: 0.45rem 0.55rem;
   border: 1px solid var(--border-strong);
-  border-radius: 0.58rem;
-  background: rgb(255 255 255 / 78%);
-  color: var(--scenario-ink);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  color: var(--ink);
   font: inherit;
+  font-size: 0.7rem;
+  font-weight: 680;
+  line-height: 1.2;
   text-align: left;
   cursor: pointer;
   transition:
-    transform 180ms ease,
     border-color 180ms ease,
-    background-color 180ms ease;
+    background-color 180ms ease,
+    transform 180ms ease;
 }
 
 .leverButtons button:hover:not(:disabled) {
   border-color: var(--scenario-accent);
-  background: #fff;
+  background: var(--scenario-soft);
   transform: translateY(-1px);
 }
 
@@ -832,70 +761,119 @@
   opacity: 0.58;
 }
 
-.leverButtons strong,
-.leverButtons span span {
-  display: block;
-}
-
 .leverButtons strong {
-  margin-bottom: 0.12rem;
-  color: var(--ink);
-  font-size: 0.75rem;
+  flex: 0 0 auto;
+  color: var(--scenario-ink);
+  font-size: 0.73rem;
 }
 
-.leverButtons span {
+.outcomeDetails {
+  border-top: 1px solid var(--border-strong);
+}
+
+.outcomeDetails > summary {
+  display: flex;
+  align-items: center;
+  min-height: 3.05rem;
+  padding: 0 1.65rem;
+  color: var(--ink);
+  font-size: 0.76rem;
+  font-weight: 760;
+  cursor: pointer;
+}
+
+.outcomeDetails > summary::marker {
+  color: var(--scenario-accent);
+}
+
+.outcomeDetailsBody {
+  padding: 0 1.65rem 1.5rem;
+}
+
+.detailSnapshot {
+  max-width: 62rem;
+  margin: 0;
   color: var(--ink-muted);
-  font-size: 0.67rem;
-  line-height: 1.35;
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.outcomeDetailsBody > .tailRiskNote {
+  margin: 0 0 0.85rem;
 }
 
 .profileGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0;
-  margin: 0;
+  margin: 1rem 0 0;
   border-top: 1px solid var(--border);
 }
 
 .profileGrid > div {
-  padding: 0.9rem 0;
+  display: grid;
+  grid-template-columns: 6.2rem minmax(0, 1fr);
+  gap: 0.7rem;
+  padding: 0.55rem 0;
   border-bottom: 1px solid var(--border);
 }
 
 .profileGrid > div:nth-child(odd) {
-  padding-right: 1.25rem;
+  padding-right: 1rem;
 }
 
 .profileGrid > div:nth-child(even) {
-  padding-left: 1.25rem;
+  padding-left: 1rem;
   border-left: 1px solid var(--border);
 }
 
-.profileGrid dt {
-  margin-bottom: 0.25rem;
-  color: var(--ink-soft);
-  font-size: 0.66rem;
-  font-weight: 780;
-  letter-spacing: 0.055em;
-  text-transform: uppercase;
+.movementGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.4rem;
+  margin-top: 1rem;
 }
 
-.profileGrid dd {
+.movementGrid h3 {
+  margin: 0 0 0.32rem;
+  font-size: 0.72rem;
+}
+
+.movementGrid ul {
+  padding-left: 1rem;
   margin: 0;
   color: var(--ink-muted);
-  font-size: 0.76rem;
-  line-height: 1.5;
+  font-size: 0.72rem;
+  line-height: 1.42;
+}
+
+.movementGrid li + li {
+  margin-top: 0.24rem;
+}
+
+.movementGrid li::marker {
+  color: var(--scenario-accent);
 }
 
 .simulator :global(button:focus-visible),
-.simulator :global(a:focus-visible) {
+.simulator :global(a:focus-visible),
+.simulator :global(summary:focus-visible) {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
 
 @media (max-width: 1080px) {
   .simulatorGrid {
-    grid-template-columns: minmax(18.25rem, 0.78fr) minmax(0, 1.45fr);
+    grid-template-columns: minmax(18.5rem, 0.76fr) minmax(0, 1.5fr);
+  }
+
+  .controlsIntro {
+    display: block;
+  }
+
+  .controlsIntro p {
+    margin-top: 0.25rem;
+    text-align: left;
   }
 
   .segmentLong {
@@ -906,7 +884,196 @@
     display: block;
   }
 
-  .profileGrid {
+  .outcomeDashboard,
+  .changeGrid {
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 860px) {
+  .simulatorGrid {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 0.82rem;
+  }
+
+  .outcome {
+    order: 1;
+    width: 100%;
+  }
+
+  .controls {
+    position: static;
+    order: 2;
+    width: 100%;
+    border-top: 1px solid var(--border-strong);
+    border-right: 0;
+  }
+
+  .outcomeDetailsSlot {
+    order: 3;
+    width: 100%;
+  }
+
+  .controlsIntro {
+    display: flex;
+  }
+
+  .controlsIntro p {
+    margin-top: 0;
+    text-align: right;
+  }
+
+  .presetButton,
+  .resetButton {
+    min-height: 2.75rem;
+  }
+
+  .controlGroups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.5rem;
+  }
+
+  .controlGroup + .controlGroup {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .controlGroup:last-child {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 1rem;
+    padding-top: 0.55rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .controlGroup:last-child .controlList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.5rem;
+  }
+
+  .range {
+    height: 2.5rem;
+  }
+
+  .range::-webkit-slider-thumb {
+    width: 1.35rem;
+    height: 1.35rem;
+    margin-top: -0.54rem;
+  }
+
+  .range::-moz-range-thumb {
+    width: 1.12rem;
+    height: 1.12rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .spectrum {
+    padding: 0.8rem 0.65rem 0.65rem;
+  }
+
+  .spectrumSegment {
+    min-height: 3.55rem;
+    padding: 0.32rem 0.08rem 0.28rem;
+    font-size: 0.56rem;
+    line-height: 1.08;
+    text-align: center;
+  }
+
+  .segmentIndex {
+    text-align: center;
+  }
+
+  .spectrumEndpoints {
+    font-size: 0.62rem;
+  }
+
+  .outcomeContent {
+    padding: 1.05rem 0.9rem 1.15rem;
+  }
+
+  .outcomeHeader {
+    display: block;
+  }
+
+  .outcomeHeader h2 {
+    font-size: clamp(2rem, 10.5vw, 2.8rem);
+  }
+
+  .notForecast {
+    display: inline-block;
+    margin-top: 0.7rem;
+  }
+
+  .outcomeDashboard,
+  .changeGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .indicatorSection,
+  .leversSection {
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .controls {
+    padding: 0.95rem 0.9rem;
+  }
+
+  .controlsIntro {
+    display: block;
+  }
+
+  .controlsIntro p {
+    margin-top: 0.25rem;
+    text-align: left;
+  }
+
+  .controlGroups {
+    grid-template-columns: 1fr;
+  }
+
+  .controlGroup + .controlGroup {
+    padding-top: 0.55rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .controlGroup:last-child {
+    grid-column: auto;
+    display: block;
+  }
+
+  .controlGroup:last-child .controlList {
+    grid-template-columns: 1fr;
+  }
+
+  .control {
+    padding: 0.46rem 0 0.52rem;
+  }
+
+  .controlLabelRow label {
+    font-size: 0.82rem;
+  }
+
+  .endpoints {
+    font-size: 0.73rem;
+  }
+
+  .outcomeDetails > summary {
+    min-height: 3.25rem;
+    padding: 0 0.9rem;
+  }
+
+  .outcomeDetailsBody {
+    padding: 0 0.9rem 1.2rem;
+  }
+
+  .profileGrid,
+  .movementGrid {
     grid-template-columns: 1fr;
   }
 
@@ -918,182 +1085,39 @@
   }
 }
 
-@media (max-width: 820px) {
-  .simulatorGrid {
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.9rem;
-  }
-
-  .outcome {
-    order: 1;
-    width: 100%;
-    border-radius: 0.9rem 0.9rem 0 0;
-  }
-
-  .controls {
-    position: static;
-    order: 2;
-    width: 100%;
-    max-height: none;
-    overflow: visible;
-    border-top: 1px solid var(--border-strong);
-    border-right: 0;
-    border-radius: 0 0 0.9rem 0.9rem;
-  }
-
-  .controlDescription {
-    max-width: 42rem;
-  }
-}
-
-@media (max-width: 620px) {
-  .spectrum {
-    padding: 1rem 0.8rem 0.85rem;
-  }
-
-  .spectrumHint {
-    display: none;
-  }
-
-  .spectrumPlot {
-    margin-top: 0.8rem;
-  }
-
-  .spectrumSegment {
-    min-height: 3.45rem;
-    padding: 0.38rem 0.14rem 0.3rem;
-    font-size: 0.55rem;
-    line-height: 1.12;
-    overflow-wrap: anywhere;
-    text-align: center;
-  }
-
-  .segmentIndex {
-    font-size: 0.48rem;
-    text-align: center;
-  }
-
-  .spectrumEndpoints {
-    font-size: 0.56rem;
-  }
-
-  .outcomeContent {
-    padding: 1.2rem 1rem 1.4rem;
-  }
-
-  .outcomeHeader {
-    display: block;
-  }
-
-  .outcomeHeader h2 {
-    font-size: clamp(2rem, 11vw, 2.8rem);
-  }
-
-  .notForecast {
-    display: inline-block;
-    margin-top: 0.8rem;
-  }
-
-  .snapshot {
-    padding: 1rem;
-    margin-top: 1.2rem;
-  }
-
-  .snapshot > p:last-child {
-    font-size: 0.94rem;
-    line-height: 1.6;
-  }
-
-  .sectionHeadingRow,
-  .indicatorLabelRow {
-    display: block;
-  }
-
-  .sectionHeadingRow > p {
-    margin-top: 0.35rem;
-    text-align: left;
-  }
-
-  .indicatorValue {
-    display: block;
-    margin-top: 0.3rem;
-  }
-
-  .driverColumns,
-  .leverButtons {
-    grid-template-columns: 1fr;
-  }
-
-  .driverColumns > div + div {
-    padding-top: 1rem;
-    padding-left: 0;
-    border-top: 1px solid var(--border);
-    border-left: 0;
-  }
-
-  .leversSection {
-    padding: 1.05rem;
-  }
-
-  .controls {
-    padding: 1.1rem 1rem;
-  }
-
-  .presetButton {
-    min-height: 2.75rem;
-  }
-
-  .control {
-    padding: 1rem 0 0.9rem;
-  }
-
-  .range {
-    height: 2.4rem;
-  }
-
-  .range::-webkit-slider-thumb {
-    width: 1.4rem;
-    height: 1.4rem;
-    margin-top: -0.56rem;
-  }
-
-  .range::-moz-range-thumb {
-    width: 1.15rem;
-    height: 1.15rem;
-  }
-}
-
 @media (max-width: 360px) {
   .spectrum {
-    padding-right: 0.55rem;
-    padding-left: 0.55rem;
-  }
-
-  .spectrumTitle {
-    font-size: 0.95rem;
+    padding-right: 0.45rem;
+    padding-left: 0.45rem;
   }
 
   .spectrumSegment {
-    min-height: 3.25rem;
-    font-size: 0.49rem;
-  }
-
-  .spectrumEndpoints {
+    min-height: 3.65rem;
     font-size: 0.51rem;
   }
 
-  .outcomeContent {
-    padding-right: 0.85rem;
-    padding-left: 0.85rem;
+  .spectrumEndpoints {
+    font-size: 0.58rem;
   }
 
-  .presetList {
+  .outcomeContent,
+  .controls {
+    padding-right: 0.72rem;
+    padding-left: 0.72rem;
+  }
+
+  .compactHeading {
+    display: block;
+  }
+
+  .compactHeading span {
+    display: block;
+    margin-top: 0.12rem;
+    text-align: left;
+  }
+
+  .leverButtons {
     grid-template-columns: 1fr;
-  }
-
-  .controlLabelRow label {
-    max-width: 60%;
   }
 
   .controlValue span {

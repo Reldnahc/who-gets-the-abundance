@@ -1,122 +1,91 @@
 ---
 import { scenariosFromPositiveToSevere } from "../data/scenarios";
+
+const tailRiskMessage =
+  "Extreme tail risk. AI does not make this outcome inevitable; it requires the collapse of political, legal, economic, and civil-liberties restraints alongside near-total automation.";
 ---
 
 <section id="scenarios" class="archive" aria-labelledby="archive-heading">
   <header class="archive-header">
-    <div>
-      <p class="section-label">Scenario archive</p>
-      <h2 id="archive-heading">
-        Eight settlements, one technological frontier
-      </h2>
-    </div>
-    <p>
-      Each entry describes an institutional equilibrium, not a forecast or a
-      claim about anyone’s hidden intentions. Follow the conditions in either
-      direction.
-    </p>
+    <h2 id="archive-heading">Explore the futures</h2>
+    <p>Open a scenario to see the institutions and tradeoffs behind it.</p>
   </header>
-
-  <nav class="scenario-index" aria-label="Jump to a scenario">
-    {
-      scenariosFromPositiveToSevere.map((scenario, index) => (
-        <a href={`#${scenario.slug}`}>
-          <span>{String(index + 1).padStart(2, "0")}</span>
-          {scenario.shortName}
-        </a>
-      ))
-    }
-  </nav>
 
   <div class="archive-list">
     {
       scenariosFromPositiveToSevere.map((scenario, index) => (
-        <article
+        <details
           id={scenario.slug}
           class="scenario-entry"
           data-scenario-entry={scenario.id}
           data-current={scenario.id === "unequal-abundance" ? "true" : "false"}
           style={`--entry-accent: ${scenario.accent.color}; --entry-soft: ${scenario.accent.soft}; --entry-ink: ${scenario.accent.ink};`}
         >
-          <div class="scenario-rail" aria-hidden="true">
-            <span>{String(index + 1).padStart(2, "0")}</span>
-          </div>
-          <div class="scenario-body">
-            <header class="scenario-heading">
+          <summary>
+            <span class="scenario-position" aria-hidden="true">
+              <i style={`--position: ${index / 7}`} />
+            </span>
+            <span class="scenario-title">
+              <strong>{scenario.name}</strong>
+              <span>{scenario.summary}</span>
+            </span>
+            <span class="current-label">Current result</span>
+          </summary>
+
+          <div class="scenario-details">
+            {scenario.id === "eliminationist-regime" && (
+              <p class="tail-risk">{tailRiskMessage}</p>
+            )}
+
+            <p class="snapshot">{scenario.snapshot}</p>
+
+            <dl class="characteristics">
               <div>
-                <p>{scenario.range}</p>
-                <h3>
-                  <a href={`#${scenario.slug}`}>{scenario.name}</a>
-                </h3>
+                <dt>Work</dt>
+                <dd>{scenario.employment}</dd>
               </div>
-              <span class="current-label">Current simulator result</span>
-            </header>
-            <p class="scenario-summary">{scenario.summary}</p>
-            <div class="snapshot-block">
-              <span>A fictional snapshot</span>
-              <p>{scenario.snapshot}</p>
+              <div>
+                <dt>Ownership</dt>
+                <dd>{scenario.ownership}</dd>
+              </div>
+              <div>
+                <dt>Power</dt>
+                <dd>{scenario.politicalStructure}</dd>
+              </div>
+              <div>
+                <dt>Necessities</dt>
+                <dd>{scenario.necessities}</dd>
+              </div>
+            </dl>
+
+            <div class="movement-grid">
+              <section>
+                <h3>Risks</h3>
+                <ul>
+                  {scenario.primaryRisks.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </section>
+              <section>
+                <h3>Toward</h3>
+                <ul>
+                  {scenario.toward.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </section>
+              <section>
+                <h3>Away</h3>
+                <ul>
+                  {scenario.away.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </section>
             </div>
-
-            <details open={scenario.id === "unequal-abundance"}>
-              <summary>Structure, risks, and movement</summary>
-              <div class="scenario-details">
-                <dl class="characteristics">
-                  <div>
-                    <dt>Employment</dt>
-                    <dd>{scenario.employment}</dd>
-                  </div>
-                  <div>
-                    <dt>Ownership</dt>
-                    <dd>{scenario.ownership}</dd>
-                  </div>
-                  <div>
-                    <dt>Political structure</dt>
-                    <dd>{scenario.politicalStructure}</dd>
-                  </div>
-                  <div>
-                    <dt>Access to necessities</dt>
-                    <dd>{scenario.necessities}</dd>
-                  </div>
-                  <div>
-                    <dt>Personal autonomy</dt>
-                    <dd>{scenario.autonomy}</dd>
-                  </div>
-                  <div>
-                    <dt>Productivity → living standards</dt>
-                    <dd>{scenario.livingStandards}</dd>
-                  </div>
-                </dl>
-
-                <div class="movement-grid">
-                  <section>
-                    <h4>Primary risks</h4>
-                    <ul>
-                      {scenario.primaryRisks.map((item) => (
-                        <li>{item}</li>
-                      ))}
-                    </ul>
-                  </section>
-                  <section>
-                    <h4>What moves toward it</h4>
-                    <ul>
-                      {scenario.toward.map((item) => (
-                        <li>{item}</li>
-                      ))}
-                    </ul>
-                  </section>
-                  <section>
-                    <h4>What moves away from it</h4>
-                    <ul>
-                      {scenario.away.map((item) => (
-                        <li>{item}</li>
-                      ))}
-                    </ul>
-                  </section>
-                </div>
-              </div>
-            </details>
           </div>
-        </article>
+        </details>
       ))
     }
   </div>
@@ -129,9 +98,9 @@ import { scenariosFromPositiveToSevere } from "../data/scenarios";
       .forEach((entry) => {
         const isCurrent = entry.dataset.scenarioEntry === scenarioId;
         entry.dataset.current = String(isCurrent);
-        const link = entry.querySelector<HTMLAnchorElement>("h3 a");
-        if (isCurrent) link?.setAttribute("aria-current", "true");
-        else link?.removeAttribute("aria-current");
+        const summary = entry.querySelector<HTMLElement>("summary");
+        if (isCurrent) summary?.setAttribute("aria-current", "true");
+        else summary?.removeAttribute("aria-current");
       });
   }
 
@@ -149,361 +118,258 @@ import { scenariosFromPositiveToSevere } from "../data/scenarios";
 <style>
   .archive {
     width: min(calc(100% - 2.5rem), 72rem);
-    padding: clamp(4.5rem, 8vw, 7.5rem) 0;
+    padding: clamp(3.5rem, 7vw, 5.5rem) 0;
     margin: 0 auto;
   }
 
   .archive-header {
-    display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
-    align-items: end;
-    gap: clamp(2rem, 6vw, 6rem);
-  }
-
-  .section-label {
-    margin: 0 0 0.65rem;
-    color: var(--active-ink);
-    font-size: 0.72rem;
-    font-weight: 780;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 1.25rem;
   }
 
   .archive-header h2 {
-    max-width: 16ch;
     margin: 0;
-    font-size: clamp(2.15rem, 4.8vw, 4rem);
-    letter-spacing: -0.06em;
-    line-height: 0.98;
-  }
-
-  .archive-header > p {
-    margin: 0;
-    color: var(--ink-muted);
-    font-size: 0.9rem;
-    line-height: 1.6;
-  }
-
-  .scenario-index {
-    display: grid;
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    margin-top: 2.5rem;
-    border-top: 1px solid var(--border-strong);
-    border-bottom: 1px solid var(--border-strong);
-  }
-
-  .scenario-index a {
-    min-width: 0;
-    min-height: 4rem;
-    padding: 0.65rem 0.4rem;
-    border-right: 1px solid var(--border);
-    color: var(--ink-muted);
-    font-size: 0.64rem;
-    font-weight: 690;
-    line-height: 1.25;
-    text-decoration: none;
-  }
-
-  .scenario-index a:last-child {
-    border-right: 0;
-  }
-
-  .scenario-index a:hover {
-    background: var(--surface);
-    color: var(--ink);
-  }
-
-  .scenario-index span {
-    display: block;
-    margin-bottom: 0.24rem;
-    color: var(--ink-faint);
-    font-size: 0.56rem;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .archive-list {
-    margin-top: 1.5rem;
-    border-top: 1px solid var(--border-strong);
-  }
-
-  .scenario-entry {
-    display: grid;
-    grid-template-columns: 3.5rem minmax(0, 1fr);
-    scroll-margin-top: 1rem;
-    border-bottom: 1px solid var(--border-strong);
-    background: transparent;
-    transition:
-      background-color 220ms ease,
-      box-shadow 220ms ease;
-  }
-
-  .scenario-entry[data-current="true"] {
-    background: linear-gradient(90deg, var(--entry-soft), transparent 58%);
-    box-shadow: inset 4px 0 0 var(--entry-accent);
-  }
-
-  .scenario-rail {
-    padding-top: 1.55rem;
-    border-right: 1px solid var(--border);
-    color: var(--ink-faint);
-    font-size: 0.66rem;
-    font-variant-numeric: tabular-nums;
-    text-align: center;
-  }
-
-  .scenario-body {
-    min-width: 0;
-    padding: clamp(1.4rem, 3vw, 2.15rem) clamp(1rem, 3.5vw, 2.6rem) 1.7rem;
-  }
-
-  .scenario-heading {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .scenario-heading p {
-    margin: 0 0 0.28rem;
-    color: var(--entry-ink);
-    font-size: 0.66rem;
-    font-weight: 760;
-    letter-spacing: 0.045em;
-  }
-
-  .scenario-heading h3 {
-    margin: 0;
-    font-size: clamp(1.55rem, 3vw, 2.55rem);
+    font-size: clamp(1.8rem, 3.6vw, 2.8rem);
     letter-spacing: -0.045em;
     line-height: 1;
   }
 
-  .scenario-heading h3 a {
-    color: var(--ink);
-    text-decoration: none;
+  .archive-header p {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    text-align: right;
   }
 
-  .scenario-heading h3 a:hover {
+  .archive-list {
+    border-top: 1px solid var(--border-strong);
+  }
+
+  .scenario-entry {
+    scroll-margin-top: 1rem;
+    border-bottom: 1px solid var(--border-strong);
+    background: transparent;
+    transition:
+      background-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+  .scenario-entry[data-current="true"] {
+    background: var(--entry-soft);
+    box-shadow: inset 3px 0 0 var(--entry-accent);
+  }
+
+  .scenario-entry > summary {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    min-height: 5rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .scenario-entry > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .scenario-entry > summary:hover .scenario-title strong {
     color: var(--entry-ink);
+  }
+
+  .scenario-position {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 0.42rem;
+    overflow: hidden;
+    border-radius: 99px;
+    background: var(--border);
+  }
+
+  .scenario-position i {
+    position: absolute;
+    top: 50%;
+    left: calc(var(--position) * 100%);
+    width: 0.72rem;
+    height: 0.72rem;
+    border: 2px solid var(--surface);
+    border-radius: 50%;
+    background: var(--entry-accent);
+    box-shadow: 0 0 0 1px var(--entry-ink);
+    transform: translate(-50%, -50%);
+  }
+
+  .scenario-title {
+    display: grid;
+    grid-template-columns: minmax(11rem, 0.6fr) minmax(0, 1.4fr);
+    align-items: baseline;
+    gap: 1rem;
+    min-width: 0;
+  }
+
+  .scenario-title strong {
+    color: var(--ink);
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  .scenario-title > span {
+    color: var(--ink-muted);
+    font-size: 0.76rem;
+    line-height: 1.4;
   }
 
   .current-label {
     display: none;
     flex: 0 0 auto;
-    padding: 0.35rem 0.5rem;
+    padding: 0.3rem 0.46rem;
     border: 1px solid var(--entry-accent);
     border-radius: 99px;
-    background: var(--entry-soft);
     color: var(--entry-ink);
-    font-size: 0.6rem;
+    font-size: 0.64rem;
     font-weight: 760;
+    white-space: nowrap;
   }
 
   .scenario-entry[data-current="true"] .current-label {
     display: inline-block;
   }
 
-  .scenario-summary {
-    max-width: 52rem;
-    margin: 0.8rem 0 0;
-    color: var(--ink-muted);
-    font-size: 1rem;
-    font-weight: 610;
-    line-height: 1.52;
+  .scenario-details {
+    padding: 0 1rem 1.35rem 6.5rem;
   }
 
-  .snapshot-block {
-    display: grid;
-    grid-template-columns: 8.5rem minmax(0, 1fr);
-    gap: 1.2rem;
-    max-width: 60rem;
-    padding: 1rem 0;
-    margin-top: 1rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .snapshot-block > span {
-    padding-top: 0.16rem;
-    color: var(--entry-ink);
-    font-size: 0.65rem;
-    font-weight: 780;
-    letter-spacing: 0.055em;
-    text-transform: uppercase;
-  }
-
-  .snapshot-block p {
+  .snapshot {
+    max-width: 56rem;
     margin: 0;
     color: var(--ink-muted);
-    font-size: 0.85rem;
-    line-height: 1.64;
+    font-size: 0.84rem;
+    line-height: 1.55;
   }
 
-  details {
-    margin-top: 0.25rem;
-    border-top: 1px solid var(--border);
-  }
-
-  summary {
-    display: flex;
-    align-items: center;
-    width: max-content;
-    min-height: 2.75rem;
-    color: var(--ink);
-    font-size: 0.72rem;
-    font-weight: 760;
-    cursor: pointer;
-  }
-
-  summary::marker {
-    color: var(--entry-accent);
-  }
-
-  summary:hover {
+  .tail-risk {
+    max-width: 58rem;
+    padding: 0.65rem 0.75rem;
+    margin: 0 0 0.8rem;
+    border-left: 3px solid var(--entry-accent);
+    background: var(--entry-soft);
     color: var(--entry-ink);
-  }
-
-  .scenario-details {
-    padding: 0.75rem 0 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 620;
+    line-height: 1.45;
   }
 
   .characteristics {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0;
-    margin: 0;
+    max-width: 62rem;
+    margin: 1rem 0 0;
     border-top: 1px solid var(--border);
   }
 
   .characteristics > div {
-    padding: 0.85rem 0;
+    display: grid;
+    grid-template-columns: 5.2rem minmax(0, 1fr);
+    gap: 0.65rem;
+    padding: 0.55rem 0;
     border-bottom: 1px solid var(--border);
   }
 
   .characteristics > div:nth-child(odd) {
-    padding-right: 1.25rem;
+    padding-right: 1rem;
   }
 
   .characteristics > div:nth-child(even) {
-    padding-left: 1.25rem;
+    padding-left: 1rem;
     border-left: 1px solid var(--border);
   }
 
   dt,
-  .movement-grid h4 {
-    margin: 0 0 0.25rem;
-    color: var(--ink-soft);
-    font-size: 0.64rem;
-    font-weight: 780;
-    letter-spacing: 0.055em;
-    text-transform: uppercase;
+  .movement-grid h3 {
+    margin: 0;
+    color: var(--entry-ink);
+    font-size: 0.69rem;
+    font-weight: 760;
+    line-height: 1.4;
   }
 
   dd {
     margin: 0;
     color: var(--ink-muted);
-    font-size: 0.75rem;
-    line-height: 1.5;
+    font-size: 0.73rem;
+    line-height: 1.42;
   }
 
   .movement-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.4rem;
-    padding-top: 1.2rem;
+    gap: 1.35rem;
+    max-width: 62rem;
+    margin-top: 1rem;
   }
 
   .movement-grid ul {
-    padding-left: 1.05rem;
-    margin: 0;
+    padding-left: 1rem;
+    margin: 0.32rem 0 0;
     color: var(--ink-muted);
-    font-size: 0.73rem;
-    line-height: 1.5;
+    font-size: 0.72rem;
+    line-height: 1.42;
   }
 
   .movement-grid li + li {
-    margin-top: 0.35rem;
+    margin-top: 0.22rem;
   }
 
   .movement-grid li::marker {
     color: var(--entry-accent);
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 760px) {
     .archive {
       width: min(calc(100% - 2rem), 72rem);
     }
 
     .archive-header {
-      grid-template-columns: 1fr;
-      gap: 1.3rem;
-    }
-
-    .archive-header h2 {
-      max-width: 18ch;
-    }
-
-    .archive-header > p {
-      max-width: 40rem;
-    }
-
-    .scenario-index {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .scenario-index a:nth-child(-n + 4) {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .scenario-index a:nth-child(4) {
-      border-right: 0;
-    }
-
-    .movement-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .scenario-index {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .scenario-index a:nth-child(n) {
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .scenario-index a:nth-child(even) {
-      border-right: 0;
-    }
-
-    .scenario-index a:nth-last-child(-n + 2) {
-      border-bottom: 0;
-    }
-
-    .scenario-entry {
-      grid-template-columns: 2rem minmax(0, 1fr);
-    }
-
-    .scenario-body {
-      padding-right: 0.8rem;
-      padding-left: 0.85rem;
-    }
-
-    .scenario-heading {
       display: block;
     }
 
-    .current-label {
-      margin-top: 0.65rem;
+    .archive-header p {
+      margin-top: 0.45rem;
+      text-align: left;
     }
 
-    .snapshot-block {
+    .scenario-entry > summary {
+      grid-template-columns: 3.2rem minmax(0, 1fr);
+      gap: 0.75rem;
+      padding-right: 0.65rem;
+      padding-left: 0.65rem;
+    }
+
+    .scenario-title {
       grid-template-columns: 1fr;
-      gap: 0.45rem;
+      gap: 0.2rem;
     }
 
-    .characteristics {
+    .current-label {
+      grid-column: 2;
+      width: max-content;
+    }
+
+    .scenario-details {
+      padding-right: 0.65rem;
+      padding-left: 4.6rem;
+    }
+
+    .characteristics,
+    .movement-grid {
       grid-template-columns: 1fr;
     }
 
@@ -512,6 +378,27 @@ import { scenariosFromPositiveToSevere } from "../data/scenarios";
       padding-right: 0;
       padding-left: 0;
       border-left: 0;
+    }
+  }
+
+  @media (max-width: 440px) {
+    .scenario-entry > summary {
+      grid-template-columns: 1.6rem minmax(0, 1fr);
+    }
+
+    .scenario-position {
+      width: 0.42rem;
+      height: 3rem;
+      margin: 0 auto;
+    }
+
+    .scenario-position i {
+      top: calc((1 - var(--position)) * 100%);
+      left: 50%;
+    }
+
+    .scenario-details {
+      padding-left: 2.95rem;
     }
   }
 

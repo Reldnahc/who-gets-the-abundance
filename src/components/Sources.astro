@@ -5,51 +5,29 @@ import { sources } from "../data/sources";
 {
   sources.length > 0 && (
     <section id="sources" class="sources" aria-labelledby="sources-heading">
-      <header class="sources-header">
-        <div>
-          <p class="section-label">Sources & further reading</p>
-          <h2 id="sources-heading">
-            Evidence for the questions—not the coefficients
-          </h2>
-        </div>
-        <p>
-          These verified readings inform the site’s questions about work,
-          distribution, rights, and governance. None validates the simulator’s
-          precise weights, thresholds, or fictional scenarios.
-        </p>
+      <header>
+        <h2 id="sources-heading">Sources and further reading</h2>
+        <p>Verified work informing the questions behind the simulator.</p>
       </header>
 
       <ol class="source-list">
-        {sources.map((source, index) => (
+        {sources.map((source) => (
           <li>
-            <span class="source-number">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <div class="source-main">
-              <a href={source.url} rel="noreferrer">
-                {source.title}
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 20 20"
-                  width="16"
-                  height="16"
-                >
-                  <path
-                    d="M7 5h8v8M15 5 6 14"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </a>
-              <p>
-                {source.authorOrOrganization}. <cite>{source.publication}</cite>
-                , {source.year}.
-              </p>
-            </div>
-            <p class="relevance">{source.relevance}</p>
+            <details>
+              <summary>
+                <span class="source-title">{source.title}</span>
+                <span class="source-meta">
+                  {source.authorOrOrganization} · {source.year}
+                </span>
+              </summary>
+              <div class="source-detail">
+                <p>{source.relevance}</p>
+                <a href={source.url} rel="noreferrer">
+                  Read at {source.publication}
+                  <span class="sr-only">(opens the source website)</span>
+                </a>
+              </div>
+            </details>
           </li>
         ))}
       </ol>
@@ -60,116 +38,134 @@ import { sources } from "../data/sources";
 <style>
   .sources {
     width: min(calc(100% - 2.5rem), 72rem);
-    padding: clamp(4.5rem, 8vw, 7rem) 0;
+    padding: clamp(3.2rem, 6vw, 4.8rem) 0;
     margin: 0 auto;
     border-top: 1px solid var(--border-strong);
   }
 
-  .sources-header {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
-    align-items: end;
-    gap: clamp(2rem, 6vw, 6rem);
+  .sources > header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 1rem;
   }
 
-  .section-label {
-    margin: 0 0 0.65rem;
-    color: var(--active-ink);
-    font-size: 0.72rem;
-    font-weight: 780;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .sources-header h2 {
-    max-width: 18ch;
+  .sources h2 {
     margin: 0;
-    font-size: clamp(2.1rem, 4.6vw, 3.8rem);
-    letter-spacing: -0.06em;
-    line-height: 0.99;
+    font-size: clamp(1.6rem, 3vw, 2.25rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
   }
 
-  .sources-header > p {
+  .sources > header p {
     margin: 0;
     color: var(--ink-muted);
-    font-size: 0.9rem;
-    line-height: 1.62;
+    font-size: 0.8rem;
+    text-align: right;
   }
 
   .source-list {
     padding: 0;
-    margin: 2.5rem 0 0;
+    margin: 0;
     border-top: 1px solid var(--border-strong);
     list-style: none;
   }
 
   .source-list li {
-    display: grid;
-    grid-template-columns: 2.4rem minmax(0, 1fr) minmax(15rem, 0.78fr);
-    gap: 1rem;
-    padding: 1.15rem 0;
     border-bottom: 1px solid var(--border-strong);
   }
 
-  .source-number {
-    padding-top: 0.13rem;
-    color: var(--ink-faint);
-    font-size: 0.62rem;
-    font-variant-numeric: tabular-nums;
+  .source-list summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(13rem, 0.65fr);
+    align-items: baseline;
+    gap: 1rem;
+    min-height: 3.4rem;
+    padding: 0.65rem 0.25rem;
+    cursor: pointer;
   }
 
-  .source-main a {
-    display: inline-flex;
-    align-items: flex-start;
-    gap: 0.35rem;
+  .source-title {
     color: var(--ink);
-    font-size: 0.87rem;
-    font-weight: 740;
+    font-size: 0.79rem;
+    font-weight: 720;
     line-height: 1.35;
-    text-decoration-color: var(--border-strong);
+  }
+
+  .source-meta {
+    color: var(--ink-muted);
+    font-size: 0.7rem;
+    line-height: 1.4;
+    text-align: right;
+  }
+
+  .source-detail {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0 0.25rem 0.85rem 1.2rem;
+  }
+
+  .source-detail p {
+    max-width: 49rem;
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.73rem;
+    line-height: 1.48;
+  }
+
+  .source-detail a {
+    flex: 0 0 auto;
+    color: var(--active-ink);
+    font-size: 0.72rem;
+    font-weight: 720;
     text-underline-offset: 0.2em;
   }
 
-  .source-main a:hover {
-    color: var(--active-ink);
-    text-decoration-color: var(--active-accent);
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
-  .source-main svg {
-    flex: 0 0 auto;
-    margin-top: 0.08rem;
-  }
-
-  .source-main p {
-    margin: 0.35rem 0 0;
-    color: var(--ink-soft);
-    font-size: 0.68rem;
-    line-height: 1.45;
-  }
-
-  .relevance {
-    margin: 0;
-    color: var(--ink-muted);
-    font-size: 0.74rem;
-    line-height: 1.5;
-  }
-
-  @media (max-width: 780px) {
+  @media (max-width: 700px) {
     .sources {
       width: min(calc(100% - 2rem), 72rem);
     }
 
-    .sources-header {
+    .sources > header {
+      display: block;
+    }
+
+    .sources > header p {
+      margin-top: 0.4rem;
+      text-align: left;
+    }
+
+    .source-list summary {
       grid-template-columns: 1fr;
-      gap: 1.4rem;
+      gap: 0.2rem;
     }
 
-    .source-list li {
-      grid-template-columns: 2rem minmax(0, 1fr);
+    .source-meta {
+      text-align: left;
     }
 
-    .relevance {
-      grid-column: 2;
+    .source-detail {
+      display: block;
+    }
+
+    .source-detail a {
+      display: inline-block;
+      margin-top: 0.55rem;
     }
   }
 

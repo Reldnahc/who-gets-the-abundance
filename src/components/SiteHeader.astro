@@ -10,9 +10,9 @@ import { siteConfig } from "../config/site";
     <div class="title-lockup">
       <h1>{siteConfig.name}</h1>
       <p>
-        Very capable AI could support radically different civilizations.
-        Capability alone does not choose among them; ownership, power, rights,
-        and distribution do.
+        AI could make society vastly more productive; the future is not yet
+        written. Change the assumptions below to explore who benefits—and who
+        holds the power.
       </p>
     </div>
     <nav class="header-actions" aria-label="Page actions">
@@ -32,7 +32,7 @@ import { siteConfig } from "../config/site";
           role="status"
           aria-live="polite"></span>
       </div>
-      <a class="method-link" href="#methodology">How the model works</a>
+      <a class="method-link" href="#methodology">How it works</a>
     </nav>
   </div>
 </header>
@@ -121,9 +121,9 @@ import { siteConfig } from "../config/site";
     justify-content: space-between;
     gap: 2rem;
     width: min(calc(100% - 2.5rem), var(--page-max));
-    min-height: 6.3rem;
+    min-height: 5.35rem;
     margin: 0 auto;
-    padding: 0.8rem 0;
+    padding: 0.65rem 0;
   }
 
   .title-lockup {
@@ -146,7 +146,7 @@ import { siteConfig } from "../config/site";
     max-width: 55ch;
     margin: 0;
     color: var(--ink-muted);
-    font-size: clamp(0.78rem, 1.15vw, 0.9rem);
+    font-size: clamp(0.8rem, 1.15vw, 0.9rem);
     line-height: 1.48;
   }
 
@@ -263,18 +263,28 @@ import { siteConfig } from "../config/site";
       padding: 0.9rem 0;
     }
 
+    .title-lockup {
+      display: contents;
+    }
+
     .title-lockup p {
       grid-column: 1 / -1;
+      grid-row: 2;
+      margin-top: 0.25rem;
       font-size: 0.74rem;
     }
 
     .header-actions {
       grid-column: 2;
       grid-row: 1;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.55rem;
     }
 
     .method-link {
-      display: none;
+      min-height: 1.65rem;
+      font-size: 0.67rem;
     }
 
     h1 {
