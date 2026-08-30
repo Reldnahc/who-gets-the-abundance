@@ -1,0 +1,142 @@
+:root {
+  color-scheme: light;
+  --page: #f7f4ed;
+  --surface: #fffefb;
+  --panel: #f1efe8;
+  --wash: #f5f4ef;
+  --ink: #20211f;
+  --ink-muted: #5d5e58;
+  --ink-soft: #62635e;
+  --ink-faint: #6b6b64;
+  --border: #dedbd2;
+  --border-strong: #cbc7bd;
+  --focus: #1d697a;
+  --active-accent: #9a7b2f;
+  --active-soft: #f2eddd;
+  --active-ink: #5f4b1d;
+  --page-max: 80rem;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  font-size: 17px;
+  font-synthesis: none;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  scrollbar-color: var(--border-strong) var(--page);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 0;
+  background: var(--page);
+  scroll-padding-top: 1rem;
+}
+
+body {
+  min-width: 0;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 86% 4%, var(--active-soft), transparent 25rem),
+    var(--page);
+  color: var(--ink);
+  transition: background-color 240ms ease;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--active-soft);
+  color: var(--ink);
+}
+
+.simulator-shell {
+  width: min(calc(100% - 2.5rem), var(--page-max));
+  padding-top: 1rem;
+  margin: 0 auto;
+}
+
+.noscript-note {
+  max-width: 50rem;
+  padding: 0.9rem 1rem;
+  margin: 0.8rem 0 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.55rem;
+  background: var(--surface);
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 680px) {
+  :root {
+    font-size: 16px;
+  }
+
+  .simulator-shell {
+    width: min(calc(100% - 1rem), var(--page-max));
+    padding-top: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media print {
+  :root {
+    font-size: 11pt;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .simulator-shell {
+    width: 100%;
+  }
+}

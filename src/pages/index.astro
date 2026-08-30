@@ -1,0 +1,44 @@
+---
+import FutureSimulator from "../components/FutureSimulator";
+import Methodology from "../components/Methodology.astro";
+import Orientation from "../components/Orientation.astro";
+import ScenarioArchive from "../components/ScenarioArchive.astro";
+import SEO from "../components/SEO.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import Sources from "../components/Sources.astro";
+import SupportFooter from "../components/SupportFooter.astro";
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEO />
+  </head>
+  <body>
+    <SiteHeader />
+    <main id="main-content">
+      <section
+        id="simulator"
+        class="simulator-shell"
+        aria-label="Interactive future simulator"
+      >
+        <FutureSimulator client:load />
+        <noscript>
+          <p class="noscript-note">
+            The interactive controls require JavaScript. The complete scenario
+            archive, model formula, limitations, and further reading remain
+            available below.
+          </p>
+        </noscript>
+      </section>
+      <Orientation />
+      <ScenarioArchive />
+      <Methodology />
+      <Sources />
+    </main>
+    <SupportFooter />
+  </body>
+</html>

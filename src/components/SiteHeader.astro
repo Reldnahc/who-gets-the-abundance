@@ -1,0 +1,311 @@
+---
+import { siteConfig } from "../config/site";
+---
+
+<a class="skip-link" href="#main-content"
+  >Skip to the simulator and main content</a
+>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="title-lockup">
+      <h1>{siteConfig.name}</h1>
+      <p>
+        Very capable AI could support radically different civilizations.
+        Capability alone does not choose among them; ownership, power, rights,
+        and distribution do.
+      </p>
+    </div>
+    <nav class="header-actions" aria-label="Page actions">
+      <div class="share-wrap">
+        <button id="share-control" class="share-control" type="button">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18">
+            <circle cx="18" cy="5" r="2.25"></circle>
+            <circle cx="6" cy="12" r="2.25"></circle>
+            <circle cx="18" cy="19" r="2.25"></circle>
+            <path d="m8 11 8-5M8 13l8 5"></path>
+          </svg>
+          Share
+        </button>
+        <span
+          id="share-feedback"
+          class="share-feedback"
+          role="status"
+          aria-live="polite"></span>
+      </div>
+      <a class="method-link" href="#methodology">How the model works</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  let currentShareUrl = window.location.href;
+  const shareButton =
+    document.querySelector<HTMLButtonElement>("#share-control");
+  const feedback = document.querySelector<HTMLElement>("#share-feedback");
+  let feedbackTimer = 0;
+
+  function setFeedback(message: string) {
+    if (!feedback) return;
+    window.clearTimeout(feedbackTimer);
+    feedback.textContent = message;
+    feedback.dataset.visible = message ? "true" : "false";
+    if (message) {
+      feedbackTimer = window.setTimeout(() => {
+        feedback.textContent = "";
+        feedback.dataset.visible = "false";
+      }, 2600);
+    }
+  }
+
+  async function copyUrl(url: string) {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(url);
+      return;
+    }
+    throw new Error("Clipboard access was not available");
+  }
+
+  window.addEventListener("abundance:statechange", (event) => {
+    const detail = (event as CustomEvent<{ url?: string }>).detail;
+    if (detail?.url) currentShareUrl = detail.url;
+  });
+
+  shareButton?.addEventListener("click", async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "Who Gets the Abundance?",
+          text: "Explore how institutions can shape very different futures under advanced automation.",
+          url: currentShareUrl,
+        });
+        setFeedback("Shared.");
+      } else {
+        await copyUrl(currentShareUrl);
+        setFeedback("Link copied.");
+      }
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
+      setFeedback("Couldn’t share. Copy the address from your browser.");
+    }
+  });
+</script>
+
+<style>
+  .skip-link {
+    position: fixed;
+    top: 0.7rem;
+    left: 0.7rem;
+    z-index: 100;
+    padding: 0.7rem 0.9rem;
+    border-radius: 0.5rem;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 760;
+    transform: translateY(-180%);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  .site-header {
+    position: relative;
+    z-index: 2;
+    border-bottom: 1px solid var(--border);
+    background: rgb(247 244 237 / 92%);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    width: min(calc(100% - 2.5rem), var(--page-max));
+    min-height: 6.3rem;
+    margin: 0 auto;
+    padding: 0.8rem 0;
+  }
+
+  .title-lockup {
+    display: grid;
+    grid-template-columns: minmax(16rem, auto) minmax(17rem, 37rem);
+    align-items: center;
+    gap: clamp(1.2rem, 3vw, 2.7rem);
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(1.35rem, 2.25vw, 2rem);
+    font-weight: 790;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+
+  .title-lockup p {
+    max-width: 55ch;
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: clamp(0.78rem, 1.15vw, 0.9rem);
+    line-height: 1.48;
+  }
+
+  .header-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .share-wrap {
+    position: relative;
+  }
+
+  .share-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--ink);
+    border-radius: 0.55rem;
+    background: var(--ink);
+    color: #fff;
+    font: inherit;
+    font-size: 0.74rem;
+    font-weight: 760;
+    cursor: pointer;
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .share-control svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+  }
+
+  .share-control:hover {
+    border-color: var(--active-ink);
+    background: var(--active-ink);
+  }
+
+  .share-control:active {
+    transform: translateY(1px);
+  }
+
+  .share-feedback {
+    position: absolute;
+    top: calc(100% + 0.45rem);
+    right: 0;
+    z-index: 10;
+    width: max-content;
+    max-width: 16rem;
+    padding: 0.45rem 0.58rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 0.42rem;
+    background: var(--surface);
+    box-shadow: 0 8px 24px rgb(32 30 26 / 12%);
+    color: var(--ink);
+    font-size: 0.68rem;
+    line-height: 1.35;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-0.2rem);
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease;
+  }
+
+  .share-feedback[data-visible="true"] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .method-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--ink);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: 0.25em;
+  }
+
+  .method-link:hover {
+    text-decoration-color: var(--active-accent);
+  }
+
+  @media (max-width: 960px) {
+    .header-inner {
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .title-lockup {
+      grid-template-columns: 1fr;
+      gap: 0.45rem;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .header-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      width: min(calc(100% - 1.5rem), var(--page-max));
+      min-height: 0;
+      padding: 0.9rem 0;
+    }
+
+    .title-lockup p {
+      grid-column: 1 / -1;
+      font-size: 0.74rem;
+    }
+
+    .header-actions {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .method-link {
+      display: none;
+    }
+
+    h1 {
+      max-width: 12rem;
+      font-size: 1.3rem;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .header-inner {
+      width: min(calc(100% - 1rem), var(--page-max));
+    }
+
+    h1 {
+      max-width: 10rem;
+      font-size: 1.16rem;
+    }
+
+    .share-control {
+      min-width: 2.75rem;
+      padding-right: 0.58rem;
+      padding-left: 0.58rem;
+      font-size: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skip-link,
+    .share-control,
+    .share-feedback {
+      transition: none;
+    }
+  }
+</style>

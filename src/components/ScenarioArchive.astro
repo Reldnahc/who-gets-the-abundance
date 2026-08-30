@@ -1,0 +1,523 @@
+---
+import { scenariosFromPositiveToSevere } from "../data/scenarios";
+---
+
+<section id="scenarios" class="archive" aria-labelledby="archive-heading">
+  <header class="archive-header">
+    <div>
+      <p class="section-label">Scenario archive</p>
+      <h2 id="archive-heading">
+        Eight settlements, one technological frontier
+      </h2>
+    </div>
+    <p>
+      Each entry describes an institutional equilibrium, not a forecast or a
+      claim about anyone’s hidden intentions. Follow the conditions in either
+      direction.
+    </p>
+  </header>
+
+  <nav class="scenario-index" aria-label="Jump to a scenario">
+    {
+      scenariosFromPositiveToSevere.map((scenario, index) => (
+        <a href={`#${scenario.slug}`}>
+          <span>{String(index + 1).padStart(2, "0")}</span>
+          {scenario.shortName}
+        </a>
+      ))
+    }
+  </nav>
+
+  <div class="archive-list">
+    {
+      scenariosFromPositiveToSevere.map((scenario, index) => (
+        <article
+          id={scenario.slug}
+          class="scenario-entry"
+          data-scenario-entry={scenario.id}
+          data-current={scenario.id === "unequal-abundance" ? "true" : "false"}
+          style={`--entry-accent: ${scenario.accent.color}; --entry-soft: ${scenario.accent.soft}; --entry-ink: ${scenario.accent.ink};`}
+        >
+          <div class="scenario-rail" aria-hidden="true">
+            <span>{String(index + 1).padStart(2, "0")}</span>
+          </div>
+          <div class="scenario-body">
+            <header class="scenario-heading">
+              <div>
+                <p>{scenario.range}</p>
+                <h3>
+                  <a href={`#${scenario.slug}`}>{scenario.name}</a>
+                </h3>
+              </div>
+              <span class="current-label">Current simulator result</span>
+            </header>
+            <p class="scenario-summary">{scenario.summary}</p>
+            <div class="snapshot-block">
+              <span>A fictional snapshot</span>
+              <p>{scenario.snapshot}</p>
+            </div>
+
+            <details open={scenario.id === "unequal-abundance"}>
+              <summary>Structure, risks, and movement</summary>
+              <div class="scenario-details">
+                <dl class="characteristics">
+                  <div>
+                    <dt>Employment</dt>
+                    <dd>{scenario.employment}</dd>
+                  </div>
+                  <div>
+                    <dt>Ownership</dt>
+                    <dd>{scenario.ownership}</dd>
+                  </div>
+                  <div>
+                    <dt>Political structure</dt>
+                    <dd>{scenario.politicalStructure}</dd>
+                  </div>
+                  <div>
+                    <dt>Access to necessities</dt>
+                    <dd>{scenario.necessities}</dd>
+                  </div>
+                  <div>
+                    <dt>Personal autonomy</dt>
+                    <dd>{scenario.autonomy}</dd>
+                  </div>
+                  <div>
+                    <dt>Productivity → living standards</dt>
+                    <dd>{scenario.livingStandards}</dd>
+                  </div>
+                </dl>
+
+                <div class="movement-grid">
+                  <section>
+                    <h4>Primary risks</h4>
+                    <ul>
+                      {scenario.primaryRisks.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </section>
+                  <section>
+                    <h4>What moves toward it</h4>
+                    <ul>
+                      {scenario.toward.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </section>
+                  <section>
+                    <h4>What moves away from it</h4>
+                    <ul>
+                      {scenario.away.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </section>
+                </div>
+              </div>
+            </details>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  function markCurrentScenario(scenarioId: string) {
+    document
+      .querySelectorAll<HTMLElement>("[data-scenario-entry]")
+      .forEach((entry) => {
+        const isCurrent = entry.dataset.scenarioEntry === scenarioId;
+        entry.dataset.current = String(isCurrent);
+        const link = entry.querySelector<HTMLAnchorElement>("h3 a");
+        if (isCurrent) link?.setAttribute("aria-current", "true");
+        else link?.removeAttribute("aria-current");
+      });
+  }
+
+  window.addEventListener("abundance:statechange", (event) => {
+    const detail = (event as CustomEvent<{ scenarioId?: string }>).detail;
+    if (detail?.scenarioId) markCurrentScenario(detail.scenarioId);
+  });
+
+  window.setTimeout(() => {
+    const hydratedScenario = document.documentElement.dataset.scenario;
+    if (hydratedScenario) markCurrentScenario(hydratedScenario);
+  }, 0);
+</script>
+
+<style>
+  .archive {
+    width: min(calc(100% - 2.5rem), 72rem);
+    padding: clamp(4.5rem, 8vw, 7.5rem) 0;
+    margin: 0 auto;
+  }
+
+  .archive-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+    align-items: end;
+    gap: clamp(2rem, 6vw, 6rem);
+  }
+
+  .section-label {
+    margin: 0 0 0.65rem;
+    color: var(--active-ink);
+    font-size: 0.72rem;
+    font-weight: 780;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .archive-header h2 {
+    max-width: 16ch;
+    margin: 0;
+    font-size: clamp(2.15rem, 4.8vw, 4rem);
+    letter-spacing: -0.06em;
+    line-height: 0.98;
+  }
+
+  .archive-header > p {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .scenario-index {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--border-strong);
+    border-bottom: 1px solid var(--border-strong);
+  }
+
+  .scenario-index a {
+    min-width: 0;
+    min-height: 4rem;
+    padding: 0.65rem 0.4rem;
+    border-right: 1px solid var(--border);
+    color: var(--ink-muted);
+    font-size: 0.64rem;
+    font-weight: 690;
+    line-height: 1.25;
+    text-decoration: none;
+  }
+
+  .scenario-index a:last-child {
+    border-right: 0;
+  }
+
+  .scenario-index a:hover {
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .scenario-index span {
+    display: block;
+    margin-bottom: 0.24rem;
+    color: var(--ink-faint);
+    font-size: 0.56rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .archive-list {
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--border-strong);
+  }
+
+  .scenario-entry {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    scroll-margin-top: 1rem;
+    border-bottom: 1px solid var(--border-strong);
+    background: transparent;
+    transition:
+      background-color 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  .scenario-entry[data-current="true"] {
+    background: linear-gradient(90deg, var(--entry-soft), transparent 58%);
+    box-shadow: inset 4px 0 0 var(--entry-accent);
+  }
+
+  .scenario-rail {
+    padding-top: 1.55rem;
+    border-right: 1px solid var(--border);
+    color: var(--ink-faint);
+    font-size: 0.66rem;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  .scenario-body {
+    min-width: 0;
+    padding: clamp(1.4rem, 3vw, 2.15rem) clamp(1rem, 3.5vw, 2.6rem) 1.7rem;
+  }
+
+  .scenario-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .scenario-heading p {
+    margin: 0 0 0.28rem;
+    color: var(--entry-ink);
+    font-size: 0.66rem;
+    font-weight: 760;
+    letter-spacing: 0.045em;
+  }
+
+  .scenario-heading h3 {
+    margin: 0;
+    font-size: clamp(1.55rem, 3vw, 2.55rem);
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+
+  .scenario-heading h3 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .scenario-heading h3 a:hover {
+    color: var(--entry-ink);
+  }
+
+  .current-label {
+    display: none;
+    flex: 0 0 auto;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--entry-accent);
+    border-radius: 99px;
+    background: var(--entry-soft);
+    color: var(--entry-ink);
+    font-size: 0.6rem;
+    font-weight: 760;
+  }
+
+  .scenario-entry[data-current="true"] .current-label {
+    display: inline-block;
+  }
+
+  .scenario-summary {
+    max-width: 52rem;
+    margin: 0.8rem 0 0;
+    color: var(--ink-muted);
+    font-size: 1rem;
+    font-weight: 610;
+    line-height: 1.52;
+  }
+
+  .snapshot-block {
+    display: grid;
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: 1.2rem;
+    max-width: 60rem;
+    padding: 1rem 0;
+    margin-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .snapshot-block > span {
+    padding-top: 0.16rem;
+    color: var(--entry-ink);
+    font-size: 0.65rem;
+    font-weight: 780;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+  }
+
+  .snapshot-block p {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.85rem;
+    line-height: 1.64;
+  }
+
+  details {
+    margin-top: 0.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    min-height: 2.75rem;
+    color: var(--ink);
+    font-size: 0.72rem;
+    font-weight: 760;
+    cursor: pointer;
+  }
+
+  summary::marker {
+    color: var(--entry-accent);
+  }
+
+  summary:hover {
+    color: var(--entry-ink);
+  }
+
+  .scenario-details {
+    padding: 0.75rem 0 0.2rem;
+  }
+
+  .characteristics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .characteristics > div {
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .characteristics > div:nth-child(odd) {
+    padding-right: 1.25rem;
+  }
+
+  .characteristics > div:nth-child(even) {
+    padding-left: 1.25rem;
+    border-left: 1px solid var(--border);
+  }
+
+  dt,
+  .movement-grid h4 {
+    margin: 0 0 0.25rem;
+    color: var(--ink-soft);
+    font-size: 0.64rem;
+    font-weight: 780;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .movement-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.4rem;
+    padding-top: 1.2rem;
+  }
+
+  .movement-grid ul {
+    padding-left: 1.05rem;
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.73rem;
+    line-height: 1.5;
+  }
+
+  .movement-grid li + li {
+    margin-top: 0.35rem;
+  }
+
+  .movement-grid li::marker {
+    color: var(--entry-accent);
+  }
+
+  @media (max-width: 800px) {
+    .archive {
+      width: min(calc(100% - 2rem), 72rem);
+    }
+
+    .archive-header {
+      grid-template-columns: 1fr;
+      gap: 1.3rem;
+    }
+
+    .archive-header h2 {
+      max-width: 18ch;
+    }
+
+    .archive-header > p {
+      max-width: 40rem;
+    }
+
+    .scenario-index {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .scenario-index a:nth-child(-n + 4) {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .scenario-index a:nth-child(4) {
+      border-right: 0;
+    }
+
+    .movement-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .scenario-index {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .scenario-index a:nth-child(n) {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .scenario-index a:nth-child(even) {
+      border-right: 0;
+    }
+
+    .scenario-index a:nth-last-child(-n + 2) {
+      border-bottom: 0;
+    }
+
+    .scenario-entry {
+      grid-template-columns: 2rem minmax(0, 1fr);
+    }
+
+    .scenario-body {
+      padding-right: 0.8rem;
+      padding-left: 0.85rem;
+    }
+
+    .scenario-heading {
+      display: block;
+    }
+
+    .current-label {
+      margin-top: 0.65rem;
+    }
+
+    .snapshot-block {
+      grid-template-columns: 1fr;
+      gap: 0.45rem;
+    }
+
+    .characteristics {
+      grid-template-columns: 1fr;
+    }
+
+    .characteristics > div:nth-child(odd),
+    .characteristics > div:nth-child(even) {
+      padding-right: 0;
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .archive {
+      width: min(calc(100% - 1.5rem), 72rem);
+    }
+  }
+</style>

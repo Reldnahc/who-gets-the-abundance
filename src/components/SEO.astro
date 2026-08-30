@@ -1,0 +1,91 @@
+---
+import { siteConfig } from "../config/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = siteConfig.title, description = siteConfig.description } =
+  Astro.props;
+const site = Astro.site ?? new URL(siteConfig.productionUrl);
+const canonicalUrl = new URL(Astro.url.pathname, site);
+canonicalUrl.search = "";
+canonicalUrl.hash = "";
+const assetBase = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const socialImageUrl = new URL(`${assetBase}${siteConfig.socialImage}`, site);
+const faviconUrl = `${assetBase}favicon.svg`;
+const pngIconUrl = `${assetBase}favicon-32.png`;
+const appleIconUrl = `${assetBase}apple-touch-icon.png`;
+const manifestUrl = `${assetBase}site.webmanifest`;
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteConfig.name,
+    url: canonicalUrl.toString(),
+    description,
+    inLanguage: "en",
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.author,
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Who Gets the Abundance? Future Simulator",
+    url: canonicalUrl.toString(),
+    description:
+      "An interactive conceptual model for exploring how automation capability and institutional power can combine into different social outcomes.",
+    applicationCategory: "EducationalApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript for interactive controls",
+    isAccessibleForFree: true,
+    inLanguage: "en",
+  },
+];
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="author" content={siteConfig.author} />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="theme-color" content="#f6f2e9" />
+<link rel="canonical" href={canonicalUrl} />
+
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={siteConfig.name} />
+<meta property="og:image" content={socialImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta
+  property="og:image:alt"
+  content="Who Gets the Abundance? Eight possible futures on a continuous spectrum."
+/>
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={socialImageUrl} />
+<meta
+  name="twitter:image:alt"
+  content="Who Gets the Abundance? Eight possible futures on a continuous spectrum."
+/>
+
+<link rel="icon" href={faviconUrl} type="image/svg+xml" />
+<link rel="icon" href={pngIconUrl} sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href={appleIconUrl} sizes="180x180" />
+<link rel="manifest" href={manifestUrl} />
+
+<script
+  type="application/ld+json"
+  is:inline
+  set:html={JSON.stringify(structuredData)}
+/>
