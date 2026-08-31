@@ -17,6 +17,12 @@ import { SimulatorControls } from "./SimulatorControls";
 
 const TRANSITION_DURATION = 260;
 
+function formatNames(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? "";
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return `${names.slice(0, -1).join(", ")}, and ${names.at(-1)}`;
+}
+
 export default function FutureSimulator() {
   const [inputs, setInputs] = useState<FutureInputs>({ ...businessAsUsual });
   const [hasHydrated, setHasHydrated] = useState(false);
@@ -26,6 +32,11 @@ export default function FutureSimulator() {
   const scenario = archetypeById[evaluation.match.primary.scenarioId];
   const secondaryScenario =
     archetypeById[evaluation.match.secondary.scenarioId];
+  const nearbyScenarios = useMemo(
+    () =>
+      evaluation.match.nearby.map((match) => archetypeById[match.scenarioId]),
+    [evaluation],
+  );
 
   const cancelAnimation = useCallback(() => {
     if (animationFrame.current !== null) {
@@ -109,11 +120,15 @@ export default function FutureSimulator() {
     );
     document.documentElement.dataset.scenario = scenario.id;
     document.documentElement.dataset.secondaryScenario = secondaryScenario.id;
+    document.documentElement.dataset.nearbyScenarios = nearbyScenarios
+      .map((item) => item.id)
+      .join(",");
     window.dispatchEvent(
       new CustomEvent("abundance:statechange", {
         detail: {
           scenarioId: scenario.id,
           secondaryScenarioId: secondaryScenario.id,
+          nearbyScenarioIds: nearbyScenarios.map((item) => item.id),
           url: shareUrl,
         },
       }),
@@ -126,12 +141,22 @@ export default function FutureSimulator() {
     }, 220);
     const announcementTimer = window.setTimeout(() => {
       const relation = evaluation.match.relation;
+      const nearbyNames = nearbyScenarios.map((item) => item.name);
+      const additionalNearbyNames = nearbyNames.filter(
+        (name) => name !== secondaryScenario.name,
+      );
       const result =
         relation === "between"
-          ? `is between ${scenario.name} and ${secondaryScenario.name}`
+          ? `is between ${scenario.name} and ${secondaryScenario.name}${
+              additionalNearbyNames.length > 0
+                ? `, with ${formatNames(additionalNearbyNames)} also nearby`
+                : ""
+            }`
           : relation === "leaning"
-            ? `leans toward ${scenario.name} and also resembles ${secondaryScenario.name}`
-            : `is closest to ${scenario.name} and also nearby ${secondaryScenario.name}`;
+            ? `leans toward ${scenario.name} and also resembles ${formatNames(nearbyNames)}`
+            : nearbyNames.length > 0
+              ? `is closest to ${scenario.name}, with ${formatNames(nearbyNames)} also nearby`
+              : `is closest to ${scenario.name}; the next nearest archetype is ${secondaryScenario.name}`;
       setAnnouncement(`Current illustrative result ${result}.`);
     }, 360);
 
@@ -139,7 +164,14 @@ export default function FutureSimulator() {
       window.clearTimeout(urlTimer);
       window.clearTimeout(announcementTimer);
     };
-  }, [evaluation, hasHydrated, inputs, scenario, secondaryScenario]);
+  }, [
+    evaluation,
+    hasHydrated,
+    inputs,
+    nearbyScenarios,
+    scenario,
+    secondaryScenario,
+  ]);
 
   const themeStyle = {
     "--scenario-accent": scenario.accent.color,
@@ -170,6 +202,7 @@ export default function FutureSimulator() {
           <OutcomePanel
             scenario={scenario}
             secondaryScenario={secondaryScenario}
+            nearbyScenarios={nearbyScenarios}
             evaluation={evaluation}
           />
         </section>

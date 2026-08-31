@@ -5,7 +5,9 @@ import { evaluateFuture } from "../lib/futureModel";
 
 const initialEvaluation = evaluateFuture(businessAsUsual);
 const initialPrimary = initialEvaluation.match.primary.scenarioId;
-const initialSecondary = initialEvaluation.match.secondary.scenarioId;
+const initialNearby = new Set(
+  initialEvaluation.match.nearby.map((match) => match.scenarioId),
+);
 ---
 
 <section id="scenarios" class="archive" aria-labelledby="archive-heading">
@@ -23,7 +25,7 @@ const initialSecondary = initialEvaluation.match.secondary.scenarioId;
           data-animated-details
           data-scenario-entry={scenario.id}
           data-primary={scenario.id === initialPrimary ? "true" : "false"}
-          data-secondary={scenario.id === initialSecondary ? "true" : "false"}
+          data-nearby={initialNearby.has(scenario.id) ? "true" : "false"}
           style={`--entry-accent: ${scenario.accent.color}; --entry-soft: ${scenario.accent.soft}; --entry-ink: ${scenario.accent.ink};`}
         >
           <summary>
@@ -33,7 +35,7 @@ const initialSecondary = initialEvaluation.match.secondary.scenarioId;
                 <small data-match-state>
                   {scenario.id === initialPrimary
                     ? "Closest"
-                    : scenario.id === initialSecondary
+                    : initialNearby.has(scenario.id)
                       ? "Nearby"
                       : ""}
                 </small>
@@ -119,25 +121,29 @@ const initialSecondary = initialEvaluation.match.secondary.scenarioId;
   interface SimulatorStateDetail {
     scenarioId?: string | undefined;
     secondaryScenarioId?: string | undefined;
+    nearbyScenarioIds?: string[] | undefined;
   }
 
   function markCurrentState(detail: SimulatorStateDetail) {
+    const nearbyIds = new Set(
+      Array.isArray(detail.nearbyScenarioIds)
+        ? detail.nearbyScenarioIds
+        : detail.secondaryScenarioId
+          ? [detail.secondaryScenarioId]
+          : [],
+    );
+
     document
       .querySelectorAll<HTMLElement>("[data-scenario-entry]")
       .forEach((entry) => {
         const isPrimary = entry.dataset.scenarioEntry === detail.scenarioId;
-        const isSecondary =
-          entry.dataset.scenarioEntry === detail.secondaryScenarioId;
+        const isNearby = nearbyIds.has(entry.dataset.scenarioEntry ?? "");
         entry.dataset.primary = String(isPrimary);
-        entry.dataset.secondary = String(isSecondary);
+        entry.dataset.nearby = String(isNearby);
         const summary = entry.querySelector<HTMLElement>("summary");
         const state = entry.querySelector<HTMLElement>("[data-match-state]");
         if (state)
-          state.textContent = isPrimary
-            ? "Closest"
-            : isSecondary
-              ? "Nearby"
-              : "";
+          state.textContent = isPrimary ? "Closest" : isNearby ? "Nearby" : "";
         if (isPrimary) summary?.setAttribute("aria-current", "true");
         else summary?.removeAttribute("aria-current");
       });
@@ -151,6 +157,11 @@ const initialSecondary = initialEvaluation.match.secondary.scenarioId;
     markCurrentState({
       scenarioId: document.documentElement.dataset.scenario,
       secondaryScenarioId: document.documentElement.dataset.secondaryScenario,
+      nearbyScenarioIds: (
+        document.documentElement.dataset.nearbyScenarios ?? ""
+      )
+        .split(",")
+        .filter(Boolean),
     });
   }, 0);
 </script>
@@ -206,7 +217,7 @@ const initialSecondary = initialEvaluation.match.secondary.scenarioId;
     box-shadow: inset 3px 0 0 var(--entry-accent);
   }
 
-  .scenario-entry[data-secondary="true"] {
+  .scenario-entry[data-nearby="true"] {
     background: color-mix(in srgb, var(--entry-soft) 42%, transparent);
     box-shadow: inset 1px 0 0 var(--entry-accent);
   }

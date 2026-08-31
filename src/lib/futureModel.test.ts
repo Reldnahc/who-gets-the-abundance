@@ -10,7 +10,9 @@ import {
   clampInputs,
   classifyMatch,
   evaluateFuture,
+  findNearbyMatches,
   rankArchetypes,
+  type ArchetypeMatch,
   type FutureCoordinates,
   type FutureInputs,
 } from "./futureModel";
@@ -124,7 +126,20 @@ describe("two-axis future model", () => {
     expect(classifyMatch(20.001, 30).fitQuality).toBe("loose");
   });
 
-  it("lets Mixed Baseline lean toward Unequal Abundance with a runner-up", () => {
+  it("returns every archetype inside the nearby-distance window", () => {
+    const matches: ArchetypeMatch[] = [
+      { scenarioId: "unequal-abundance", distance: 10 },
+      { scenarioId: "broad-productivity-boom", distance: 11 },
+      { scenarioId: "automated-neo-feudalism", distance: 17.999 },
+      { scenarioId: "corporate-dependency", distance: 18 },
+    ];
+
+    expect(findNearbyMatches(matches).map((match) => match.scenarioId)).toEqual(
+      ["broad-productivity-boom", "automated-neo-feudalism"],
+    );
+  });
+
+  it("lets Mixed Baseline show more than one nearby archetype", () => {
     const evaluation = evaluateFuture(businessAsUsual);
 
     expect(evaluation.match.primary.scenarioId).toBe("unequal-abundance");
@@ -132,6 +147,11 @@ describe("two-axis future model", () => {
       "broad-productivity-boom",
     );
     expect(evaluation.match.relation).toBe("leaning");
+    expect(evaluation.match.nearby.map((match) => match.scenarioId)).toEqual([
+      "broad-productivity-boom",
+      "corporate-dependency",
+      "automated-neo-feudalism",
+    ]);
   });
 
   it("ranks Eliminationist Regime as an ordinary bottom-left archetype", () => {

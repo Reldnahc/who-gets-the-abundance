@@ -24,10 +24,20 @@ function currentLabelClass(anchor: Archetype["labelAnchor"]): string {
   return styles.currentLabelAboveLeft ?? "";
 }
 
+function formatNames(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? "";
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return `${names.slice(0, -1).join(", ")}, and ${names.at(-1)}`;
+}
+
 export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
   const { coordinates, match } = evaluation;
   const automation = Math.round(coordinates.automation);
   const primaryArchetype = archetypeById[match.primary.scenarioId];
+  const nearbyIds = new Set(match.nearby.map((item) => item.scenarioId));
+  const nearbyNames = match.nearby.map(
+    (item) => archetypeById[item.scenarioId].name,
+  );
 
   return (
     <section className={styles.futureMap} aria-labelledby="map-heading">
@@ -58,7 +68,7 @@ export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
 
             {archetypes.map((archetype) => {
               const isPrimary = archetype.id === match.primary.scenarioId;
-              const isSecondary = archetype.id === match.secondary.scenarioId;
+              const isNearby = nearbyIds.has(archetype.id);
 
               return (
                 <button
@@ -66,7 +76,7 @@ export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
                   type="button"
                   className={`${styles.mapPoint} ${styles[archetype.labelAnchor]} ${
                     isPrimary ? styles.primaryPoint : ""
-                  } ${isSecondary ? styles.secondaryPoint : ""}`}
+                  } ${isNearby ? styles.nearbyPoint : ""}`}
                   style={
                     {
                       left: `${archetype.center.sharedBenefit}%`,
@@ -82,7 +92,7 @@ export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
                     archetype.center.publicAgency,
                   )}, automation ${Math.round(
                     archetype.center.automation,
-                  )}. ${isPrimary ? "Closest archetype. " : isSecondary ? "Runner-up archetype. " : ""}Load representative configuration.`}
+                  )}. ${isPrimary ? "Closest archetype. " : isNearby ? "Nearby archetype. " : ""}Load representative configuration.`}
                   aria-pressed={isPrimary}
                   onClick={() => onSelect(scenarioExamples[archetype.id])}
                 >
@@ -91,7 +101,7 @@ export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
                   </span>
                   <span className={styles.mapPointLabel} aria-hidden="true">
                     <strong>{archetype.shortName}</strong>
-                    {(isPrimary || isSecondary) && (
+                    {(isPrimary || isNearby) && (
                       <small>{isPrimary ? "Closest" : "Nearby"}</small>
                     )}
                   </span>
@@ -126,14 +136,14 @@ export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
       <div className={styles.mapLegend} aria-label="Archetype map key">
         {archetypes.map((archetype) => {
           const isPrimary = archetype.id === match.primary.scenarioId;
-          const isSecondary = archetype.id === match.secondary.scenarioId;
+          const isNearby = nearbyIds.has(archetype.id);
 
           return (
             <button
               key={archetype.id}
               type="button"
               className={`${isPrimary ? styles.primaryLegend : ""} ${
-                isSecondary ? styles.secondaryLegend : ""
+                isNearby ? styles.nearbyLegend : ""
               }`}
               onClick={() => onSelect(scenarioExamples[archetype.id])}
             >
@@ -148,7 +158,7 @@ export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
                 {pointCode(archetype.shortName)}
               </span>
               <strong>{archetype.name}</strong>
-              {(isPrimary || isSecondary) && (
+              {(isPrimary || isNearby) && (
                 <small>{isPrimary ? "Closest" : "Nearby"}</small>
               )}
             </button>
@@ -164,12 +174,9 @@ export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
         public agency {Math.round(coordinates.publicAgency)}, and automation{" "}
         {automation}. The closest archetype is{" "}
         {archetypes.find((item) => item.id === match.primary.scenarioId)?.name};
-        the runner-up is{" "}
-        {
-          archetypes.find((item) => item.id === match.secondary.scenarioId)
-            ?.name
-        }
-        .
+        {nearbyNames.length > 0
+          ? ` nearby archetypes, ordered by proximity, are ${formatNames(nearbyNames)}.`
+          : ` the nearest alternative is ${archetypeById[match.secondary.scenarioId].name}.`}
       </p>
     </section>
   );

@@ -13,6 +13,7 @@ import styles from "./FutureSimulator.module.css";
 interface OutcomePanelProps {
   scenario: Archetype;
   secondaryScenario: Archetype;
+  nearbyScenarios: Archetype[];
   evaluation: FutureEvaluation;
 }
 
@@ -70,10 +71,35 @@ function matchEyebrow(
   return `Closest to ${primaryName}`;
 }
 
-function secondaryCopy(relation: MatchRelation, secondaryName: string): string {
-  if (relation === "between") return `Nearly as close: ${secondaryName}`;
-  if (relation === "leaning") return `Also resembles ${secondaryName}`;
-  return `Also nearby ${secondaryName}`;
+function formatNames(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? "";
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return `${names.slice(0, -1).join(", ")}, and ${names.at(-1)}`;
+}
+
+function alternativesCopy(
+  relation: MatchRelation,
+  secondaryName: string,
+  nearbyScenarios: Archetype[],
+): string {
+  const nearbyNames = nearbyScenarios.map((scenario) => scenario.name);
+
+  if (relation === "between") {
+    const additionalNames = nearbyNames.filter(
+      (name) => name !== secondaryName,
+    );
+    return additionalNames.length > 0
+      ? `Nearly as close: ${secondaryName} · Also nearby: ${formatNames(additionalNames)}`
+      : `Nearly as close: ${secondaryName}`;
+  }
+
+  if (relation === "leaning") {
+    return `Also resembles ${formatNames(nearbyNames)}`;
+  }
+
+  return nearbyNames.length > 0
+    ? `Also nearby ${formatNames(nearbyNames)}`
+    : `Next nearest: ${secondaryName}`;
 }
 
 function titleCase(value: string): string {
@@ -115,6 +141,7 @@ function AxisDriverRow({
 export function OutcomePanel({
   scenario,
   secondaryScenario,
+  nearbyScenarios,
   evaluation,
 }: OutcomePanelProps) {
   const { coordinates, match } = evaluation;
@@ -129,7 +156,11 @@ export function OutcomePanel({
         <p className={styles.outcomeSummary}>{scenario.summary}</p>
         <div className={styles.matchMeta}>
           <span className={styles.secondaryMatch}>
-            {secondaryCopy(match.relation, secondaryScenario.name)}
+            {alternativesCopy(
+              match.relation,
+              secondaryScenario.name,
+              nearbyScenarios,
+            )}
           </span>
           <span className={styles.fitQuality}>
             {titleCase(match.fitQuality)} archetype fit

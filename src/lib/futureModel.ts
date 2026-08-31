@@ -38,6 +38,7 @@ export type AxisInputKey = SharedBenefitKey | PublicAgencyKey;
 export type AxisName = "sharedBenefit" | "publicAgency";
 
 const DISTANCE_TIE_EPSILON = 1e-9;
+export const NEARBY_DISTANCE_GAP = 8;
 
 export interface FutureCoordinates {
   sharedBenefit: number;
@@ -56,6 +57,7 @@ export type FitQuality = "strong" | "moderate" | "loose";
 export interface MatchSummary {
   primary: ArchetypeMatch;
   secondary: ArchetypeMatch;
+  nearby: ArchetypeMatch[];
   gap: number;
   relation: MatchRelation;
   fitQuality: FitQuality;
@@ -185,11 +187,26 @@ export function classifyMatch(
     : Number.POSITIVE_INFINITY;
   const gap = secondary - primary;
   const relation: MatchRelation =
-    gap < 3 ? "between" : gap < 8 ? "leaning" : "closest";
+    gap < 3 ? "between" : gap < NEARBY_DISTANCE_GAP ? "leaning" : "closest";
   const fitQuality: FitQuality =
     primary <= 10 ? "strong" : primary <= 20 ? "moderate" : "loose";
 
   return { gap, relation, fitQuality };
+}
+
+export function findNearbyMatches(
+  rankedMatches: readonly ArchetypeMatch[],
+): ArchetypeMatch[] {
+  const primary = rankedMatches[0];
+  if (!primary || !Number.isFinite(primary.distance)) return [];
+
+  return rankedMatches
+    .slice(1)
+    .filter(
+      (match) =>
+        Number.isFinite(match.distance) &&
+        match.distance - primary.distance < NEARBY_DISTANCE_GAP,
+    );
 }
 
 export function calculateIndicators(
@@ -270,6 +287,7 @@ export function evaluateFuture(inputs: FutureInputs): FutureEvaluation {
   }
 
   const classification = classifyMatch(primary.distance, secondary.distance);
+  const nearby = findNearbyMatches(rankedMatches);
 
   return {
     inputs: safe,
@@ -277,6 +295,7 @@ export function evaluateFuture(inputs: FutureInputs): FutureEvaluation {
     match: {
       primary,
       secondary,
+      nearby,
       ...classification,
     },
     rankedMatches,

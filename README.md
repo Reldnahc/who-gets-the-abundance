@@ -42,7 +42,7 @@ The production output is fully static in `dist/` and does not require a Node ser
 - `src/lib/shareState.ts` owns compact query-string serialization and safe parsing.
 - Vitest covers the model and share-state edge cases.
 
-The two visible institutional axes carry most of archetype distance. Automation remains independent so capability cannot point toward a socially positive or negative result by itself. The interface shows the nearest and runner-up archetypes rather than forcing mixed states into exclusive bands.
+The two visible institutional axes carry most of archetype distance. Automation remains independent so capability cannot point toward a socially positive or negative result by itself. The interface shows the nearest match and every archetype inside the nearby-distance window rather than forcing mixed states into exclusive bands.
 
 ## Initial GitHub Pages setup
 
