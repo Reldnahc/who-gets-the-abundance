@@ -9,11 +9,11 @@ The model is an illustrative thought tool. Its weights and scenario thresholds a
 Requirements: Node.js 22.12 or newer and npm.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-The development server defaults to `http://localhost:4321`.
+With the default project base path, the development server serves the site at `http://localhost:4321/who-gets-the-abundance/`.
 
 ## Quality checks
 
@@ -41,9 +41,19 @@ The production output is fully static in `dist/` and does not require a Node ser
 - `src/lib/shareState.ts` owns compact query-string serialization and safe parsing.
 - Vitest covers the model and share-state edge cases.
 
+## Initial GitHub Pages setup
+
+Before the first deployment from a new repository, select:
+
+`Settings → Pages → Build and deployment → Source → GitHub Actions`
+
+The included workflow then verifies and publishes the static `dist/` artifact on pushes to `main`.
+
 ## Production URL and base paths
 
-The local fallback URL is centralized at `siteConfig.productionUrl` in `src/config/site.ts`. Before a non-GitHub deployment, replace it with the real public URL or set the `PUBLIC_SITE_URL` environment variable. Include the repository path for a project site, for example:
+The standard project URL, `https://reldnahc.github.io/who-gets-the-abundance/`, is the default at `siteConfig.productionUrl` in `src/config/site.ts`.
+
+`PUBLIC_SITE_URL` is an optional override for a future custom domain, alternate deployment, or preview build. Include any required path:
 
 ```text
 PUBLIC_SITE_URL=https://username.github.io/repository-name
@@ -51,12 +61,19 @@ PUBLIC_SITE_URL=https://username.github.io/repository-name
 
 Astro derives the deployment base path from that URL, so assets, canonical metadata, anchors, the sitemap, and shared query-string links work under GitHub Pages project paths.
 
-The included GitHub Pages workflow derives the standard Pages URL from the repository at build time. Set a repository Actions variable named `PUBLIC_SITE_URL` only when using a custom domain or nonstandard path.
+The GitHub Pages workflow also derives the standard Pages URL at build time. Set a repository Actions variable named `PUBLIC_SITE_URL` only for a custom domain or nonstandard path.
+
+## Sitemap and robots
+
+The sitemap index is published at:
+
+`https://reldnahc.github.io/who-gets-the-abundance/sitemap-index.xml`
+
+That URL can be submitted directly to search-engine webmaster tools. Crawlers generally consult the host-root `robots.txt`; this project repository cannot control that file for the entire `reldnahc.github.io` host. The generated project-path robots file is included only as a deployment artifact.
 
 ## Donation link
 
-Replace `siteConfig.donationUrl` in `src/config/site.ts` before publishing. The
-placeholder value exists only in that configuration property.
+The support link is centralized at `siteConfig.donationUrl` in `src/config/site.ts` and can be changed there later.
 
 ## Sources
 

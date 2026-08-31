@@ -1,6 +1,7 @@
 import { scenarioExamples } from "../data/presets";
-import { scenarios, type ScenarioId } from "../data/scenarios";
+import { scenarioById, scenarios, type ScenarioId } from "../data/scenarios";
 import type { FutureInputs } from "../lib/futureModel";
+import { calculateDisplayPosition } from "../lib/spectrumModel";
 import styles from "./FutureSimulator.module.css";
 
 interface FutureSpectrumProps {
@@ -14,7 +15,12 @@ export function FutureSpectrum({
   scenarioId,
   onSelect,
 }: FutureSpectrumProps) {
-  const markerPosition = `clamp(0.9rem, ${outcomePosition}%, calc(100% - 0.9rem))`;
+  const displayPosition = calculateDisplayPosition(outcomePosition, scenarioId);
+  const markerPosition = `clamp(0.9rem, ${displayPosition}%, calc(100% - 0.9rem))`;
+  const spectrumColumns = scenarios
+    .map((scenario) => `${scenario.maximum - scenario.minimum}fr`)
+    .join(" ");
+  const selectedScenario = scenarioById[scenarioId];
 
   return (
     <section className={styles.spectrum} aria-labelledby="spectrum-heading">
@@ -30,7 +36,11 @@ export function FutureSpectrum({
         >
           <span>Current</span>
         </div>
-        <div className={styles.spectrumTrack} aria-hidden="true">
+        <div
+          className={styles.spectrumTrack}
+          style={{ gridTemplateColumns: spectrumColumns }}
+          aria-hidden="true"
+        >
           {scenarios.map((scenario) => (
             <span
               key={scenario.id}
@@ -40,6 +50,7 @@ export function FutureSpectrum({
         </div>
         <div
           className={styles.spectrumSegments}
+          style={{ gridTemplateColumns: spectrumColumns }}
           role="group"
           aria-label="Try a representative scenario"
         >
@@ -58,12 +69,15 @@ export function FutureSpectrum({
                 <span className={styles.segmentIndex} aria-hidden="true">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <span className={styles.segmentLong}>{scenario.name}</span>
-                <span className={styles.segmentShort}>
+                <span className={styles.segmentLong} aria-hidden="true">
+                  {scenario.name}
+                </span>
+                <span className={styles.segmentShort} aria-hidden="true">
                   {scenario.shortName}
                 </span>
                 <span className={styles.srOnly}>
-                  Try a representative configuration. {scenario.range}.
+                  {scenario.name}. Try a representative configuration.{" "}
+                  {scenario.range}.
                 </span>
               </button>
             );
@@ -73,6 +87,9 @@ export function FutureSpectrum({
           <span>Concentrated power</span>
           <span>Broadly shared power</span>
         </div>
+        <p className={styles.spectrumSelection}>
+          <span>Selected future:</span> {selectedScenario.name}
+        </p>
       </div>
     </section>
   );

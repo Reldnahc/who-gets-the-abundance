@@ -326,7 +326,6 @@
 
 .spectrumTrack {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
   height: 0.5rem;
   overflow: hidden;
   border: 1px solid rgb(36 34 30 / 16%);
@@ -339,7 +338,6 @@
 
 .spectrumSegments {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
   margin-top: 0.38rem;
 }
 
@@ -416,6 +414,10 @@
   color: var(--ink-soft);
   font-size: 0.66rem;
   font-weight: 650;
+}
+
+.spectrumSelection {
+  display: none;
 }
 
 .outcomeContent {
@@ -1086,12 +1088,39 @@
   }
 
   .spectrumSegment {
-    min-height: 3.65rem;
-    font-size: 0.51rem;
+    display: grid;
+    min-height: 3rem;
+    padding: 0.35rem 0.05rem;
+    place-items: center;
+  }
+
+  .segmentIndex {
+    margin: 0;
+    font-size: 0.66rem;
+    font-weight: 760;
+    line-height: 1;
+  }
+
+  .segmentShort {
+    display: none;
   }
 
   .spectrumEndpoints {
     font-size: 0.58rem;
+  }
+
+  .spectrumSelection {
+    display: block;
+    margin: 0.5rem 0 0;
+    color: var(--scenario-ink);
+    font-size: 0.7rem;
+    line-height: 1.3;
+    text-align: center;
+  }
+
+  .spectrumSelection span {
+    color: var(--ink-muted);
+    font-weight: 650;
   }
 
   .outcomeContent,

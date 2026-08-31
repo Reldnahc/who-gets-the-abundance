@@ -3,7 +3,7 @@ export const siteConfig = {
   title: "Who Gets the Abundance? | Exploring Possible AI Futures",
   description:
     "Explore how automation, ownership, democracy, civil liberties, and wealth distribution could shape radically different AI futures—from optional work and shared prosperity to authoritarian exclusion.",
-  productionUrl: "http://localhost:4321",
+  productionUrl: "https://reldnahc.github.io/who-gets-the-abundance/",
   socialImage: "og-image.png",
   author: "Who Gets the Abundance? project",
   attribution: "An independent public-interest technology project",

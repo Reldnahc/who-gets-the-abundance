@@ -53,4 +53,12 @@ await Promise.all([
     .resize(32, 32)
     .png({ compressionLevel: 9 })
     .toFile(path.join(publicDirectory, "favicon-32.png")),
+  sharp(Buffer.from(icon))
+    .resize(192, 192)
+    .png({ compressionLevel: 9 })
+    .toFile(path.join(publicDirectory, "icon-192.png")),
+  sharp(Buffer.from(icon))
+    .resize(512, 512)
+    .png({ compressionLevel: 9 })
+    .toFile(path.join(publicDirectory, "icon-512.png")),
 ]);
