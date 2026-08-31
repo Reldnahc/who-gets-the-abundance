@@ -230,16 +230,32 @@ import { siteConfig } from "../config/site";
   .method-link {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     min-height: 2.75rem;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 0.55rem;
+    background: transparent;
     color: var(--ink);
     font-size: 0.72rem;
     font-weight: 700;
-    text-decoration-color: var(--border-strong);
-    text-underline-offset: 0.25em;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      color 180ms ease,
+      background-color 180ms ease,
+      border-color 180ms ease,
+      transform 180ms ease;
   }
 
   .method-link:hover {
-    text-decoration-color: var(--active-accent);
+    border-color: var(--active-accent);
+    background: var(--active-soft);
+    color: var(--active-ink);
+  }
+
+  .method-link:active {
+    transform: translateY(1px);
   }
 
   @media (max-width: 960px) {
@@ -283,7 +299,6 @@ import { siteConfig } from "../config/site";
     }
 
     .method-link {
-      min-height: 1.65rem;
       font-size: 0.67rem;
     }
 
@@ -314,7 +329,8 @@ import { siteConfig } from "../config/site";
   @media (prefers-reduced-motion: reduce) {
     .skip-link,
     .share-control,
-    .share-feedback {
+    .share-feedback,
+    .method-link {
       transition: none;
     }
   }
