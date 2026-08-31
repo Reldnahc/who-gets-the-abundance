@@ -35,10 +35,10 @@ The production output is fully static in `dist/` and does not require a Node ser
 
 ## Architecture
 
-- Astro renders the header, eight-archetype archive, separate tail-risk essay, methodology, sources, and footer as static HTML.
+- Astro renders the header, nine-archetype archive, methodology, sources, and footer as static HTML.
 - React is used only for `src/components/FutureSimulator.tsx`, hydrated with `client:load`.
 - `src/components/FutureMap.tsx` renders the interactive two-axis map and same-capability examples.
-- `src/lib/futureModel.ts` calculates shared benefit, public agency, indicators, nearest-archetype matches, and the separate extreme-tail-risk guard.
+- `src/lib/futureModel.ts` calculates shared benefit, public agency, indicators, and nearest-archetype matches.
 - `src/lib/shareState.ts` owns compact query-string serialization and safe parsing.
 - Vitest covers the model and share-state edge cases.
 

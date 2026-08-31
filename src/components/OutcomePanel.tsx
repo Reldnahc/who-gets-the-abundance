@@ -117,7 +117,7 @@ export function OutcomePanel({
   secondaryScenario,
   evaluation,
 }: OutcomePanelProps) {
-  const { coordinates, match, tailRisk } = evaluation;
+  const { coordinates, match } = evaluation;
 
   return (
     <div className={styles.outcomeContent}>
@@ -150,26 +150,6 @@ export function OutcomePanel({
           </div>
         </dl>
       </header>
-
-      {tailRisk.active && (
-        <aside
-          className={styles.tailRiskWarning}
-          aria-labelledby="tail-warning-heading"
-        >
-          <h3 id="tail-warning-heading">
-            Extreme coercive tail-risk conditions
-          </h3>
-          <p>
-            These settings remove many of the restraints that could enable
-            eliminationist violence. The model does not encode ideology,
-            perpetrators, or intent, so it does not infer genocide from the
-            sliders alone.
-          </p>
-          <a href="#eliminationist-regime">
-            Read the extreme tail-risk scenario
-          </a>
-        </aside>
-      )}
 
       <div className={styles.outcomeDashboard}>
         <section

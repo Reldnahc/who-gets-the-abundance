@@ -19,6 +19,16 @@ export const businessAsUsual: FutureInputs = {
 };
 
 export const scenarioExamples: Record<ArchetypeId, FutureInputs> = {
+  "eliminationist-regime": {
+    automation: 95,
+    ownership: 5,
+    workerPower: 6,
+    socialDividend: 6,
+    democracy: 5,
+    civilLiberties: 5,
+    universalAccess: 18,
+    openInfrastructure: 6,
+  },
   "authoritarian-exclusion": {
     automation: 90,
     ownership: 20,
@@ -132,14 +142,3 @@ export const sameCapabilityPresets: readonly SimulatorPreset[] = [
     },
   },
 ];
-
-export const tailRiskExample: FutureInputs = {
-  automation: 95,
-  ownership: 5,
-  workerPower: 6,
-  socialDividend: 6,
-  democracy: 5,
-  civilLiberties: 5,
-  universalAccess: 18,
-  openInfrastructure: 6,
-};

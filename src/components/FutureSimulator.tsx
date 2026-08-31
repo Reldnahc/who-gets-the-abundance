@@ -109,15 +109,11 @@ export default function FutureSimulator() {
     );
     document.documentElement.dataset.scenario = scenario.id;
     document.documentElement.dataset.secondaryScenario = secondaryScenario.id;
-    document.documentElement.dataset.tailRisk = String(
-      evaluation.tailRisk.active,
-    );
     window.dispatchEvent(
       new CustomEvent("abundance:statechange", {
         detail: {
           scenarioId: scenario.id,
           secondaryScenarioId: secondaryScenario.id,
-          tailRiskActive: evaluation.tailRisk.active,
           url: shareUrl,
         },
       }),

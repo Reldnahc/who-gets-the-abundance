@@ -1,4 +1,5 @@
 export type ArchetypeId =
+  | "eliminationist-regime"
   | "authoritarian-exclusion"
   | "automated-neo-feudalism"
   | "corporate-dependency"
@@ -8,10 +9,9 @@ export type ArchetypeId =
   | "shared-prosperity"
   | "optional-work-abundance";
 
-export type ScenarioId = ArchetypeId | "eliminationist-regime";
+export type ScenarioId = ArchetypeId;
 
 export type AccentCategory =
-  | "tail-risk"
   | "danger"
   | "rust"
   | "orange"
@@ -63,7 +63,7 @@ const scenarioRecords: readonly Scenario[] = [
     id: "eliminationist-regime",
     slug: "eliminationist-regime",
     name: "Eliminationist Regime",
-    shortName: "Tail risk",
+    shortName: "Elim. regime",
     summary:
       "Near-total automation serves an eliminationist state after ownership, rights, democratic checks, and ordinary people’s leverage have collapsed.",
     snapshot:
@@ -96,7 +96,7 @@ const scenarioRecords: readonly Scenario[] = [
       "Democratic control of security infrastructure",
     ],
     accent: {
-      category: "tail-risk",
+      category: "danger",
       color: "#8b3f43",
       soft: "#f2e5e3",
       ink: "#5f272c",
@@ -436,6 +436,7 @@ const scenarioRecords: readonly Scenario[] = [
 ] as const;
 
 export const archetypeOrder = [
+  "eliminationist-regime",
   "authoritarian-exclusion",
   "automated-neo-feudalism",
   "corporate-dependency",
@@ -449,6 +450,11 @@ export const archetypeOrder = [
 export const archetypeCenters: Readonly<
   Record<ArchetypeId, ArchetypeCoordinates>
 > = {
+  "eliminationist-regime": {
+    sharedBenefit: 8.6,
+    publicAgency: 5.45,
+    automation: 95,
+  },
   "authoritarian-exclusion": {
     sharedBenefit: 21.25,
     publicAgency: 13.35,
@@ -492,6 +498,7 @@ export const archetypeCenters: Readonly<
 };
 
 const labelAnchors: Readonly<Record<ArchetypeId, Archetype["labelAnchor"]>> = {
+  "eliminationist-regime": "belowRight",
   "authoritarian-exclusion": "aboveRight",
   "automated-neo-feudalism": "aboveRight",
   "corporate-dependency": "aboveLeft",
@@ -518,8 +525,6 @@ export const archetypeById = Object.fromEntries(
   archetypes.map((archetype) => [archetype.id, archetype]),
 ) as Record<ArchetypeId, Archetype>;
 
-export const eliminationistScenario = scenarioById["eliminationist-regime"];
-
 export const archiveArchetypeOrder = [
   "unequal-abundance",
   "broad-productivity-boom",
@@ -529,6 +534,7 @@ export const archiveArchetypeOrder = [
   "corporate-dependency",
   "administered-abundance",
   "authoritarian-exclusion",
+  "eliminationist-regime",
 ] as const satisfies readonly ArchetypeId[];
 
 export const archiveArchetypes = archiveArchetypeOrder.map(

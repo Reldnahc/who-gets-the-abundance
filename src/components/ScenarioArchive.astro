@@ -1,14 +1,11 @@
 ---
 import { businessAsUsual } from "../data/presets";
-import { archiveArchetypes, eliminationistScenario } from "../data/scenarios";
+import { archiveArchetypes } from "../data/scenarios";
 import { evaluateFuture } from "../lib/futureModel";
 
 const initialEvaluation = evaluateFuture(businessAsUsual);
 const initialPrimary = initialEvaluation.match.primary.scenarioId;
 const initialSecondary = initialEvaluation.match.secondary.scenarioId;
-
-const tailRiskMessage =
-  "Extreme tail risk. AI does not make this outcome inevitable; it requires the collapse of political, legal, economic, and civil-liberties restraints alongside near-total automation.";
 ---
 
 <section id="scenarios" class="archive" aria-labelledby="archive-heading">
@@ -116,103 +113,12 @@ const tailRiskMessage =
       ))
     }
   </div>
-
-  <section class="tail-section" aria-labelledby="tail-section-heading">
-    <header>
-      <h3 id="tail-section-heading">Extreme tail risk</h3>
-      <p>Separate from ordinary archetype matching.</p>
-    </header>
-    <details
-      id={eliminationistScenario.slug}
-      class="scenario-entry tail-entry"
-      data-animated-details
-      data-tail-risk-entry
-      data-tail-active="false"
-      style={`--entry-accent: ${eliminationistScenario.accent.color}; --entry-soft: ${eliminationistScenario.accent.soft}; --entry-ink: ${eliminationistScenario.accent.ink};`}
-    >
-      <summary>
-        <span class="scenario-title">
-          <span class="scenario-heading-row">
-            <strong>{eliminationistScenario.name}</strong>
-            <small data-tail-state></small>
-          </span>
-          <span>{eliminationistScenario.summary}</span>
-        </span>
-        <span class="scenario-coordinates"
-          >Guarded warning / not a map point</span
-        >
-        <span
-          class="scenario-chevron"
-          data-disclosure-chevron
-          aria-hidden="true"
-        >
-          <svg viewBox="0 0 20 20" focusable="false">
-            <path d="m5.5 7.5 4.5 4.5 4.5-4.5"></path>
-          </svg>
-        </span>
-      </summary>
-
-      <div class="scenario-reveal" data-disclosure-reveal>
-        <div class="scenario-reveal-inner" data-disclosure-inner>
-          <div class="scenario-details">
-            <p class="tail-risk">{tailRiskMessage}</p>
-            <p class="snapshot">{eliminationistScenario.snapshot}</p>
-
-            <dl class="characteristics">
-              <div>
-                <dt>Work</dt>
-                <dd>{eliminationistScenario.employment}</dd>
-              </div>
-              <div>
-                <dt>Ownership</dt>
-                <dd>{eliminationistScenario.ownership}</dd>
-              </div>
-              <div>
-                <dt>Power</dt>
-                <dd>{eliminationistScenario.politicalStructure}</dd>
-              </div>
-              <div>
-                <dt>Necessities</dt>
-                <dd>{eliminationistScenario.necessities}</dd>
-              </div>
-            </dl>
-
-            <div class="movement-grid">
-              <section>
-                <h3>Risks</h3>
-                <ul>
-                  {
-                    eliminationistScenario.primaryRisks.map((item) => (
-                      <li>{item}</li>
-                    ))
-                  }
-                </ul>
-              </section>
-              <section>
-                <h3>Toward</h3>
-                <ul>
-                  {eliminationistScenario.toward.map((item) => <li>{item}</li>)}
-                </ul>
-              </section>
-              <section>
-                <h3>Away</h3>
-                <ul>
-                  {eliminationistScenario.away.map((item) => <li>{item}</li>)}
-                </ul>
-              </section>
-            </div>
-          </div>
-        </div>
-      </div>
-    </details>
-  </section>
 </section>
 
 <script>
   interface SimulatorStateDetail {
     scenarioId?: string | undefined;
     secondaryScenarioId?: string | undefined;
-    tailRiskActive?: boolean;
   }
 
   function markCurrentState(detail: SimulatorStateDetail) {
@@ -235,16 +141,6 @@ const tailRiskMessage =
         if (isPrimary) summary?.setAttribute("aria-current", "true");
         else summary?.removeAttribute("aria-current");
       });
-
-    const tailEntry = document.querySelector<HTMLElement>(
-      "[data-tail-risk-entry]",
-    );
-    const tailActive = Boolean(detail.tailRiskActive);
-    if (tailEntry) tailEntry.dataset.tailActive = String(tailActive);
-    const tailState =
-      tailEntry?.querySelector<HTMLElement>("[data-tail-state]");
-    if (tailState)
-      tailState.textContent = tailActive ? "Conditions active" : "";
   }
 
   window.addEventListener("abundance:statechange", (event) => {
@@ -255,7 +151,6 @@ const tailRiskMessage =
     markCurrentState({
       scenarioId: document.documentElement.dataset.scenario,
       secondaryScenarioId: document.documentElement.dataset.secondaryScenario,
-      tailRiskActive: document.documentElement.dataset.tailRisk === "true",
     });
   }, 0);
 </script>
@@ -267,8 +162,7 @@ const tailRiskMessage =
     margin: 0 auto;
   }
 
-  .archive-header,
-  .tail-section > header {
+  .archive-header {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -286,8 +180,7 @@ const tailRiskMessage =
     line-height: 1;
   }
 
-  .archive-header p,
-  .tail-section > header p {
+  .archive-header p {
     margin: 0;
     color: var(--ink-muted);
     font-size: 0.82rem;
@@ -295,8 +188,7 @@ const tailRiskMessage =
     text-align: right;
   }
 
-  .archive-list,
-  .tail-entry {
+  .archive-list {
     border-top: 1px solid var(--border-strong);
   }
 
@@ -317,11 +209,6 @@ const tailRiskMessage =
   .scenario-entry[data-secondary="true"] {
     background: color-mix(in srgb, var(--entry-soft) 42%, transparent);
     box-shadow: inset 1px 0 0 var(--entry-accent);
-  }
-
-  .tail-entry[data-tail-active="true"] {
-    background: var(--entry-soft);
-    box-shadow: inset 3px 0 0 var(--entry-accent);
   }
 
   .scenario-entry > summary {
@@ -427,18 +314,6 @@ const tailRiskMessage =
     line-height: 1.55;
   }
 
-  .tail-risk {
-    max-width: 58rem;
-    padding: 0.65rem 0.75rem;
-    margin: 0 0 0.8rem;
-    border-left: 3px solid var(--entry-accent);
-    background: var(--entry-soft);
-    color: var(--entry-ink);
-    font-size: 0.75rem;
-    font-weight: 620;
-    line-height: 1.45;
-  }
-
   .characteristics {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -504,31 +379,16 @@ const tailRiskMessage =
     color: var(--entry-accent);
   }
 
-  .tail-section {
-    padding-top: 2.4rem;
-  }
-
-  .tail-section > header {
-    margin-bottom: 0.75rem;
-  }
-
-  .tail-section > header h3 {
-    margin: 0;
-    font-size: 1rem;
-  }
-
   @media (max-width: 760px) {
     .archive {
       width: min(calc(100% - 2rem), 72rem);
     }
 
-    .archive-header,
-    .tail-section > header {
+    .archive-header {
       display: block;
     }
 
-    .archive-header p,
-    .tail-section > header p {
+    .archive-header p {
       margin-top: 0.4rem;
       text-align: left;
     }

@@ -37,6 +37,8 @@ export type PublicAgencyKey = keyof typeof publicAgencyWeights;
 export type AxisInputKey = SharedBenefitKey | PublicAgencyKey;
 export type AxisName = "sharedBenefit" | "publicAgency";
 
+const DISTANCE_TIE_EPSILON = 1e-9;
+
 export interface FutureCoordinates {
   sharedBenefit: number;
   publicAgency: number;
@@ -57,11 +59,6 @@ export interface MatchSummary {
   gap: number;
   relation: MatchRelation;
   fitQuality: FitQuality;
-}
-
-export interface TailRiskEvaluation {
-  active: boolean;
-  checks: Record<string, boolean>;
 }
 
 export interface StructuralIndicators {
@@ -89,7 +86,6 @@ export interface FutureEvaluation {
   indicators: StructuralIndicators;
   sharedBenefitDrivers: AxisContribution[];
   publicAgencyDrivers: AxisContribution[];
-  tailRisk: TailRiskEvaluation;
 }
 
 export function clamp(value: number, minimum = 0, maximum = 100): number {
@@ -166,7 +162,7 @@ export function rankArchetypes(
     .sort((first, second) => {
       const distanceDifference = first.distance - second.distance;
 
-      if (Math.abs(distanceDifference) > Number.EPSILON) {
+      if (Math.abs(distanceDifference) > DISTANCE_TIE_EPSILON) {
         return distanceDifference;
       }
 
@@ -194,30 +190,6 @@ export function classifyMatch(
     primary <= 10 ? "strong" : primary <= 20 ? "moderate" : "loose";
 
   return { gap, relation, fitQuality };
-}
-
-export function evaluateExtremeTailRisk(
-  inputs: FutureInputs,
-  coordinates = calculateCoordinates(inputs),
-): TailRiskEvaluation {
-  const safe = clampInputs(inputs);
-  const checks = {
-    automation: safe.automation >= 85,
-    sharedBenefit: coordinates.sharedBenefit <= 15,
-    publicAgency: coordinates.publicAgency <= 12,
-    ownership: safe.ownership <= 12,
-    socialDividend: safe.socialDividend <= 15,
-    universalAccess: safe.universalAccess <= 25,
-    workerPower: safe.workerPower <= 15,
-    democracy: safe.democracy <= 12,
-    civilLiberties: safe.civilLiberties <= 12,
-    openInfrastructure: safe.openInfrastructure <= 15,
-  };
-
-  return {
-    active: Object.values(checks).every(Boolean),
-    checks,
-  };
 }
 
 export function calculateIndicators(
@@ -311,6 +283,5 @@ export function evaluateFuture(inputs: FutureInputs): FutureEvaluation {
     indicators: calculateIndicators(safe, coordinates),
     sharedBenefitDrivers: calculateAxisContributions(safe, "sharedBenefit"),
     publicAgencyDrivers: calculateAxisContributions(safe, "publicAgency"),
-    tailRisk: evaluateExtremeTailRisk(safe, coordinates),
   };
 }

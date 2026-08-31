@@ -15,7 +15,6 @@ const requiredContent = [
   "Administered Abundance",
   "Authoritarian Exclusion",
   "Eliminationist Regime",
-  "Extreme tail risk",
   "Two coordinates",
   "Archetype matching",
 ];
@@ -29,9 +28,11 @@ if (missing.length > 0) {
 }
 
 if (!html.includes('id="eliminationist-regime"')) {
-  throw new Error("Static build is missing the tail-risk scenario anchor.");
+  throw new Error(
+    "Static build is missing the Eliminationist archetype anchor.",
+  );
 }
 
 console.log(
-  "Static archive verified: eight ordinary archetypes, tail-risk essay, and methodology are present in dist/index.html.",
+  "Static archive verified: nine archetypes and methodology are present in dist/index.html.",
 );

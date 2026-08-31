@@ -79,4 +79,4 @@ export const sources: readonly Source[] = [
 
 // Developer note: add new sources only after verifying the title, authorship,
 // publication date, and destination URL. These readings inform the questions;
-// they do not validate the simulator's weights or scenario boundaries.
+// they do not validate the simulator's weights or archetype centers.

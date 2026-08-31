@@ -4,13 +4,8 @@ import {
   businessAsUsual,
   sameCapabilityPresets,
   scenarioExamples,
-  tailRiskExample,
 } from "../data/presets";
-import {
-  archetypeCenters,
-  archetypeOrder,
-  type ArchetypeId,
-} from "../data/scenarios";
+import { archetypeCenters, archetypeOrder } from "../data/scenarios";
 import {
   calculateCoordinates,
   calculateIndicators,
@@ -18,7 +13,6 @@ import {
   calculateSharedBenefit,
   clampInputs,
   classifyMatch,
-  evaluateExtremeTailRisk,
   evaluateFuture,
   rankArchetypes,
   type FutureCoordinates,
@@ -153,53 +147,28 @@ describe("two-axis future model", () => {
     expect(new Set(primaryIds).size).toBe(4);
   });
 
-  it("activates the guarded extreme tail-risk example", () => {
-    expect(evaluateExtremeTailRisk(tailRiskExample).active).toBe(true);
-  });
-
-  it("deactivates tail risk when any direct guard is broken", () => {
-    const guardBreaks: Array<[keyof FutureInputs, number]> = [
-      ["automation", 84],
-      ["ownership", 13],
-      ["socialDividend", 16],
-      ["universalAccess", 26],
-      ["workerPower", 16],
-      ["democracy", 13],
-      ["civilLiberties", 13],
-      ["openInfrastructure", 16],
-    ];
-
-    guardBreaks.forEach(([key, value]) => {
-      expect(
-        evaluateExtremeTailRisk({ ...tailRiskExample, [key]: value }).active,
-      ).toBe(false);
+  it("ranks Eliminationist Regime as an ordinary bottom-left archetype", () => {
+    const representative = scenarioExamples["eliminationist-regime"];
+    const evaluation = evaluateFuture(representative);
+    const formerGuardBreak = evaluateFuture({
+      ...representative,
+      democracy: 13,
     });
 
-    const coordinates = calculateCoordinates(tailRiskExample);
-    expect(
-      evaluateExtremeTailRisk(tailRiskExample, {
-        ...coordinates,
-        sharedBenefit: 16,
-      }).active,
-    ).toBe(false);
-    expect(
-      evaluateExtremeTailRisk(tailRiskExample, {
-        ...coordinates,
-        publicAgency: 13,
-      }).active,
-    ).toBe(false);
-  });
-
-  it("never replaces the ordinary primary match when tail risk is active", () => {
-    const evaluation = evaluateFuture(tailRiskExample);
-
-    expect(evaluation.tailRisk.active).toBe(true);
-    expect(evaluation.match.primary.scenarioId).toBe("authoritarian-exclusion");
-    expect(evaluation.rankedMatches).not.toContainEqual(
-      expect.objectContaining({
-        scenarioId: "eliminationist-regime" as ArchetypeId,
-      }),
+    expect(evaluation.coordinates).toEqual({
+      sharedBenefit: 8.6,
+      publicAgency: 5.45,
+      automation: 95,
+    });
+    expect(evaluation.match.primary.scenarioId).toBe("eliminationist-regime");
+    expect(formerGuardBreak.match.primary.scenarioId).toBe(
+      "eliminationist-regime",
     );
+    expect(
+      evaluation.rankedMatches.some(
+        (match) => match.scenarioId === "eliminationist-regime",
+      ),
+    ).toBe(true);
   });
 
   it("clamps all inputs and conceptual indicators to 0–100", () => {
