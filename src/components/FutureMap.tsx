@@ -66,14 +66,21 @@ export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
         </div>
       </div>
 
+      <p className={styles.mapAxisDefinition}>
+        <strong>Y axis · Public agency</strong>
+        <span>
+          Ability to contest decisions, organize, and shape the rules.
+        </span>
+      </p>
+
       <div className={styles.mapPlotShell}>
-        <span className={styles.mapYTitle}>Who can shape the rules?</span>
+        <span className={styles.mapYTitle}>Public agency</span>
         <div className={styles.mapPlot}>
           <span className={styles.mapYHigh} aria-hidden="true">
-            Contestable / autonomous
+            High agency · contestable
           </span>
           <span className={styles.mapYLow} aria-hidden="true">
-            Managed / dependent
+            Low agency · managed / dependent
           </span>
           <span className={styles.mapCrosshairVertical} aria-hidden="true" />
           <span className={styles.mapCrosshairHorizontal} aria-hidden="true" />
@@ -179,8 +186,9 @@ export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
 
       <p className={styles.srOnly}>
         Two-axis map. The horizontal axis shows who gets the gains, from narrow
-        capture to broad claims. The vertical axis shows who can shape the
-        rules, from managed or dependent to contestable or autonomous. Current
+        capture to broad claims. The vertical public-agency axis shows how much
+        people can contest decisions, organize, and shape the rules, from low
+        managed or dependent agency to high contestable agency. Current
         coordinates are shared benefit {Math.round(coordinates.sharedBenefit)},
         public agency {Math.round(coordinates.publicAgency)}, and automation{" "}
         {automation}. The closest archetype is{" "}
