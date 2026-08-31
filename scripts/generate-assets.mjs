@@ -37,17 +37,14 @@ const ogImage = `
 const icon = `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="#20211f"/>
-  <clipPath id="spectrum-track">
-    <rect x="9" y="35" width="46" height="9" rx="4.5"/>
+  <path d="M18 21c0-8 5.8-13 14-13s14 5.2 14 13c0 6.2-3.4 9.5-9.3 13.3C33.3 36.6 32 38.6 32 42" fill="none" stroke="#f7f4ed" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <clipPath id="question-dot">
+    <circle cx="32" cy="52" r="5.5"/>
   </clipPath>
-  <g clip-path="url(#spectrum-track)">
-    <path d="M9 35h12v9H9z" fill="#9b4b3c"/>
-    <path d="M21 35h11v9H21z" fill="#9a7b2f"/>
-    <path d="M32 35h11v9H32z" fill="#5c7487"/>
-    <path d="M43 35h12v9H43z" fill="#23766f"/>
+  <g clip-path="url(#question-dot)">
+    <path d="M26.5 46.5H32v11h-5.5z" fill="#9b4b3c"/>
+    <path d="M32 46.5h5.5v11H32z" fill="#23766f"/>
   </g>
-  <path d="M32 13a10 10 0 0 0-10 10c0 7.2 10 15 10 15s10-7.8 10-15a10 10 0 0 0-10-10Z" fill="#f7f4ed"/>
-  <circle cx="32" cy="23" r="4.25" fill="#20211f"/>
 </svg>`;
 
 await Promise.all([
