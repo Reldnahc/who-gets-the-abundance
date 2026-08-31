@@ -359,63 +359,6 @@
   line-height: 1.35;
 }
 
-.capabilityStrip {
-  display: grid;
-  grid-template-columns: minmax(11rem, auto) minmax(8rem, 1fr);
-  align-items: center;
-  gap: 0.9rem;
-  padding: 0.52rem 0.65rem;
-  margin-top: 0.65rem;
-  border: 1px solid var(--border);
-  border-radius: 0.55rem;
-  background: rgb(255 255 255 / 36%);
-}
-
-.capabilityLabel {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
-  font-size: 0.7rem;
-}
-
-.capabilityLabel span {
-  color: var(--ink-muted);
-  font-weight: 650;
-}
-
-.capabilityLabel strong {
-  color: var(--scenario-ink);
-  font-size: 0.7rem;
-  white-space: nowrap;
-}
-
-.capabilityLabel b {
-  min-width: 1.5rem;
-  margin-left: 0.25rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.capabilityTrack {
-  position: relative;
-  height: 0.38rem;
-  overflow: hidden;
-  border-radius: 99px;
-  background: #d9d7d0;
-}
-
-.capabilityTrack span {
-  display: block;
-  height: 100%;
-  border-right: 2px solid var(--scenario-ink);
-  border-radius: inherit;
-  background: var(--scenario-accent);
-  transition:
-    width 260ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 220ms ease,
-    border-color 220ms ease;
-}
-
 .mapPlotShell {
   position: relative;
   padding: 0.7rem 0.4rem 0 2.7rem;
@@ -1358,12 +1301,6 @@
 @media (max-width: 640px) {
   .futureMap {
     padding: 0.85rem 0.72rem 0.8rem;
-  }
-
-  .capabilityStrip {
-    grid-template-columns: 1fr;
-    gap: 0.4rem;
-    padding: 0.5rem 0.58rem;
   }
 
   .mapPlotShell {

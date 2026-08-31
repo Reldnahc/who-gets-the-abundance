@@ -8,14 +8,6 @@ interface FutureMapProps {
   onSelect: (inputs: FutureInputs) => void;
 }
 
-function automationLevel(value: number): string {
-  if (value < 20) return "Assistive";
-  if (value < 40) return "Limited";
-  if (value < 60) return "Transformative";
-  if (value < 80) return "Extensive";
-  return "Near-total";
-}
-
 function pointCode(name: string): string {
   return name
     .split(/[-\s]+/)
@@ -45,26 +37,6 @@ export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
           <p>These are nearby archetypes, not steps from worst to best.</p>
         </div>
       </header>
-
-      <div className={styles.capabilityStrip}>
-        <div className={styles.capabilityLabel}>
-          <span>Automation capability</span>
-          <strong>
-            {automationLevel(automation)} <b>{automation}</b>
-          </strong>
-        </div>
-        <div
-          className={styles.capabilityTrack}
-          role="meter"
-          aria-label="Automation capability"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={automation}
-          aria-valuetext={`${automationLevel(automation)}, ${automation} out of 100`}
-        >
-          <span style={{ width: `${automation}%` }} />
-        </div>
-      </div>
 
       <div className={styles.mapPlotShell}>
         <span className={styles.mapYTitle}>Who can shape the rules?</span>
