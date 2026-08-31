@@ -93,15 +93,7 @@ export function OutcomePanel({ scenario, evaluation }: OutcomePanelProps) {
     <div className={styles.outcomeContent}>
       <header className={styles.outcomeHeader}>
         <div>
-          <h2
-            className={
-              scenario.id === "optional-work-abundance"
-                ? styles.longOutcomeTitle
-                : undefined
-            }
-          >
-            {scenario.name}
-          </h2>
+          <h2 className={styles.outcomeTitle}>{scenario.name}</h2>
           <p className={styles.outcomeSummary}>{scenario.summary}</p>
         </div>
       </header>

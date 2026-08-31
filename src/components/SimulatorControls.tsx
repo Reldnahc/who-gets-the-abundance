@@ -1,3 +1,5 @@
+import { useId, useState } from "react";
+
 import { type FutureInputs, type SliderKey } from "../lib/futureModel";
 import styles from "./FutureSimulator.module.css";
 
@@ -118,97 +120,121 @@ export function SimulatorControls({
   onChange,
   onReset,
 }: SimulatorControlsProps) {
+  const [isOpen, setIsOpen] = useState(true);
+  const controlsId = useId();
+
   return (
-    <aside className={styles.controls} aria-labelledby="controls-heading">
+    <aside
+      className={`${styles.controls} ${isOpen ? styles.controlsOpen : ""}`}
+      aria-labelledby="controls-heading"
+    >
       <div className={styles.controlsIntro}>
         <h2 id="controls-heading">Change the assumptions</h2>
         <p>Except automation, moving right strengthens shared institutions.</p>
+        <button
+          type="button"
+          className={styles.controlsToggle}
+          aria-expanded={isOpen}
+          aria-controls={controlsId}
+          onClick={() => setIsOpen((open) => !open)}
+        >
+          <span>{isOpen ? "Hide" : "Show"}</span>
+          <span className={styles.controlsChevron} aria-hidden="true">
+            <svg viewBox="0 0 20 20" focusable="false">
+              <path d="m5.5 7.5 4.5 4.5 4.5-4.5" />
+            </svg>
+          </span>
+        </button>
       </div>
 
-      <div className={styles.controlGroups}>
-        {inputGroups.map((group) => (
-          <section
-            className={styles.controlGroup}
-            aria-labelledby={`control-group-${group.label
-              .toLowerCase()
-              .replaceAll(" ", "-")
-              .replace("&", "and")}`}
-            key={group.label}
+      <div id={controlsId} className={styles.controlsReveal}>
+        <div className={styles.controlsRevealInner}>
+          <div className={styles.controlGroups}>
+            {inputGroups.map((group) => (
+              <section
+                className={styles.controlGroup}
+                aria-labelledby={`control-group-${group.label
+                  .toLowerCase()
+                  .replaceAll(" ", "-")
+                  .replace("&", "and")}`}
+                key={group.label}
+              >
+                <h3
+                  id={`control-group-${group.label
+                    .toLowerCase()
+                    .replaceAll(" ", "-")
+                    .replace("&", "and")}`}
+                >
+                  {group.label}
+                </h3>
+                <div className={styles.controlList}>
+                  {group.keys.map((key) => {
+                    const definition = inputDefinitions[key];
+                    const value = inputs[key];
+                    const controlId = `simulator-${key}`;
+                    const descriptionId = `${controlId}-description`;
+                    return (
+                      <div className={styles.control} key={key}>
+                        <div className={styles.controlLabelRow}>
+                          <label htmlFor={controlId}>{definition.label}</label>
+                          <output
+                            htmlFor={controlId}
+                            className={styles.controlValue}
+                          >
+                            <span>{qualitativeLevel(key, value)}</span>
+                            <strong>{value}</strong>
+                          </output>
+                        </div>
+                        <input
+                          id={controlId}
+                          className={styles.range}
+                          type="range"
+                          min="0"
+                          max="100"
+                          step="1"
+                          value={value}
+                          aria-describedby={descriptionId}
+                          aria-valuetext={`${value} out of 100, ${qualitativeLevel(key, value)}`}
+                          style={
+                            {
+                              "--range-fill": `${value}%`,
+                            } as React.CSSProperties
+                          }
+                          onChange={(event) =>
+                            onChange(key, Number(event.currentTarget.value))
+                          }
+                        />
+                        <div className={styles.endpoints} aria-hidden="true">
+                          <span>{definition.left}</span>
+                          <span>{definition.right}</span>
+                        </div>
+                        <p id={descriptionId} className={styles.srOnly}>
+                          {definition.description}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className={styles.resetButton}
+            onClick={onReset}
+            aria-label="Reset all assumptions to Mixed Baseline"
           >
-            <h3
-              id={`control-group-${group.label
-                .toLowerCase()
-                .replaceAll(" ", "-")
-                .replace("&", "and")}`}
-            >
-              {group.label}
-            </h3>
-            <div className={styles.controlList}>
-              {group.keys.map((key) => {
-                const definition = inputDefinitions[key];
-                const value = inputs[key];
-                const controlId = `simulator-${key}`;
-                const descriptionId = `${controlId}-description`;
-                return (
-                  <div className={styles.control} key={key}>
-                    <div className={styles.controlLabelRow}>
-                      <label htmlFor={controlId}>{definition.label}</label>
-                      <output
-                        htmlFor={controlId}
-                        className={styles.controlValue}
-                      >
-                        <span>{qualitativeLevel(key, value)}</span>
-                        <strong>{value}</strong>
-                      </output>
-                    </div>
-                    <input
-                      id={controlId}
-                      className={styles.range}
-                      type="range"
-                      min="0"
-                      max="100"
-                      step="1"
-                      value={value}
-                      aria-describedby={descriptionId}
-                      aria-valuetext={`${value} out of 100, ${qualitativeLevel(key, value)}`}
-                      style={
-                        {
-                          "--range-fill": `${value}%`,
-                        } as React.CSSProperties
-                      }
-                      onChange={(event) =>
-                        onChange(key, Number(event.currentTarget.value))
-                      }
-                    />
-                    <div className={styles.endpoints} aria-hidden="true">
-                      <span>{definition.left}</span>
-                      <span>{definition.right}</span>
-                    </div>
-                    <p id={descriptionId} className={styles.srOnly}>
-                      {definition.description}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        ))}
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17">
+              <path
+                d="M4.7 7.8A8 8 0 1 1 4 14h2.1a6 6 0 1 0 1.4-4.6L10 12H3V5l1.7 2.8Z"
+                fill="currentColor"
+              />
+            </svg>
+            Reset <span>Mixed Baseline</span>
+          </button>
+        </div>
       </div>
-
-      <button
-        type="button"
-        className={styles.resetButton}
-        onClick={onReset}
-        aria-label="Reset all assumptions to Mixed Baseline"
-      >
-        <svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17">
-          <path
-            d="M4.7 7.8A8 8 0 1 1 4 14h2.1a6 6 0 1 0 1.4-4.6L10 12H3V5l1.7 2.8Z"
-            fill="currentColor"
-          />
-        </svg>
-        Reset <span>Mixed Baseline</span>
-      </button>
     </aside>
   );
 }
