@@ -882,16 +882,16 @@
   }
 
   .outcome {
-    order: 1;
+    order: 2;
     width: 100%;
   }
 
   .controls {
     position: static;
-    order: 2;
+    order: 1;
     width: 100%;
-    border-top: 1px solid var(--border-strong);
     border-right: 0;
+    border-bottom: 1px solid var(--border-strong);
   }
 
   .outcomeDetailsSlot {

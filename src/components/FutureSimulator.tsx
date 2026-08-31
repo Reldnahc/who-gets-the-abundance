@@ -143,6 +143,11 @@ export default function FutureSimulator() {
         {announcement}
       </p>
       <div className={styles.simulatorGrid}>
+        <SimulatorControls
+          inputs={inputs}
+          onChange={changeInput}
+          onReset={() => applyInputs(businessAsUsual)}
+        />
         <section
           className={styles.outcome}
           aria-label="Current simulated outcome"
@@ -154,11 +159,6 @@ export default function FutureSimulator() {
           />
           <OutcomePanel scenario={scenario} evaluation={evaluation} />
         </section>
-        <SimulatorControls
-          inputs={inputs}
-          onChange={changeInput}
-          onReset={() => applyInputs(businessAsUsual)}
-        />
       </div>
       <div className={styles.outcomeDetailsSlot}>
         <OutcomeDetails scenario={scenario} />
