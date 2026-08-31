@@ -5,7 +5,10 @@ export type ArchetypeId =
   | "corporate-dependency"
   | "administered-abundance"
   | "unequal-abundance"
+  | "automation-plateau"
+  | "competitive-abundance"
   | "broad-productivity-boom"
+  | "dividend-capitalism"
   | "shared-prosperity"
   | "optional-work-abundance";
 
@@ -311,6 +314,92 @@ const scenarioRecords: readonly Scenario[] = [
     },
   },
   {
+    id: "automation-plateau",
+    slug: "automation-plateau",
+    name: "Automation Plateau",
+    shortName: "Plateau",
+    summary:
+      "AI becomes a powerful everyday tool without replacing most human labor; productivity rises, occupations change, and employment remains central.",
+    snapshot:
+      "AI copilots are standard in offices, clinics, workshops, and public agencies. Individual workers produce far more, while some routine roles have vanished. Care, construction, field work, leadership, and countless irregular tasks still resist full automation. Most households continue to live on wages, and employers still depend on people enough for bargaining to matter. Society feels changed but recognizable: a more productive mixed economy, not a post-labor order.",
+    employment:
+      "Most households rely on wages, though tasks and occupations change repeatedly.",
+    ownership:
+      "Firms own most productive systems, with pensions and public funds holding meaningful stakes.",
+    politicalStructure:
+      "Democratic institutions adapt incrementally while organized workers retain practical influence.",
+    necessities:
+      "Public provision expands unevenly; employment still shapes access and security.",
+    autonomy:
+      "Workers retain leverage because production still depends substantially on human labor.",
+    livingStandards:
+      "Higher productivity raises living standards unevenly without ending compulsory work.",
+    primaryRisks: [
+      "Productivity gains accruing unevenly",
+      "Repeated occupational disruption",
+      "Surveillance and work intensity rising with productivity",
+    ],
+    toward: [
+      "Assistive rather than substitutive AI",
+      "Persistent demand for human labor",
+      "Open deployment and durable worker bargaining",
+    ],
+    away: [
+      "Near-total labor substitution",
+      "Income systems independent of employment",
+      "Ownership concentration after labor loses leverage",
+    ],
+    accent: {
+      category: "slate",
+      color: "#687386",
+      soft: "#e9ebef",
+      ink: "#414b5b",
+    },
+  },
+  {
+    id: "competitive-abundance",
+    slug: "competitive-abundance",
+    name: "Competitive Abundance",
+    shortName: "Competitive",
+    summary:
+      "Automation makes capabilities extraordinarily cheap while open infrastructure, competition, and strong civil liberties preserve autonomy despite unequal ownership.",
+    snapshot:
+      "Open models and interoperable networks make software, manufacturing, diagnostics, education, and energy remarkably cheap. Starting a firm or leaving a poor provider is usually practical, while strong liberties protect experimentation and dissent. Major equity stakes, land, and prestigious housing remain unequally owned, and public dividends are modest. Ordinary people command extraordinary capabilities without comparable wealth. The rich remain much richer, but closed platforms have difficulty turning that wealth into total dependence.",
+    employment:
+      "Work is less necessary, while accessible automation supports independent livelihoods.",
+    ownership:
+      "Valuable capital, land, and premium locations remain unequally owned.",
+    politicalStructure:
+      "Strong democracy, civil liberties, and competition preserve contestability.",
+    necessities:
+      "Cheap production and broad access cover essentials; scarce locations remain costly.",
+    autonomy:
+      "Open tools and real exit rights make people difficult to control.",
+    livingStandards:
+      "Capabilities become abundant while wealth and scarce assets remain unequal.",
+    primaryRisks: [
+      "Persistent wealth and land inequality",
+      "Competitive markets gradually reconsolidating",
+      "Capital wealth regaining political dominance",
+    ],
+    toward: [
+      "Open, interoperable infrastructure",
+      "Strong liberties and low entry barriers",
+      "High automation with broad practical access",
+    ],
+    away: [
+      "Monopoly platform dependence",
+      "Closed infrastructure and employer-tied benefits",
+      "Large dividends or broad ownership reform",
+    ],
+    accent: {
+      category: "teal",
+      color: "#55765c",
+      soft: "#e5ece5",
+      ink: "#354f3b",
+    },
+  },
+  {
     id: "broad-productivity-boom",
     slug: "broad-productivity-boom",
     name: "Broad Productivity Boom",
@@ -349,6 +438,49 @@ const scenarioRecords: readonly Scenario[] = [
       color: "#5c7487",
       soft: "#e7ecee",
       ink: "#364b5b",
+    },
+  },
+  {
+    id: "dividend-capitalism",
+    slug: "dividend-capitalism",
+    name: "Dividend Capitalism",
+    shortName: "Dividend",
+    summary:
+      "Automated capital remains concentrated, but taxes, universal services, and large social dividends distribute much of its output across society.",
+    snapshot:
+      "Most production is automated and most shares remain in corporate, fund, and wealthy hands. A household can meet basic needs without a job through a large civic dividend, universal healthcare, education, and public infrastructure. Elected governments still tax automated returns, so material security is broad. People have votes and reliable income, but little direct ownership or workplace power. The settlement works well while democratic coalitions can resist capital flight and political capture.",
+    employment:
+      "Paid work is optional for survival but still offers status and additional income.",
+    ownership:
+      "Corporations, funds, and wealthy investors retain most automated capital.",
+    politicalStructure:
+      "Democratic governments retain enough capacity to tax capital and sustain redistribution.",
+    necessities:
+      "Universal services and dividends make essential access reliable.",
+    autonomy:
+      "Income security expands choice, though ownership and workplace voice remain limited.",
+    livingStandards:
+      "High automated output funds broad security despite concentrated private wealth.",
+    primaryRisks: [
+      "Redistribution losing political support",
+      "Concentrated wealth capturing government",
+      "Mobile capital eroding the tax base",
+    ],
+    toward: [
+      "Large universal social dividends",
+      "Progressive taxation of automated returns",
+      "Strong democracy and universal public services",
+    ],
+    away: [
+      "Broader direct or worker ownership",
+      "Benefits tied to employment",
+      "Weak taxation of automated rents",
+    ],
+    accent: {
+      category: "violet",
+      color: "#667097",
+      soft: "#e9eaf2",
+      ink: "#414863",
     },
   },
   {
@@ -442,7 +574,10 @@ export const archetypeOrder = [
   "corporate-dependency",
   "administered-abundance",
   "unequal-abundance",
+  "automation-plateau",
+  "competitive-abundance",
   "broad-productivity-boom",
+  "dividend-capitalism",
   "shared-prosperity",
   "optional-work-abundance",
 ] as const satisfies readonly ArchetypeId[];
@@ -480,10 +615,25 @@ export const archetypeCenters: Readonly<
     publicAgency: 65.65,
     automation: 80,
   },
+  "automation-plateau": {
+    sharedBenefit: 45.75,
+    publicAgency: 64.25,
+    automation: 30,
+  },
+  "competitive-abundance": {
+    sharedBenefit: 45.5,
+    publicAgency: 84.75,
+    automation: 95,
+  },
   "broad-productivity-boom": {
     sharedBenefit: 56.55,
     publicAgency: 75.75,
     automation: 62,
+  },
+  "dividend-capitalism": {
+    sharedBenefit: 64,
+    publicAgency: 69.5,
+    automation: 90,
   },
   "shared-prosperity": {
     sharedBenefit: 78,
@@ -504,7 +654,10 @@ const labelAnchors: Readonly<Record<ArchetypeId, Archetype["labelAnchor"]>> = {
   "corporate-dependency": "aboveLeft",
   "administered-abundance": "aboveLeft",
   "unequal-abundance": "aboveLeft",
+  "automation-plateau": "belowRight",
+  "competitive-abundance": "aboveLeft",
   "broad-productivity-boom": "aboveLeft",
+  "dividend-capitalism": "belowRight",
   "shared-prosperity": "belowLeft",
   "optional-work-abundance": "aboveLeft",
 };
@@ -526,8 +679,11 @@ export const archetypeById = Object.fromEntries(
 ) as Record<ArchetypeId, Archetype>;
 
 export const archiveArchetypeOrder = [
+  "automation-plateau",
   "unequal-abundance",
+  "competitive-abundance",
   "broad-productivity-boom",
+  "dividend-capitalism",
   "shared-prosperity",
   "optional-work-abundance",
   "automated-neo-feudalism",

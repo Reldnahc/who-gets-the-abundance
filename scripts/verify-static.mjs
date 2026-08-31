@@ -7,7 +7,10 @@ const html = await readFile(path.join(root, "dist", "index.html"), "utf8");
 
 const requiredContent = [
   "Unequal Abundance",
+  "Automation Plateau",
+  "Competitive Abundance",
   "Broad Productivity Boom",
+  "Dividend Capitalism",
   "Shared Prosperity",
   "Optional-Work Abundance",
   "Automated Neo-Feudalism",
@@ -34,5 +37,5 @@ if (!html.includes('id="eliminationist-regime"')) {
 }
 
 console.log(
-  "Static archive verified: nine archetypes and methodology are present in dist/index.html.",
+  "Static archive verified: twelve archetypes and methodology are present in dist/index.html.",
 );

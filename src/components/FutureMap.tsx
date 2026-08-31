@@ -97,7 +97,7 @@ export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
                   onClick={() => onSelect(scenarioExamples[archetype.id])}
                 >
                   <span className={styles.mapPointDot} aria-hidden="true">
-                    <span>{pointCode(archetype.shortName)}</span>
+                    <span>{pointCode(archetype.name)}</span>
                   </span>
                   <span className={styles.mapPointLabel} aria-hidden="true">
                     <strong>{archetype.shortName}</strong>
@@ -155,7 +155,7 @@ export function FutureMap({ evaluation, onSelect }: FutureMapProps) {
                 }}
                 aria-hidden="true"
               >
-                {pointCode(archetype.shortName)}
+                {pointCode(archetype.name)}
               </span>
               <strong>{archetype.name}</strong>
               {(isPrimary || isNearby) && (

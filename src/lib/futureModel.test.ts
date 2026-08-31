@@ -30,6 +30,13 @@ const neutral: FutureInputs = {
 };
 
 describe("two-axis future model", () => {
+  it("defines twelve archetypes with one representative preset each", () => {
+    expect(archetypeOrder).toHaveLength(12);
+    expect(Object.keys(scenarioExamples).sort()).toEqual(
+      [...archetypeOrder].sort(),
+    );
+  });
+
   it("places all-50 inputs at 50 on both visible axes", () => {
     expect(calculateSharedBenefit(neutral)).toBe(50);
     expect(calculatePublicAgency(neutral)).toBe(50);
@@ -79,6 +86,50 @@ describe("two-axis future model", () => {
       expect(evaluation.match.primary.scenarioId).toBe(scenarioId);
       expect(evaluation.match.primary.distance).toBeCloseTo(0);
     });
+  });
+
+  it.each([
+    [
+      "automation-plateau" as const,
+      { sharedBenefit: 45.75, publicAgency: 64.25, automation: 30 },
+    ],
+    [
+      "dividend-capitalism" as const,
+      { sharedBenefit: 64, publicAgency: 69.5, automation: 90 },
+    ],
+    [
+      "competitive-abundance" as const,
+      { sharedBenefit: 45.5, publicAgency: 84.75, automation: 95 },
+    ],
+  ])(
+    "selects the new %s representative at its derived center",
+    (id, center) => {
+      const evaluation = evaluateFuture(scenarioExamples[id]);
+
+      expect(evaluation.coordinates).toEqual(center);
+      expect(evaluation.match.primary.scenarioId).toBe(id);
+      expect(evaluation.match.primary.distance).toBeCloseTo(0);
+    },
+  );
+
+  it("uses automation to distinguish Plateau from a higher-capability future", () => {
+    const plateauInputs = scenarioExamples["automation-plateau"];
+    const plateau = evaluateFuture(plateauInputs);
+    const higherAutomation = evaluateFuture({
+      ...plateauInputs,
+      automation: 62,
+    });
+
+    expect(plateau.match.primary.scenarioId).toBe("automation-plateau");
+    expect(higherAutomation.coordinates.sharedBenefit).toBe(
+      plateau.coordinates.sharedBenefit,
+    );
+    expect(higherAutomation.coordinates.publicAgency).toBe(
+      plateau.coordinates.publicAgency,
+    );
+    expect(higherAutomation.match.primary.scenarioId).toBe(
+      "broad-productivity-boom",
+    );
   });
 
   it("returns finite, ascending, distinct matches with deterministic ties", () => {
@@ -150,6 +201,8 @@ describe("two-axis future model", () => {
     expect(evaluation.match.nearby.map((match) => match.scenarioId)).toEqual([
       "broad-productivity-boom",
       "corporate-dependency",
+      "automation-plateau",
+      "dividend-capitalism",
       "automated-neo-feudalism",
     ]);
   });
