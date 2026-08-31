@@ -1,4 +1,4 @@
-import { mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -35,13 +35,27 @@ const ogImage = `
 </svg>`;
 
 const icon = `
-<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
-  <rect width="180" height="180" rx="38" fill="#20211f"/>
-  <path d="M37 45h20l12 91H49L37 45Zm39 0h20l-9 56-11-56Zm38 0h20l-16 91H98l16-91Z" fill="#f7f4ed"/>
-  <circle cx="135" cy="137" r="15" fill="#3f7d82"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#20211f"/>
+  <clipPath id="spectrum-track">
+    <rect x="9" y="35" width="46" height="9" rx="4.5"/>
+  </clipPath>
+  <g clip-path="url(#spectrum-track)">
+    <path d="M9 35h12v9H9z" fill="#9b4b3c"/>
+    <path d="M21 35h11v9H21z" fill="#9a7b2f"/>
+    <path d="M32 35h11v9H32z" fill="#5c7487"/>
+    <path d="M43 35h12v9H43z" fill="#23766f"/>
+  </g>
+  <path d="M32 13a10 10 0 0 0-10 10c0 7.2 10 15 10 15s10-7.8 10-15a10 10 0 0 0-10-10Z" fill="#f7f4ed"/>
+  <circle cx="32" cy="23" r="4.25" fill="#20211f"/>
 </svg>`;
 
 await Promise.all([
+  writeFile(
+    path.join(publicDirectory, "favicon.svg"),
+    `${icon.trim()}\n`,
+    "utf8",
+  ),
   sharp(Buffer.from(ogImage))
     .png({ compressionLevel: 9 })
     .toFile(path.join(publicDirectory, "og-image.png")),

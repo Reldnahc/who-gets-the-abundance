@@ -16,7 +16,6 @@ export function FutureSpectrum({
   onSelect,
 }: FutureSpectrumProps) {
   const displayPosition = calculateDisplayPosition(outcomePosition, scenarioId);
-  const markerPosition = `clamp(0.9rem, ${displayPosition}%, calc(100% - 0.9rem))`;
   const spectrumColumns = scenarios
     .map((scenario) => `${scenario.maximum - scenario.minimum}fr`)
     .join(" ");
@@ -31,7 +30,11 @@ export function FutureSpectrum({
       <div className={styles.spectrumPlot}>
         <div
           className={styles.spectrumMarker}
-          style={{ left: markerPosition }}
+          style={
+            {
+              "--marker-position": `${displayPosition}%`,
+            } as React.CSSProperties
+          }
           aria-hidden="true"
         >
           <span>Current</span>
