@@ -416,22 +416,6 @@
     border-color 220ms ease;
 }
 
-.mapAxisDefinition {
-  display: flex;
-  align-items: baseline;
-  gap: 0.45rem;
-  margin: 0.62rem 0.4rem -0.16rem 2.7rem;
-  color: var(--ink-muted);
-  font-size: 0.64rem;
-  line-height: 1.35;
-}
-
-.mapAxisDefinition strong {
-  flex: 0 0 auto;
-  color: var(--ink);
-  font-size: 0.68rem;
-}
-
 .mapPlotShell {
   position: relative;
   padding: 0.7rem 0.4rem 0 2.7rem;
@@ -497,6 +481,8 @@
   font-size: 0.58rem;
   font-weight: 650;
   white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
 }
 
 .mapYHigh {
@@ -1411,13 +1397,6 @@
 
   .mapPlotShell {
     padding-left: 1.7rem;
-  }
-
-  .mapAxisDefinition {
-    display: grid;
-    gap: 0.12rem;
-    margin-right: 0;
-    margin-left: 1.7rem;
   }
 
   .mapYTitle {
