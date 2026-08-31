@@ -1,102 +1,175 @@
 import { useId, useState } from "react";
 
-import type { Scenario } from "../data/scenarios";
-import {
-  type Contribution,
-  type FutureEvaluation,
-  type ProtectiveKey,
+import type { Archetype } from "../data/scenarios";
+import type {
+  AxisContribution,
+  AxisInputKey,
+  FutureEvaluation,
+  MatchRelation,
 } from "../lib/futureModel";
 import { IndicatorBars } from "./IndicatorBars";
 import styles from "./FutureSimulator.module.css";
 
 interface OutcomePanelProps {
-  scenario: Scenario;
+  scenario: Archetype;
+  secondaryScenario: Archetype;
   evaluation: FutureEvaluation;
 }
 
 const driverLabels: Record<
-  ProtectiveKey,
-  { protective: string; risk: string; explanation: string }
+  AxisInputKey,
+  { higher: string; lower: string; neutral: string }
 > = {
   ownership: {
-    protective: "Broad ownership",
-    risk: "Concentrated ownership",
-    explanation: "Who holds durable claims on automated production.",
-  },
-  workerPower: {
-    protective: "Strong bargaining power",
-    risk: "Weak bargaining power",
-    explanation: "How much practical leverage workers and citizens retain.",
+    higher: "Broader ownership",
+    lower: "Concentrated ownership",
+    neutral: "Ownership near midpoint",
   },
   socialDividend: {
-    protective: "Shared productivity gains",
-    risk: "Privately captured gains",
-    explanation: "How much new output becomes shared income or services.",
-  },
-  democracy: {
-    protective: "Democratic accountability",
-    risk: "Weak democratic checks",
-    explanation: "Whether powerful systems can be challenged and governed.",
-  },
-  civilLiberties: {
-    protective: "Strong civil liberties",
-    risk: "Weak civil liberties",
-    explanation: "Protection from coercion, surveillance, and arbitrary power.",
+    higher: "More shared returns",
+    lower: "Privately captured gains",
+    neutral: "Shared returns near midpoint",
   },
   universalAccess: {
-    protective: "Universal access",
-    risk: "Conditional necessities",
-    explanation: "Whether basic security depends on work or political status.",
+    higher: "More universal access",
+    lower: "Conditional access",
+    neutral: "Access near midpoint",
+  },
+  democracy: {
+    higher: "Democratic accountability",
+    lower: "Centralized authority",
+    neutral: "Accountability near midpoint",
+  },
+  civilLiberties: {
+    higher: "Protected liberties",
+    lower: "Weak liberties",
+    neutral: "Liberties near midpoint",
+  },
+  workerPower: {
+    higher: "Collective leverage",
+    lower: "Fragmented leverage",
+    neutral: "Leverage near midpoint",
   },
   openInfrastructure: {
-    protective: "Open infrastructure",
-    risk: "Monopoly infrastructure",
-    explanation:
-      "Whether people can switch, interoperate, and build alternatives.",
+    higher: "Open infrastructure",
+    lower: "Gatekept infrastructure",
+    neutral: "Openness near midpoint",
   },
 };
 
-const tailRiskMessage =
-  "Extreme tail risk. AI does not make this outcome inevitable; it requires the collapse of political, legal, economic, and civil-liberties restraints alongside near-total automation.";
+function matchEyebrow(
+  relation: MatchRelation,
+  primaryName: string,
+  secondaryName: string,
+): string {
+  if (relation === "between") {
+    return `Between ${primaryName} and ${secondaryName}`;
+  }
 
-function DriverChips({
+  if (relation === "leaning") return `Leans toward ${primaryName}`;
+  return `Closest to ${primaryName}`;
+}
+
+function secondaryCopy(relation: MatchRelation, secondaryName: string): string {
+  if (relation === "between") return `Nearly as close: ${secondaryName}`;
+  if (relation === "leaning") return `Also resembles ${secondaryName}`;
+  return `Also nearby ${secondaryName}`;
+}
+
+function titleCase(value: string): string {
+  return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+}
+
+function AxisDriverRow({
+  title,
   items,
-  direction,
 }: {
-  items: Contribution[];
-  direction: "protective" | "risk";
+  title: string;
+  items: AxisContribution[];
 }) {
-  if (items.length === 0) return null;
-
   return (
-    <>
-      {items.slice(0, 2).map((item) => (
-        <span
-          className={`${styles.driverChip} ${styles[direction]}`}
-          key={item.key}
-        >
-          <span className={styles.driverArrow} aria-hidden="true">
-            {direction === "protective" ? "↑" : "↓"}
+    <div className={styles.axisDriverRow}>
+      <strong>{title}</strong>
+      <div>
+        {items.map((item) => (
+          <span
+            className={styles.axisDriver}
+            data-direction={item.direction}
+            key={item.key}
+          >
+            <span aria-hidden="true">
+              {item.direction === "higher"
+                ? "+"
+                : item.direction === "lower"
+                  ? "-"
+                  : "mid"}
+            </span>
+            {driverLabels[item.key][item.direction]}
           </span>
-          <span className={styles.driverCopy}>
-            <strong>{driverLabels[item.key][direction]}</strong>
-            <small>{driverLabels[item.key].explanation}</small>
-          </span>
-        </span>
-      ))}
-    </>
+        ))}
+      </div>
+    </div>
   );
 }
 
-export function OutcomePanel({ scenario, evaluation }: OutcomePanelProps) {
+export function OutcomePanel({
+  scenario,
+  secondaryScenario,
+  evaluation,
+}: OutcomePanelProps) {
+  const { coordinates, match, tailRisk } = evaluation;
+
   return (
     <div className={styles.outcomeContent}>
       <header className={styles.outcomeHeader}>
-        <div>
-          <h2 className={styles.outcomeTitle}>{scenario.name}</h2>
-          <p className={styles.outcomeSummary}>{scenario.summary}</p>
+        <p className={styles.matchEyebrow}>
+          {matchEyebrow(match.relation, scenario.name, secondaryScenario.name)}
+        </p>
+        <h2 className={styles.outcomeTitle}>{scenario.name}</h2>
+        <p className={styles.outcomeSummary}>{scenario.summary}</p>
+        <div className={styles.matchMeta}>
+          <span className={styles.secondaryMatch}>
+            {secondaryCopy(match.relation, secondaryScenario.name)}
+          </span>
+          <span className={styles.fitQuality}>
+            {titleCase(match.fitQuality)} archetype fit
+          </span>
         </div>
+        <dl className={styles.coordinateChips}>
+          <div>
+            <dt>Shared benefit</dt>
+            <dd>{Math.round(coordinates.sharedBenefit)}</dd>
+          </div>
+          <div>
+            <dt>Public agency</dt>
+            <dd>{Math.round(coordinates.publicAgency)}</dd>
+          </div>
+          <div>
+            <dt>Automation</dt>
+            <dd>{Math.round(coordinates.automation)}</dd>
+          </div>
+        </dl>
       </header>
+
+      {tailRisk.active && (
+        <aside
+          className={styles.tailRiskWarning}
+          aria-labelledby="tail-warning-heading"
+        >
+          <h3 id="tail-warning-heading">
+            Extreme coercive tail-risk conditions
+          </h3>
+          <p>
+            These settings remove many of the restraints that could enable
+            eliminationist violence. The model does not encode ideology,
+            perpetrators, or intent, so it does not infer genocide from the
+            sliders alone.
+          </p>
+          <a href="#eliminationist-regime">
+            Read the extreme tail-risk scenario
+          </a>
+        </aside>
+      )}
 
       <div className={styles.outcomeDashboard}>
         <section
@@ -133,31 +206,23 @@ export function OutcomePanel({ scenario, evaluation }: OutcomePanelProps) {
         className={styles.forcesSection}
         aria-labelledby="forces-heading"
       >
-        <h3 id="forces-heading">Biggest forces</h3>
-        <div className={styles.driverChips}>
-          <DriverChips
-            items={evaluation.protectiveForces}
-            direction="protective"
+        <h3 id="forces-heading">What shapes these coordinates</h3>
+        <div className={styles.axisDrivers}>
+          <AxisDriverRow
+            title="Who gets the gains"
+            items={evaluation.sharedBenefitDrivers}
           />
-          <DriverChips items={evaluation.riskForces} direction="risk" />
-          {evaluation.protectiveForces.length === 0 &&
-            evaluation.riskForces.length === 0 && (
-              <span className={styles.neutralChip}>
-                Institutions near neutral
-              </span>
-            )}
+          <AxisDriverRow
+            title="Who can shape the rules"
+            items={evaluation.publicAgencyDrivers}
+          />
         </div>
-        {evaluation.inputs.automation < 30 && (
-          <p className={styles.capabilitySignal}>
-            Low automation keeps the range closer to the middle.
-          </p>
-        )}
       </section>
     </div>
   );
 }
 
-export function OutcomeDetails({ scenario }: { scenario: Scenario }) {
+export function OutcomeDetails({ scenario }: { scenario: Archetype }) {
   const [isOpen, setIsOpen] = useState(false);
   const detailsId = useId();
 
@@ -172,7 +237,7 @@ export function OutcomeDetails({ scenario }: { scenario: Scenario }) {
         aria-controls={detailsId}
         onClick={() => setIsOpen((open) => !open)}
       >
-        <span>Explore this future</span>
+        <span>Explore this archetype</span>
         <span className={styles.detailsChevron} aria-hidden="true">
           <svg viewBox="0 0 20 20" focusable="false">
             <path d="m5.5 7.5 4.5 4.5 4.5-4.5" />
@@ -187,9 +252,6 @@ export function OutcomeDetails({ scenario }: { scenario: Scenario }) {
       >
         <div className={styles.detailsRevealInner}>
           <div className={styles.outcomeDetailsBody}>
-            {scenario.id === "eliminationist-regime" && (
-              <p className={styles.tailRiskNote}>{tailRiskMessage}</p>
-            )}
             <p className={styles.detailSnapshot}>{scenario.snapshot}</p>
 
             <dl className={styles.profileGrid}>

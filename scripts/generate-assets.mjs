@@ -12,25 +12,33 @@ await mkdir(publicDirectory, { recursive: true });
 const ogImage = `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="#f7f4ed"/>
-  <circle cx="1120" cy="20" r="280" fill="#e2eeee" opacity="0.78"/>
+  <circle cx="1150" cy="-10" r="260" fill="#e2eeee" opacity="0.62"/>
   <path d="M72 74h1056" stroke="#cbc7bd" stroke-width="2"/>
   <text x="74" y="126" fill="#5d5e58" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="3">AN INTERACTIVE CIVIC TOOL</text>
-  <text x="72" y="244" fill="#20211f" font-family="Arial, Helvetica, sans-serif" font-size="77" font-weight="750" letter-spacing="-3">WHO GETS THE</text>
-  <text x="72" y="330" fill="#20211f" font-family="Arial, Helvetica, sans-serif" font-size="77" font-weight="750" letter-spacing="-3">ABUNDANCE?</text>
-  <text x="76" y="394" fill="#5d5e58" font-family="Arial, Helvetica, sans-serif" font-size="28">AI capability raises the stakes. Institutions shape the outcome.</text>
-  <g transform="translate(74 474)">
-    <rect width="131" height="24" rx="12" fill="#8b3f43"/>
-    <rect x="131" width="131" height="24" fill="#9b4b3c"/>
-    <rect x="262" width="131" height="24" fill="#a45f42"/>
-    <rect x="393" width="131" height="24" fill="#a66d37"/>
-    <rect x="524" width="131" height="24" fill="#9a7b2f"/>
-    <rect x="655" width="131" height="24" fill="#5c7487"/>
-    <rect x="786" width="131" height="24" fill="#3f7d82"/>
-    <rect x="917" width="137" height="24" rx="12" fill="#23766f"/>
-    <path d="M580-16v54" stroke="#20211f" stroke-width="4"/>
-    <path d="m568-18 12-14 12 14Z" fill="#20211f"/>
-    <text x="0" y="66" fill="#5d5e58" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="650">CONCENTRATED POWER</text>
-    <text x="829" y="66" fill="#5d5e58" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="650">BROADLY SHARED POWER</text>
+  <text x="72" y="238" fill="#20211f" font-family="Arial, Helvetica, sans-serif" font-size="73" font-weight="750" letter-spacing="-3">WHO GETS THE</text>
+  <text x="72" y="320" fill="#20211f" font-family="Arial, Helvetica, sans-serif" font-size="73" font-weight="750" letter-spacing="-3">ABUNDANCE?</text>
+  <text x="76" y="382" fill="#5d5e58" font-family="Arial, Helvetica, sans-serif" font-size="27">Same capability. Different ownership. Different power.</text>
+  <g transform="translate(760 138)">
+    <rect width="352" height="344" rx="18" fill="#fbfaf6" stroke="#bbb8af" stroke-width="2"/>
+    <path d="M176 24v286M28 172h296" stroke="#d2cfc6" stroke-width="2" stroke-dasharray="7 8"/>
+    <path d="M28 310V24M28 310h296" stroke="#77776f" stroke-width="2"/>
+    <circle cx="82" cy="270" r="9" fill="#9b4b3c"/>
+    <circle cx="95" cy="188" r="9" fill="#a45f42"/>
+    <circle cx="187" cy="226" r="9" fill="#a66d37"/>
+    <circle cx="264" cy="254" r="9" fill="#74648a"/>
+    <circle cx="120" cy="116" r="9" fill="#9a7b2f"/>
+    <circle cx="202" cy="82" r="9" fill="#5c7487"/>
+    <circle cx="270" cy="68" r="9" fill="#3f7880"/>
+    <circle cx="307" cy="46" r="12" fill="#f7f4ed" stroke="#287b73" stroke-width="5"/>
+    <text x="176" y="334" fill="#5d5e58" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="middle">WHO GETS THE GAINS?</text>
+    <text x="-170" y="-2" fill="#5d5e58" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" text-anchor="middle" transform="rotate(-90)">WHO CAN SHAPE THE RULES?</text>
+  </g>
+  <g transform="translate(72 472)">
+    <rect width="610" height="90" rx="12" fill="#efece4"/>
+    <text x="24" y="34" fill="#5d5e58" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="1.5">AUTOMATION CAPABILITY</text>
+    <rect x="24" y="53" width="562" height="10" rx="5" fill="#d7d4cc"/>
+    <rect x="24" y="53" width="465" height="10" rx="5" fill="#5c7487"/>
+    <circle cx="489" cy="58" r="11" fill="#f7f4ed" stroke="#364b5b" stroke-width="4"/>
   </g>
 </svg>`;
 

@@ -338,162 +338,417 @@
   background: var(--surface);
 }
 
-.spectrum {
-  padding: 0.9rem clamp(1rem, 2.6vw, 1.6rem) 0.7rem;
+.futureMap {
+  padding: 0.95rem clamp(1rem, 2.6vw, 1.6rem) 1rem;
   border-bottom: 1px solid var(--border);
-  background: color-mix(in srgb, var(--scenario-soft) 46%, var(--surface));
+  background: color-mix(in srgb, var(--scenario-soft) 30%, var(--surface));
   transition: background-color 220ms ease;
 }
 
-.spectrumTitle {
+.mapHeader h2 {
   margin: 0;
   font-size: 1rem;
   letter-spacing: -0.018em;
   line-height: 1.2;
 }
 
-.spectrumPlot {
-  --marker-edge-inset: 0.9rem;
-  position: relative;
-  padding-top: 1.55rem;
-  margin-top: 0.55rem;
-}
-
-.spectrumMarker {
-  position: absolute;
-  top: 0;
-  left: clamp(
-    var(--marker-edge-inset),
-    var(--marker-position),
-    calc(100% - var(--marker-edge-inset))
-  );
-  z-index: 20;
-  transform: translateX(-50%);
-  transition: left 260ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.spectrumMarker span {
-  display: block;
-  padding: 0.2rem 0.38rem;
-  border-radius: 0.3rem;
-  background: var(--scenario-ink);
-  color: #fff;
-  font-size: 0.58rem;
-  font-weight: 800;
-  letter-spacing: 0.055em;
-  line-height: 1;
-  text-transform: uppercase;
-  white-space: nowrap;
-  transition: background-color 220ms ease;
-}
-
-.spectrumMarker::after {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-top: 0.3rem solid var(--scenario-ink);
-  border-right: 0.27rem solid transparent;
-  border-left: 0.27rem solid transparent;
-  content: "";
-  transform: translateX(-50%);
-}
-
-.spectrumTrack {
-  display: grid;
-  height: 0.5rem;
-  overflow: hidden;
-  border: 1px solid rgb(36 34 30 / 16%);
-  border-radius: 99px;
-}
-
-.spectrumTrack span {
-  opacity: 0.9;
-}
-
-.spectrumSegments {
-  display: grid;
-  margin-top: 0.38rem;
-}
-
-.spectrumSegment {
-  position: relative;
-  min-width: 0;
-  min-height: 3.25rem;
-  padding: 0.33rem 0.25rem 0.28rem;
-  overflow-wrap: anywhere;
-  border: 0;
-  border-right: 1px solid var(--border);
-  border-radius: 0;
-  background: transparent;
+.mapHeader p {
+  margin: 0.2rem 0 0;
   color: var(--ink-muted);
-  font: inherit;
-  font-size: 0.64rem;
-  font-weight: 630;
-  line-height: 1.16;
-  text-align: left;
-  cursor: pointer;
+  font-size: 0.7rem;
+  line-height: 1.35;
 }
 
-.spectrumSegment:last-child {
-  border-right: 0;
+.capabilityStrip {
+  display: grid;
+  grid-template-columns: minmax(11rem, auto) minmax(8rem, 1fr);
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.52rem 0.65rem;
+  margin-top: 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 0.55rem;
+  background: rgb(255 255 255 / 36%);
 }
 
-.spectrumSegment:hover {
-  background: var(--wash);
-  color: var(--ink);
-}
-
-.spectrumSegment::after {
-  position: absolute;
-  right: 0.2rem;
-  bottom: 0;
-  left: 0.2rem;
-  height: 2px;
-  border-radius: 9px;
-  background: transparent;
-  content: "";
-}
-
-.currentSegment {
-  background: var(--scenario-soft);
-  color: var(--scenario-ink);
-  font-weight: 630;
-}
-
-.currentSegment::after {
-  background: var(--scenario-accent);
-}
-
-.segmentIndex {
-  display: block;
-  margin-bottom: 0.15rem;
-  color: var(--ink-faint);
-  font-size: 0.55rem;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.05em;
-}
-
-.segmentLong {
-  display: block;
-}
-
-.segmentShort {
-  display: none;
-}
-
-.spectrumEndpoints {
+.capabilityLabel {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
-  margin-top: 0.25rem;
-  color: var(--ink-soft);
-  font-size: 0.66rem;
+  gap: 0.75rem;
+  font-size: 0.7rem;
+}
+
+.capabilityLabel span {
+  color: var(--ink-muted);
   font-weight: 650;
 }
 
-.spectrumSelection {
+.capabilityLabel strong {
+  color: var(--scenario-ink);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.capabilityLabel b {
+  min-width: 1.5rem;
+  margin-left: 0.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.capabilityTrack {
+  position: relative;
+  height: 0.38rem;
+  overflow: hidden;
+  border-radius: 99px;
+  background: #d9d7d0;
+}
+
+.capabilityTrack span {
+  display: block;
+  height: 100%;
+  border-right: 2px solid var(--scenario-ink);
+  border-radius: inherit;
+  background: var(--scenario-accent);
+  transition:
+    width 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 220ms ease,
+    border-color 220ms ease;
+}
+
+.mapPlotShell {
+  position: relative;
+  padding: 0.7rem 0.4rem 0 2.7rem;
+  margin-top: 0.45rem;
+}
+
+.mapYTitle {
+  position: absolute;
+  top: 50%;
+  left: 0.15rem;
+  color: var(--ink-muted);
+  font-size: 0.66rem;
+  font-weight: 730;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.mapPlot {
+  position: relative;
+  height: clamp(18rem, 27vw, 23rem);
+  margin: 1.15rem 2rem 0.25rem 1rem;
+  border-bottom: 1px solid var(--ink-soft);
+  border-left: 1px solid var(--ink-soft);
+  background-image:
+    linear-gradient(to right, rgb(53 52 47 / 5%) 1px, transparent 1px),
+    linear-gradient(to top, rgb(53 52 47 / 5%) 1px, transparent 1px);
+  background-size: 25% 25%;
+}
+
+.mapCrosshairVertical,
+.mapCrosshairHorizontal {
+  position: absolute;
+  z-index: 0;
+  background: rgb(47 46 42 / 20%);
+  pointer-events: none;
+}
+
+.mapCrosshairVertical {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+}
+
+.mapCrosshairHorizontal {
+  right: 0;
+  bottom: 50%;
+  left: 0;
+  height: 1px;
+}
+
+.mapYHigh,
+.mapYLow {
+  position: absolute;
+  left: 0.3rem;
+  z-index: 1;
+  padding: 0.12rem 0.22rem;
+  border-radius: 0.2rem;
+  background: rgb(251 250 246 / 84%);
+  color: var(--ink-soft);
+  font-size: 0.58rem;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.mapYHigh {
+  top: 0.22rem;
+}
+
+.mapYLow {
+  bottom: 0.22rem;
+}
+
+.mapPoint {
+  position: absolute;
+  z-index: 4;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--point-ink);
+  font: inherit;
+  cursor: pointer;
+  transform: translate(-50%, 50%);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mapPointDot {
+  display: grid;
+  width: 1.05rem;
+  height: 1.05rem;
+  place-items: center;
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  background: var(--point-accent);
+  box-shadow: 0 0 0 1px var(--point-ink);
+  transition:
+    width 180ms ease,
+    height 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.mapPointDot span {
+  color: transparent;
+  font-size: 0.5rem;
+  font-weight: 800;
+}
+
+.mapPointLabel {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  min-width: max-content;
+  gap: 0.05rem;
+  padding: 0.2rem 0.3rem;
+  border-radius: 0.28rem;
+  background: rgb(251 250 246 / 90%);
+  box-shadow: 0 0 0 1px rgb(50 48 43 / 8%);
+  text-align: left;
+  pointer-events: none;
+}
+
+.mapPointLabel strong {
+  color: var(--ink);
+  font-size: 0.58rem;
+  line-height: 1.08;
+}
+
+.mapPointLabel small {
+  color: var(--point-ink);
+  font-size: 0.5rem;
+  font-weight: 750;
+  line-height: 1;
+}
+
+.aboveRight .mapPointLabel {
+  bottom: calc(50% + 0.5rem);
+  left: calc(50% + 0.45rem);
+}
+
+.aboveLeft .mapPointLabel {
+  right: calc(50% + 0.45rem);
+  bottom: calc(50% + 0.5rem);
+  text-align: right;
+}
+
+.belowRight .mapPointLabel {
+  top: calc(50% + 0.5rem);
+  left: calc(50% + 0.45rem);
+}
+
+.belowLeft .mapPointLabel {
+  top: calc(50% + 0.5rem);
+  right: calc(50% + 0.45rem);
+  text-align: right;
+}
+
+.primaryPoint {
+  z-index: 8;
+}
+
+.secondaryPoint {
+  z-index: 7;
+}
+
+.primaryPoint .mapPointDot {
+  width: 1.38rem;
+  height: 1.38rem;
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 4px var(--point-ink);
+}
+
+.secondaryPoint .mapPointDot {
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 4px color-mix(in srgb, var(--point-ink) 70%, transparent);
+}
+
+.mapPoint:hover .mapPointDot {
+  transform: scale(1.16);
+}
+
+.currentMapMarker {
+  position: absolute;
+  bottom: clamp(1.2rem, var(--current-y), calc(100% - 1.2rem));
+  left: clamp(1.2rem, var(--current-x), calc(100% - 1.2rem));
+  z-index: 12;
+  width: 1.65rem;
+  height: 1.65rem;
+  border: 3px solid var(--scenario-ink);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--scenario-soft) 65%, transparent);
+  box-shadow:
+    0 0 0 3px var(--surface),
+    0 2px 9px rgb(32 30 26 / 22%);
+  pointer-events: none;
+  transform: translate(-50%, 50%);
+  transition:
+    bottom 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    left 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms ease;
+}
+
+.currentMapMarker span {
+  position: absolute;
+  bottom: calc(100% + 0.35rem);
+  left: 50%;
+  padding: 0.19rem 0.32rem;
+  border-radius: 0.28rem;
+  background: var(--scenario-ink);
+  color: #fff;
+  font-size: 0.52rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.currentLabelBelowRight span {
+  top: calc(100% + 0.35rem);
+  bottom: auto;
+  left: calc(50% + 0.28rem);
+  transform: none;
+}
+
+.currentLabelBelowLeft span {
+  top: calc(100% + 0.35rem);
+  right: calc(50% + 0.28rem);
+  bottom: auto;
+  left: auto;
+  transform: none;
+}
+
+.currentLabelAboveRight span {
+  right: auto;
+  left: calc(50% + 0.28rem);
+  transform: none;
+}
+
+.currentLabelAboveLeft span {
+  right: calc(50% + 0.28rem);
+  left: auto;
+  transform: none;
+}
+
+.mapXAxis {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin: 0 2rem 0 1rem;
+  color: var(--ink-soft);
+  font-size: 0.59rem;
+}
+
+.mapXAxis strong {
+  color: var(--ink-muted);
+  font-size: 0.66rem;
+}
+
+.mapXAxis span:last-child {
+  text-align: right;
+}
+
+.mapLegend {
   display: none;
+}
+
+.sameCapability {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.8fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: 0.8rem 1.2rem;
+  padding-top: 0.7rem;
+  margin-top: 0.7rem;
+  border-top: 1px solid var(--border);
+}
+
+.presetHeading {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.presetHeading strong {
+  font-size: 0.7rem;
+  line-height: 1.2;
+}
+
+.presetHeading span {
+  color: var(--ink-muted);
+  font-size: 0.62rem;
+  line-height: 1.3;
+}
+
+.presetButtons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.presetButtons button {
+  min-height: 2.6rem;
+  padding: 0.35rem 0.42rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.42rem;
+  background: var(--surface);
+  color: var(--ink-muted);
+  font: inherit;
+  font-size: 0.61rem;
+  font-weight: 680;
+  line-height: 1.15;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.presetButtons button:hover {
+  border-color: var(--scenario-accent);
+  background: var(--scenario-soft);
+  color: var(--scenario-ink);
+  transform: translateY(-1px);
 }
 
 .outcomeContent {
@@ -504,8 +759,12 @@
   width: 100%;
 }
 
-.outcomeHeader > div {
-  width: 100%;
+.matchEyebrow {
+  margin: 0 0 0.35rem;
+  color: var(--scenario-ink);
+  font-size: 0.72rem;
+  font-weight: 760;
+  line-height: 1.25;
 }
 
 .outcomeHeader h2 {
@@ -530,16 +789,90 @@
   line-height: 1.42;
 }
 
-.tailRiskNote {
-  max-width: 62rem;
-  padding: 0.68rem 0.78rem;
-  margin: 0.9rem 0 0;
-  border-left: 3px solid var(--scenario-accent);
-  background: var(--scenario-soft);
+.matchMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.65rem;
+  margin-top: 0.62rem;
+}
+
+.secondaryMatch,
+.fitQuality {
+  font-size: 0.68rem;
+  line-height: 1.25;
+}
+
+.secondaryMatch {
+  color: var(--ink-muted);
+  font-weight: 650;
+}
+
+.fitQuality {
+  padding: 0.23rem 0.42rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 99px;
   color: var(--scenario-ink);
-  font-size: 0.76rem;
-  font-weight: 620;
+  font-weight: 720;
+}
+
+.coordinateChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.38rem;
+  margin: 0.68rem 0 0;
+}
+
+.coordinateChips > div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.32rem;
+  padding: 0.32rem 0.48rem;
+  border-radius: 0.38rem;
+  background: var(--wash);
+}
+
+.coordinateChips dt {
+  color: var(--ink-muted);
+  font-size: 0.62rem;
+  font-weight: 650;
+}
+
+.coordinateChips dd {
+  margin: 0;
+  color: var(--scenario-ink);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 780;
+}
+
+.tailRiskWarning {
+  max-width: 62rem;
+  padding: 0.75rem 0.85rem;
+  margin-top: 0.9rem;
+  border-left: 3px solid #9b4b3c;
+  background: #f4e8e1;
+  color: #663128;
+}
+
+.tailRiskWarning h3 {
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+.tailRiskWarning p {
+  margin: 0.3rem 0 0;
+  color: #663128;
+  font-size: 0.72rem;
   line-height: 1.45;
+}
+
+.tailRiskWarning a {
+  display: inline-block;
+  margin-top: 0.4rem;
+  color: #663128;
+  font-size: 0.7rem;
+  font-weight: 740;
 }
 
 .outcomeDashboard {
@@ -665,73 +998,63 @@
   border-top: 1px solid var(--border);
 }
 
-.driverChips {
+.axisDrivers {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: stretch;
-  gap: 0.48rem;
+  gap: 0.38rem;
   margin-top: 0.55rem;
 }
 
-.driverChip,
-.neutralChip {
-  display: inline-flex;
-  align-items: flex-start;
-  gap: 0.58rem;
-  min-height: 4.15rem;
-  padding: 0.62rem 0.72rem;
-  border: 1px solid var(--border);
-  border-radius: 0.62rem;
-  background: var(--wash);
-  color: var(--ink-muted);
-  font-weight: 670;
+.axisDriverRow {
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 0.7fr) minmax(0, 1.3fr);
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 2.6rem;
+  padding: 0.42rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.axisDriverRow > strong {
+  color: var(--scenario-ink);
+  font-size: 0.7rem;
   line-height: 1.25;
 }
 
-.driverArrow {
-  flex: 0 0 auto;
-  color: var(--scenario-ink);
-  font-size: 0.92rem;
-  font-weight: 850;
-  line-height: 1.15;
+.axisDriverRow > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.32rem;
 }
 
-.driverCopy {
-  display: grid;
-  min-width: 0;
-  gap: 0.2rem;
-}
-
-.driverCopy strong {
+.axisDriver {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  min-height: 1.8rem;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--wash);
   color: var(--ink);
-  font-size: 0.74rem;
+  font-size: 0.66rem;
+  font-weight: 680;
   line-height: 1.2;
 }
 
-.driverCopy small {
-  color: var(--ink-muted);
-  font-size: 0.68rem;
-  font-weight: 520;
-  line-height: 1.35;
+.axisDriver > span {
+  min-width: 0.8rem;
+  color: var(--scenario-ink);
+  font-weight: 850;
+  text-align: center;
 }
 
-.protective {
+.axisDriver[data-direction="higher"] {
   background: color-mix(in srgb, var(--scenario-soft) 58%, var(--surface));
 }
 
-.risk {
+.axisDriver[data-direction="lower"] {
   border-style: dashed;
-}
-
-.neutralChip {
-  grid-column: 1 / -1;
-}
-
-.capabilitySignal {
-  margin: 0.42rem 0 0;
-  color: var(--ink-muted);
-  font-size: 0.68rem;
-  line-height: 1.35;
 }
 
 .outcomeDetails {
@@ -861,10 +1184,6 @@
   line-height: 1.55;
 }
 
-.outcomeDetailsBody > .tailRiskNote {
-  margin: 0 0 0.85rem;
-}
-
 .profileGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -940,16 +1259,17 @@
     text-align: left;
   }
 
-  .segmentLong {
-    display: none;
-  }
-
-  .segmentShort {
-    display: block;
-  }
-
   .outcomeDashboard {
     gap: 1.25rem;
+  }
+
+  .mapPlot {
+    height: 20rem;
+    margin-right: 1.25rem;
+  }
+
+  .mapPointLabel strong {
+    font-size: 0.55rem;
   }
 }
 
@@ -1063,41 +1383,134 @@
 }
 
 @media (max-width: 640px) {
-  .spectrum {
-    padding: 0.8rem 0.65rem 0.65rem;
+  .futureMap {
+    padding: 0.85rem 0.72rem 0.8rem;
   }
 
-  .spectrumPlot {
-    --marker-edge-inset: 1.05rem;
+  .capabilityStrip {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+    padding: 0.5rem 0.58rem;
   }
 
-  .spectrumSegment {
-    min-height: 3.55rem;
-    padding: 0.32rem 0.08rem 0.28rem;
-    font-size: 0.56rem;
-    line-height: 1.08;
-    text-align: center;
+  .mapPlotShell {
+    padding-left: 1.7rem;
   }
 
-  .segmentIndex {
-    text-align: center;
+  .mapYTitle {
+    left: 0.15rem;
+    font-size: 0.6rem;
   }
 
-  .spectrumEndpoints {
-    font-size: 0.62rem;
+  .mapPlot {
+    height: clamp(15.5rem, 74vw, 19rem);
+    margin-right: 0.45rem;
+    margin-left: 0.55rem;
+  }
+
+  .mapYHigh,
+  .mapYLow {
+    font-size: 0.51rem;
+  }
+
+  .mapPointLabel {
+    display: none;
+  }
+
+  .mapPointDot {
+    width: 1.35rem;
+    height: 1.35rem;
+    border-color: var(--point-accent);
+    background: var(--point-soft);
+  }
+
+  .mapPointDot span {
+    color: var(--point-ink);
+  }
+
+  .primaryPoint .mapPointDot {
+    width: 1.55rem;
+    height: 1.55rem;
+  }
+
+  .mapXAxis {
+    margin-right: 0.45rem;
+    margin-left: 0.55rem;
+  }
+
+  .mapXAxis strong {
+    font-size: 0.61rem;
+  }
+
+  .mapLegend {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.3rem;
+    margin-top: 0.7rem;
+  }
+
+  .mapLegend button {
+    display: grid;
+    grid-template-columns: 1.55rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 2.75rem;
+    padding: 0.3rem 0.4rem;
+    border: 1px solid var(--border);
+    border-radius: 0.42rem;
+    background: rgb(255 255 255 / 34%);
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+  }
+
+  .mapLegend button > span {
+    display: grid;
+    width: 1.45rem;
+    height: 1.45rem;
+    place-items: center;
+    border: 2px solid;
+    border-radius: 50%;
+    font-size: 0.48rem;
+    font-weight: 800;
+  }
+
+  .mapLegend strong {
+    min-width: 0;
+    font-size: 0.58rem;
+    line-height: 1.12;
+  }
+
+  .mapLegend small {
+    color: var(--scenario-ink);
+    font-size: 0.48rem;
+    font-weight: 760;
+  }
+
+  .mapLegend .primaryLegend {
+    border-color: var(--scenario-accent);
+    background: var(--scenario-soft);
+  }
+
+  .mapLegend .secondaryLegend {
+    border-style: dashed;
+    border-color: var(--scenario-accent);
+  }
+
+  .sameCapability {
+    grid-template-columns: 1fr;
+  }
+
+  .presetButtons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .presetButtons button {
+    min-height: 2.75rem;
   }
 
   .outcomeContent {
     padding: 1.05rem 0.9rem 1.15rem;
-  }
-
-  .driverChips {
-    grid-template-columns: 1fr;
-  }
-
-  .driverChip,
-  .neutralChip {
-    min-height: 3.75rem;
   }
 
   .outcomeHeader {
@@ -1123,6 +1536,15 @@
   .indicatorSection {
     padding-top: 1rem;
     border-top: 1px solid var(--border);
+  }
+
+  .axisDriverRow {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .axisDriverRow > div {
+    justify-content: flex-start;
   }
 
   .controls {
@@ -1202,49 +1624,9 @@
 }
 
 @media (max-width: 360px) {
-  .spectrum {
-    padding-right: 0.45rem;
-    padding-left: 0.45rem;
-  }
-
-  .spectrumPlot {
-    --marker-edge-inset: 1.2rem;
-  }
-
-  .spectrumSegment {
-    display: grid;
-    min-height: 3rem;
-    padding: 0.35rem 0.05rem;
-    place-items: center;
-  }
-
-  .segmentIndex {
-    margin: 0;
-    font-size: 0.66rem;
-    font-weight: 760;
-    line-height: 1;
-  }
-
-  .segmentShort {
-    display: none;
-  }
-
-  .spectrumEndpoints {
-    font-size: 0.58rem;
-  }
-
-  .spectrumSelection {
-    display: block;
-    margin: 0.5rem 0 0;
-    color: var(--scenario-ink);
-    font-size: 0.7rem;
-    line-height: 1.3;
-    text-align: center;
-  }
-
-  .spectrumSelection span {
-    color: var(--ink-muted);
-    font-weight: 650;
+  .futureMap {
+    padding-right: 0.55rem;
+    padding-left: 0.55rem;
   }
 
   .outcomeContent,
@@ -1253,8 +1635,12 @@
     padding-left: 0.72rem;
   }
 
-  .driverChips {
-    grid-template-columns: 1fr;
+  .mapLegend button {
+    grid-template-columns: 1.45rem minmax(0, 1fr);
+  }
+
+  .mapLegend small {
+    grid-column: 2;
   }
 
   .controlValue span {

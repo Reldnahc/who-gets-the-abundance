@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { businessAsUsual } from "../data/presets";
-import { scenarioById } from "../data/scenarios";
+import { archetypeById } from "../data/scenarios";
 import {
   clamp,
   evaluateFuture,
@@ -10,7 +10,7 @@ import {
   type SliderKey,
 } from "../lib/futureModel";
 import { buildShareUrl, parseState } from "../lib/shareState";
-import { FutureSpectrum } from "./FutureSpectrum";
+import { FutureMap } from "./FutureMap";
 import styles from "./FutureSimulator.module.css";
 import { OutcomeDetails, OutcomePanel } from "./OutcomePanel";
 import { SimulatorControls } from "./SimulatorControls";
@@ -23,7 +23,9 @@ export default function FutureSimulator() {
   const [announcement, setAnnouncement] = useState("");
   const animationFrame = useRef<number | null>(null);
   const evaluation = useMemo(() => evaluateFuture(inputs), [inputs]);
-  const scenario = scenarioById[evaluation.scenarioId];
+  const scenario = archetypeById[evaluation.match.primary.scenarioId];
+  const secondaryScenario =
+    archetypeById[evaluation.match.secondary.scenarioId];
 
   const cancelAnimation = useCallback(() => {
     if (animationFrame.current !== null) {
@@ -106,9 +108,18 @@ export default function FutureSimulator() {
       scenario.accent.ink,
     );
     document.documentElement.dataset.scenario = scenario.id;
+    document.documentElement.dataset.secondaryScenario = secondaryScenario.id;
+    document.documentElement.dataset.tailRisk = String(
+      evaluation.tailRisk.active,
+    );
     window.dispatchEvent(
       new CustomEvent("abundance:statechange", {
-        detail: { scenarioId: scenario.id, url: shareUrl },
+        detail: {
+          scenarioId: scenario.id,
+          secondaryScenarioId: secondaryScenario.id,
+          tailRiskActive: evaluation.tailRisk.active,
+          url: shareUrl,
+        },
       }),
     );
 
@@ -118,14 +129,21 @@ export default function FutureSimulator() {
       window.history.replaceState(null, "", browserUrl);
     }, 220);
     const announcementTimer = window.setTimeout(() => {
-      setAnnouncement(`Current illustrative outcome: ${scenario.name}.`);
+      const relation = evaluation.match.relation;
+      const result =
+        relation === "between"
+          ? `is between ${scenario.name} and ${secondaryScenario.name}`
+          : relation === "leaning"
+            ? `leans toward ${scenario.name} and also resembles ${secondaryScenario.name}`
+            : `is closest to ${scenario.name} and also nearby ${secondaryScenario.name}`;
+      setAnnouncement(`Current illustrative result ${result}.`);
     }, 360);
 
     return () => {
       window.clearTimeout(urlTimer);
       window.clearTimeout(announcementTimer);
     };
-  }, [hasHydrated, inputs, scenario]);
+  }, [evaluation, hasHydrated, inputs, scenario, secondaryScenario]);
 
   const themeStyle = {
     "--scenario-accent": scenario.accent.color,
@@ -152,12 +170,12 @@ export default function FutureSimulator() {
           className={styles.outcome}
           aria-label="Current simulated outcome"
         >
-          <FutureSpectrum
-            outcomePosition={evaluation.outcomePosition}
-            scenarioId={scenario.id}
-            onSelect={applyInputs}
+          <FutureMap evaluation={evaluation} onSelect={applyInputs} />
+          <OutcomePanel
+            scenario={scenario}
+            secondaryScenario={secondaryScenario}
+            evaluation={evaluation}
           />
-          <OutcomePanel scenario={scenario} evaluation={evaluation} />
         </section>
       </div>
       <div className={styles.outcomeDetailsSlot}>

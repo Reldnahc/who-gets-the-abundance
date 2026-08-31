@@ -10,9 +10,9 @@ import { siteConfig } from "../config/site";
     <div class="title-lockup">
       <h1>{siteConfig.name}</h1>
       <p>
-        AI could make society vastly more productive; the future is not yet
-        written. Change the assumptions below to explore who benefits—and who
-        holds the power.
+        AI capability is only one part of the story. Change who owns the gains,
+        who can contest power, and how capable automation becomes—the same
+        technology can support very different societies.
       </p>
     </div>
     <nav class="header-actions" aria-label="Page actions">
@@ -75,7 +75,7 @@ import { siteConfig } from "../config/site";
       if (navigator.share) {
         await navigator.share({
           title: "Who Gets the Abundance?",
-          text: "Explore how institutions can shape very different futures under advanced automation.",
+          text: "Explore how ownership, public agency, and automation can shape very different futures.",
           url: currentShareUrl,
         });
         setFeedback("Shared.");

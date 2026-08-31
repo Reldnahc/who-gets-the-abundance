@@ -1,12 +1,27 @@
 import { describe, expect, it } from "vitest";
 
-import { businessAsUsual, presets } from "../data/presets";
 import {
-  calculateOutcomePosition,
+  businessAsUsual,
+  sameCapabilityPresets,
+  scenarioExamples,
+  tailRiskExample,
+} from "../data/presets";
+import {
+  archetypeCenters,
+  archetypeOrder,
+  type ArchetypeId,
+} from "../data/scenarios";
+import {
+  calculateCoordinates,
+  calculateIndicators,
+  calculatePublicAgency,
+  calculateSharedBenefit,
   clampInputs,
-  rankCounterfactualLevers,
-  satisfiesEliminationistGuard,
-  selectScenario,
+  classifyMatch,
+  evaluateExtremeTailRisk,
+  evaluateFuture,
+  rankArchetypes,
+  type FutureCoordinates,
   type FutureInputs,
 } from "./futureModel";
 import { buildShareUrl, parseState, serializeState } from "./shareState";
@@ -22,130 +37,178 @@ const neutral: FutureInputs = {
   openInfrastructure: 50,
 };
 
-describe("future scoring model", () => {
-  it("maps high automation and strong institutions to a positive scenario", () => {
-    const inputs = {
-      ...neutral,
-      automation: 95,
-      ownership: 90,
-      workerPower: 90,
-      socialDividend: 90,
-      democracy: 90,
-      civilLiberties: 90,
-      universalAccess: 90,
-      openInfrastructure: 90,
-    };
-
-    expect(selectScenario(inputs)).toBe("optional-work-abundance");
-  });
-
-  it("maps high automation and comprehensively weak institutions to the guarded severe tail", () => {
-    const inputs: FutureInputs = {
-      automation: 95,
-      ownership: 5,
-      workerPower: 5,
-      socialDividend: 5,
-      democracy: 5,
-      civilLiberties: 5,
-      universalAccess: 5,
-      openInfrastructure: 5,
-    };
-
-    expect(satisfiesEliminationistGuard(inputs)).toBe(true);
-    expect(selectScenario(inputs)).toBe("eliminationist-regime");
-  });
-
-  it("does not let high automation alone determine whether the outcome is positive or negative", () => {
-    const highAutomation = { ...neutral, automation: 100 };
-    const strong = {
-      ...highAutomation,
-      ownership: 90,
-      workerPower: 90,
-      socialDividend: 90,
-      democracy: 90,
-      civilLiberties: 90,
-      universalAccess: 90,
-      openInfrastructure: 90,
-    };
-    const weak = {
-      ...highAutomation,
-      ownership: 20,
-      workerPower: 20,
-      socialDividend: 20,
-      democracy: 20,
-      civilLiberties: 20,
-      universalAccess: 20,
-      openInfrastructure: 20,
-    };
-
-    expect(selectScenario(highAutomation)).toBe("unequal-abundance");
-    expect(calculateOutcomePosition(strong)).toBeGreaterThan(88);
-    expect(calculateOutcomePosition(weak)).toBeLessThan(24);
-  });
-
-  it("compresses low-automation outcomes away from both extremes", () => {
-    const strongLowAutomation = {
-      ...neutral,
-      automation: 0,
-      ownership: 100,
-      workerPower: 100,
-      socialDividend: 100,
-      democracy: 100,
-      civilLiberties: 100,
-      universalAccess: 100,
-      openInfrastructure: 100,
-    };
-    const weakLowAutomation = {
-      ...strongLowAutomation,
-      ownership: 0,
-      workerPower: 0,
-      socialDividend: 0,
-      democracy: 0,
-      civilLiberties: 0,
-      universalAccess: 0,
-      openInfrastructure: 0,
-    };
-
-    expect(calculateOutcomePosition(strongLowAutomation)).toBeCloseTo(77.5);
-    expect(calculateOutcomePosition(weakLowAutomation)).toBeCloseTo(22.5);
-    expect(selectScenario(strongLowAutomation)).not.toBe(
-      "optional-work-abundance",
-    );
-    expect(selectScenario(weakLowAutomation)).not.toBe("eliminationist-regime");
-  });
-
-  it("requires every tail-risk guard before selecting Eliminationist Regime", () => {
-    const guarded: FutureInputs = {
-      automation: 95,
-      ownership: 8,
-      workerPower: 8,
-      socialDividend: 8,
-      democracy: 8,
-      civilLiberties: 8,
-      universalAccess: 10,
-      openInfrastructure: 8,
-    };
-
-    expect(selectScenario(guarded)).toBe("eliminationist-regime");
-
-    const guardBreaks: Array<[keyof FutureInputs, number]> = [
-      ["automation", 84],
-      ["ownership", 13],
-      ["workerPower", 16],
-      ["socialDividend", 16],
-      ["democracy", 13],
-      ["civilLiberties", 13],
-    ];
-
-    guardBreaks.forEach(([key, value]) => {
-      expect(selectScenario({ ...guarded, [key]: value })).toBe(
-        "authoritarian-exclusion",
-      );
+describe("two-axis future model", () => {
+  it("places all-50 inputs at 50 on both visible axes", () => {
+    expect(calculateSharedBenefit(neutral)).toBe(50);
+    expect(calculatePublicAgency(neutral)).toBe(50);
+    expect(calculateCoordinates(neutral)).toEqual({
+      sharedBenefit: 50,
+      publicAgency: 50,
+      automation: 50,
     });
   });
 
-  it("clamps inputs below zero and above one hundred", () => {
+  it("changes shared benefit, but not public agency, for an economic input", () => {
+    const changed = { ...neutral, ownership: 80 };
+
+    expect(calculateSharedBenefit(changed)).toBe(62);
+    expect(calculatePublicAgency(changed)).toBe(50);
+  });
+
+  it("changes public agency, but not shared benefit, for a power input", () => {
+    const changed = { ...neutral, democracy: 80 };
+
+    expect(calculateSharedBenefit(changed)).toBe(50);
+    expect(calculatePublicAgency(changed)).toBe(59);
+  });
+
+  it("keeps both visible axes unchanged when automation changes", () => {
+    const low = calculateCoordinates({ ...neutral, automation: 0 });
+    const high = calculateCoordinates({ ...neutral, automation: 100 });
+
+    expect(low.sharedBenefit).toBe(high.sharedBenefit);
+    expect(low.publicAgency).toBe(high.publicAgency);
+    expect(low.automation).toBe(0);
+    expect(high.automation).toBe(100);
+  });
+
+  it("maps every representative configuration to its documented center and itself", () => {
+    archetypeOrder.forEach((scenarioId) => {
+      const evaluation = evaluateFuture(scenarioExamples[scenarioId]);
+      const center = archetypeCenters[scenarioId];
+
+      expect(evaluation.coordinates.sharedBenefit).toBeCloseTo(
+        center.sharedBenefit,
+      );
+      expect(evaluation.coordinates.publicAgency).toBeCloseTo(
+        center.publicAgency,
+      );
+      expect(evaluation.coordinates.automation).toBeCloseTo(center.automation);
+      expect(evaluation.match.primary.scenarioId).toBe(scenarioId);
+      expect(evaluation.match.primary.distance).toBeCloseTo(0);
+    });
+  });
+
+  it("returns finite, ascending, distinct matches with deterministic ties", () => {
+    const ranking = rankArchetypes(calculateCoordinates(neutral));
+
+    expect(ranking).toHaveLength(archetypeOrder.length);
+    expect(ranking.every((match) => Number.isFinite(match.distance))).toBe(
+      true,
+    );
+    expect(new Set(ranking.map((match) => match.scenarioId)).size).toBe(
+      archetypeOrder.length,
+    );
+    ranking.slice(1).forEach((match, index) => {
+      expect(match.distance).toBeGreaterThanOrEqual(
+        ranking[index]?.distance ?? 0,
+      );
+    });
+
+    const firstCenter = archetypeCenters[archetypeOrder[0]];
+    const secondCenter = archetypeCenters[archetypeOrder[1]];
+    const midpoint: FutureCoordinates = {
+      sharedBenefit:
+        (firstCenter.sharedBenefit + secondCenter.sharedBenefit) / 2,
+      publicAgency: (firstCenter.publicAgency + secondCenter.publicAgency) / 2,
+      automation: (firstCenter.automation + secondCenter.automation) / 2,
+    };
+    const tied = rankArchetypes(midpoint);
+
+    expect(tied[0]?.distance).toBeCloseTo(tied[1]?.distance ?? -1);
+    expect(tied[0]?.scenarioId).toBe(archetypeOrder[0]);
+    expect(tied[1]?.scenarioId).toBe(archetypeOrder[1]);
+  });
+
+  it("classifies relation boundaries at gaps 3 and 8", () => {
+    expect(classifyMatch(0, 2.999).relation).toBe("between");
+    expect(classifyMatch(0, 3).relation).toBe("leaning");
+    expect(classifyMatch(0, 7.999).relation).toBe("leaning");
+    expect(classifyMatch(0, 8).relation).toBe("closest");
+  });
+
+  it("classifies fit quality boundaries at distances 10 and 20", () => {
+    expect(classifyMatch(10, 20).fitQuality).toBe("strong");
+    expect(classifyMatch(10.001, 20).fitQuality).toBe("moderate");
+    expect(classifyMatch(20, 30).fitQuality).toBe("moderate");
+    expect(classifyMatch(20.001, 30).fitQuality).toBe("loose");
+  });
+
+  it("lets Mixed Baseline lean toward Unequal Abundance with a runner-up", () => {
+    const evaluation = evaluateFuture(businessAsUsual);
+
+    expect(evaluation.match.primary.scenarioId).toBe("unequal-abundance");
+    expect(evaluation.match.secondary.scenarioId).toBe(
+      "broad-productivity-boom",
+    );
+    expect(evaluation.match.relation).toBe("leaning");
+  });
+
+  it("keeps same-capability presets at 90 while selecting different archetypes", () => {
+    const primaryIds = sameCapabilityPresets.map((preset) => {
+      expect(preset.values.automation).toBe(90);
+      return evaluateFuture(preset.values).match.primary.scenarioId;
+    });
+
+    expect(new Set(primaryIds).size).toBe(4);
+  });
+
+  it("activates the guarded extreme tail-risk example", () => {
+    expect(evaluateExtremeTailRisk(tailRiskExample).active).toBe(true);
+  });
+
+  it("deactivates tail risk when any direct guard is broken", () => {
+    const guardBreaks: Array<[keyof FutureInputs, number]> = [
+      ["automation", 84],
+      ["ownership", 13],
+      ["socialDividend", 16],
+      ["universalAccess", 26],
+      ["workerPower", 16],
+      ["democracy", 13],
+      ["civilLiberties", 13],
+      ["openInfrastructure", 16],
+    ];
+
+    guardBreaks.forEach(([key, value]) => {
+      expect(
+        evaluateExtremeTailRisk({ ...tailRiskExample, [key]: value }).active,
+      ).toBe(false);
+    });
+
+    const coordinates = calculateCoordinates(tailRiskExample);
+    expect(
+      evaluateExtremeTailRisk(tailRiskExample, {
+        ...coordinates,
+        sharedBenefit: 16,
+      }).active,
+    ).toBe(false);
+    expect(
+      evaluateExtremeTailRisk(tailRiskExample, {
+        ...coordinates,
+        publicAgency: 13,
+      }).active,
+    ).toBe(false);
+  });
+
+  it("never replaces the ordinary primary match when tail risk is active", () => {
+    const evaluation = evaluateFuture(tailRiskExample);
+
+    expect(evaluation.tailRisk.active).toBe(true);
+    expect(evaluation.match.primary.scenarioId).toBe("authoritarian-exclusion");
+    expect(evaluation.rankedMatches).not.toContainEqual(
+      expect.objectContaining({
+        scenarioId: "eliminationist-regime" as ArchetypeId,
+      }),
+    );
+  });
+
+  it("clamps all inputs and conceptual indicators to 0–100", () => {
     const clamped = clampInputs({
+      ...neutral,
+      automation: 500,
+      ownership: -20,
+    });
+    const indicators = calculateIndicators({
       ...neutral,
       automation: 500,
       ownership: -20,
@@ -153,35 +216,39 @@ describe("future scoring model", () => {
 
     expect(clamped.automation).toBe(100);
     expect(clamped.ownership).toBe(0);
-    expect(calculateOutcomePosition(clamped)).toBeGreaterThanOrEqual(0);
-    expect(calculateOutcomePosition(clamped)).toBeLessThanOrEqual(100);
-  });
-
-  it("maps the supplied presets to their expected broad scenarios", () => {
-    const expected = new Map([
-      ["democratic-abundance", "optional-work-abundance"],
-      ["social-market-automation", "broad-productivity-boom"],
-      ["business-as-usual", "unequal-abundance"],
-      ["corporate-oligarchy", "authoritarian-exclusion"],
-      ["automated-authoritarianism", "eliminationist-regime"],
-    ]);
-
-    presets.forEach((preset) => {
-      expect(selectScenario(preset.values)).toBe(expected.get(preset.id));
-    });
-  });
-
-  it("ranks equal-sized counterfactuals consistently by model weight", () => {
-    const levers = rankCounterfactualLevers({ ...neutral, automation: 80 });
-
-    expect(levers[0]?.key).toBe("ownership");
-    expect(levers[1]?.key).toBe("democracy");
-    expect(levers[0]?.improvement).toBeGreaterThan(levers[1]?.improvement ?? 0);
+    expect(
+      Object.values(indicators).every((value) => value >= 0 && value <= 100),
+    ).toBe(true);
   });
 });
 
-describe("share state", () => {
-  it("ignores invalid URL values, clamps finite values, and never throws", () => {
+describe("share state compatibility", () => {
+  it("keeps the existing compact keys and round-trips complete state", () => {
+    const state: FutureInputs = {
+      automation: 91,
+      ownership: 83,
+      workerPower: 71,
+      socialDividend: 67,
+      democracy: 88,
+      civilLiberties: 79,
+      universalAccess: 74,
+      openInfrastructure: 69,
+    };
+
+    const serialized = serializeState(state);
+    expect(serialized).toBe("a=91&o=83&w=71&s=67&d=88&c=79&u=74&i=69");
+    expect(parseState(serialized, businessAsUsual)).toEqual(state);
+
+    const url = buildShareUrl(
+      "https://example.test/project/?old=1#methodology",
+      state,
+    );
+    const parsedUrl = new URL(url);
+    expect(parsedUrl.hash).toBe("");
+    expect(parseState(parsedUrl.search, businessAsUsual)).toEqual(state);
+  });
+
+  it("ignores invalid values, clamps finite values, and never throws", () => {
     expect(() =>
       parseState("?a=not-a-number&o=-50&w=900&c=%E0%A4%A", businessAsUsual),
     ).not.toThrow();
@@ -195,29 +262,5 @@ describe("share state", () => {
     expect(parsed.ownership).toBe(0);
     expect(parsed.workerPower).toBe(100);
     expect(parsed.civilLiberties).toBe(businessAsUsual.civilLiberties);
-  });
-
-  it("round-trips a complete shared state", () => {
-    const state: FutureInputs = {
-      automation: 91,
-      ownership: 83,
-      workerPower: 71,
-      socialDividend: 67,
-      democracy: 88,
-      civilLiberties: 79,
-      universalAccess: 74,
-      openInfrastructure: 69,
-    };
-
-    const serialized = serializeState(state);
-    expect(parseState(serialized, businessAsUsual)).toEqual(state);
-
-    const url = buildShareUrl(
-      "https://example.test/project/?old=1#methodology",
-      state,
-    );
-    const parsedUrl = new URL(url);
-    expect(parsedUrl.hash).toBe("");
-    expect(parseState(parsedUrl.search, businessAsUsual)).toEqual(state);
   });
 });

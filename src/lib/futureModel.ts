@@ -1,4 +1,9 @@
-import type { ScenarioId } from "../data/scenarios";
+import {
+  archetypeCenters,
+  archetypeOrder,
+  type ArchetypeCoordinates,
+  type ArchetypeId,
+} from "../data/scenarios";
 
 export const inputKeys = [
   "automation",
@@ -12,8 +17,52 @@ export const inputKeys = [
 ] as const;
 
 export type SliderKey = (typeof inputKeys)[number];
-export type ProtectiveKey = Exclude<SliderKey, "automation">;
 export type FutureInputs = Record<SliderKey, number>;
+
+export const sharedBenefitWeights = {
+  ownership: 0.4,
+  socialDividend: 0.35,
+  universalAccess: 0.25,
+} as const;
+
+export const publicAgencyWeights = {
+  democracy: 0.3,
+  civilLiberties: 0.25,
+  workerPower: 0.25,
+  openInfrastructure: 0.2,
+} as const;
+
+export type SharedBenefitKey = keyof typeof sharedBenefitWeights;
+export type PublicAgencyKey = keyof typeof publicAgencyWeights;
+export type AxisInputKey = SharedBenefitKey | PublicAgencyKey;
+export type AxisName = "sharedBenefit" | "publicAgency";
+
+export interface FutureCoordinates {
+  sharedBenefit: number;
+  publicAgency: number;
+  automation: number;
+}
+
+export interface ArchetypeMatch {
+  scenarioId: ArchetypeId;
+  distance: number;
+}
+
+export type MatchRelation = "between" | "leaning" | "closest";
+export type FitQuality = "strong" | "moderate" | "loose";
+
+export interface MatchSummary {
+  primary: ArchetypeMatch;
+  secondary: ArchetypeMatch;
+  gap: number;
+  relation: MatchRelation;
+  fitQuality: FitQuality;
+}
+
+export interface TailRiskEvaluation {
+  active: boolean;
+  checks: Record<string, boolean>;
+}
 
 export interface StructuralIndicators {
   materialAbundance: number;
@@ -23,46 +72,25 @@ export interface StructuralIndicators {
   freedomFromCompulsoryWork: number;
 }
 
-export interface Contribution {
-  key: ProtectiveKey;
+export interface AxisContribution {
+  axis: AxisName;
+  key: AxisInputKey;
   value: number;
   contribution: number;
   magnitude: number;
-  direction: "protective" | "risk" | "neutral";
-}
-
-export interface LeverResult {
-  key: ProtectiveKey;
-  before: number;
-  after: number;
-  improvement: number;
+  direction: "higher" | "lower" | "neutral";
 }
 
 export interface FutureEvaluation {
   inputs: FutureInputs;
-  institutionalCapacity: number;
-  automationAmplifier: number;
-  outcomePosition: number;
-  scenarioId: ScenarioId;
+  coordinates: FutureCoordinates;
+  match: MatchSummary;
+  rankedMatches: ArchetypeMatch[];
   indicators: StructuralIndicators;
-  protectiveForces: Contribution[];
-  riskForces: Contribution[];
-  levers: LeverResult[];
+  sharedBenefitDrivers: AxisContribution[];
+  publicAgencyDrivers: AxisContribution[];
+  tailRisk: TailRiskEvaluation;
 }
-
-export const institutionalWeights: Readonly<Record<ProtectiveKey, number>> = {
-  ownership: 0.21,
-  democracy: 0.18,
-  socialDividend: 0.16,
-  workerPower: 0.13,
-  civilLiberties: 0.13,
-  universalAccess: 0.11,
-  openInfrastructure: 0.08,
-};
-
-export const protectiveKeys = Object.keys(
-  institutionalWeights,
-) as ProtectiveKey[];
 
 export function clamp(value: number, minimum = 0, maximum = 100): number {
   if (!Number.isFinite(value)) return minimum;
@@ -75,160 +103,214 @@ export function clampInputs(inputs: FutureInputs): FutureInputs {
   ) as unknown as FutureInputs;
 }
 
-export function calculateInstitutionalCapacity(inputs: FutureInputs): number {
+export function calculateSharedBenefit(inputs: FutureInputs): number {
   const safe = clampInputs(inputs);
 
-  return protectiveKeys.reduce(
-    (sum, key) => sum + safe[key] * institutionalWeights[key],
-    0,
+  return clamp(
+    safe.ownership * sharedBenefitWeights.ownership +
+      safe.socialDividend * sharedBenefitWeights.socialDividend +
+      safe.universalAccess * sharedBenefitWeights.universalAccess,
   );
 }
 
-export function calculateAutomationAmplifier(automation: number): number {
-  return 0.55 + 0.9 * (clamp(automation) / 100);
-}
-
-export function calculateOutcomePosition(inputs: FutureInputs): number {
-  const safe = clampInputs(inputs);
-  const institutionalCapacity = calculateInstitutionalCapacity(safe);
-  const automationAmplifier = calculateAutomationAmplifier(safe.automation);
-
-  return clamp(50 + (institutionalCapacity - 50) * automationAmplifier);
-}
-
-export function satisfiesEliminationistGuard(inputs: FutureInputs): boolean {
+export function calculatePublicAgency(inputs: FutureInputs): number {
   const safe = clampInputs(inputs);
 
-  return (
-    safe.automation >= 85 &&
-    safe.ownership <= 12 &&
-    safe.democracy <= 12 &&
-    safe.civilLiberties <= 12 &&
-    safe.socialDividend <= 15 &&
-    safe.workerPower <= 15 &&
-    calculateOutcomePosition(safe) < 12
+  return clamp(
+    safe.democracy * publicAgencyWeights.democracy +
+      safe.civilLiberties * publicAgencyWeights.civilLiberties +
+      safe.workerPower * publicAgencyWeights.workerPower +
+      safe.openInfrastructure * publicAgencyWeights.openInfrastructure,
   );
 }
 
-export function selectScenario(inputs: FutureInputs): ScenarioId {
+export function calculateCoordinates(inputs: FutureInputs): FutureCoordinates {
   const safe = clampInputs(inputs);
-  const position = calculateOutcomePosition(safe);
 
-  if (position >= 88) return "optional-work-abundance";
-  if (position >= 74) return "shared-prosperity";
-  if (position >= 61) return "broad-productivity-boom";
-  if (position >= 48) return "unequal-abundance";
-  if (position >= 36) return "corporate-dependency";
-  if (position >= 24) return "automated-neo-feudalism";
-  if (position >= 12) return "authoritarian-exclusion";
+  return {
+    sharedBenefit: calculateSharedBenefit(safe),
+    publicAgency: calculatePublicAgency(safe),
+    automation: safe.automation,
+  };
+}
 
-  return satisfiesEliminationistGuard(safe)
-    ? "eliminationist-regime"
-    : "authoritarian-exclusion";
+export function calculateArchetypeDistance(
+  coordinates: FutureCoordinates,
+  center: ArchetypeCoordinates,
+): number {
+  const sharedBenefitDifference =
+    clamp(coordinates.sharedBenefit) - clamp(center.sharedBenefit);
+  const publicAgencyDifference =
+    clamp(coordinates.publicAgency) - clamp(center.publicAgency);
+  const automationDifference =
+    clamp(coordinates.automation) - clamp(center.automation);
+
+  return Math.sqrt(
+    0.4 * sharedBenefitDifference ** 2 +
+      0.4 * publicAgencyDifference ** 2 +
+      0.2 * automationDifference ** 2,
+  );
+}
+
+export function rankArchetypes(
+  coordinates: FutureCoordinates,
+): ArchetypeMatch[] {
+  return archetypeOrder
+    .map((scenarioId) => ({
+      scenarioId,
+      distance: calculateArchetypeDistance(
+        coordinates,
+        archetypeCenters[scenarioId],
+      ),
+    }))
+    .sort((first, second) => {
+      const distanceDifference = first.distance - second.distance;
+
+      if (Math.abs(distanceDifference) > Number.EPSILON) {
+        return distanceDifference;
+      }
+
+      return (
+        archetypeOrder.indexOf(first.scenarioId) -
+        archetypeOrder.indexOf(second.scenarioId)
+      );
+    });
+}
+
+export function classifyMatch(
+  primaryDistance: number,
+  secondaryDistance: number,
+): Pick<MatchSummary, "gap" | "relation" | "fitQuality"> {
+  const primary = Number.isFinite(primaryDistance)
+    ? Math.max(0, primaryDistance)
+    : Number.POSITIVE_INFINITY;
+  const secondary = Number.isFinite(secondaryDistance)
+    ? Math.max(primary, secondaryDistance)
+    : Number.POSITIVE_INFINITY;
+  const gap = secondary - primary;
+  const relation: MatchRelation =
+    gap < 3 ? "between" : gap < 8 ? "leaning" : "closest";
+  const fitQuality: FitQuality =
+    primary <= 10 ? "strong" : primary <= 20 ? "moderate" : "loose";
+
+  return { gap, relation, fitQuality };
+}
+
+export function evaluateExtremeTailRisk(
+  inputs: FutureInputs,
+  coordinates = calculateCoordinates(inputs),
+): TailRiskEvaluation {
+  const safe = clampInputs(inputs);
+  const checks = {
+    automation: safe.automation >= 85,
+    sharedBenefit: coordinates.sharedBenefit <= 15,
+    publicAgency: coordinates.publicAgency <= 12,
+    ownership: safe.ownership <= 12,
+    socialDividend: safe.socialDividend <= 15,
+    universalAccess: safe.universalAccess <= 25,
+    workerPower: safe.workerPower <= 15,
+    democracy: safe.democracy <= 12,
+    civilLiberties: safe.civilLiberties <= 12,
+    openInfrastructure: safe.openInfrastructure <= 15,
+  };
+
+  return {
+    active: Object.values(checks).every(Boolean),
+    checks,
+  };
 }
 
 export function calculateIndicators(
   inputs: FutureInputs,
+  coordinates = calculateCoordinates(inputs),
 ): StructuralIndicators {
   const safe = clampInputs(inputs);
 
   return {
     materialAbundance: clamp(
-      safe.automation * 0.65 + safe.universalAccess * 0.35,
+      0.65 * safe.automation + 0.35 * safe.universalAccess,
     ),
-    sharedProsperity: clamp(
-      safe.ownership * 0.4 +
-        safe.socialDividend * 0.25 +
-        safe.workerPower * 0.2 +
-        safe.universalAccess * 0.15,
-    ),
+    sharedProsperity: clamp(coordinates.sharedBenefit),
     personalAutonomy: clamp(
-      safe.democracy * 0.35 +
-        safe.civilLiberties * 0.3 +
-        safe.workerPower * 0.2 +
-        safe.universalAccess * 0.15,
+      0.35 * safe.civilLiberties +
+        0.25 * safe.openInfrastructure +
+        0.25 * safe.universalAccess +
+        0.15 * safe.workerPower,
     ),
     politicalSecurity: clamp(
-      safe.democracy * 0.55 + safe.civilLiberties * 0.3 + safe.ownership * 0.15,
+      0.45 * safe.democracy +
+        0.35 * safe.civilLiberties +
+        0.2 * safe.workerPower,
     ),
     freedomFromCompulsoryWork: clamp(
-      safe.automation *
-        (0.3 +
-          0.7 *
-            ((safe.ownership + safe.socialDividend + safe.universalAccess) /
-              300)),
+      safe.automation * (0.25 + 0.75 * (coordinates.sharedBenefit / 100)),
     ),
   };
 }
 
-export function calculateContributions(inputs: FutureInputs): Contribution[] {
+export function calculateAxisContributions(
+  inputs: FutureInputs,
+  axis: AxisName,
+): AxisContribution[] {
   const safe = clampInputs(inputs);
-  const amplifier = calculateAutomationAmplifier(safe.automation);
+  const weights =
+    axis === "sharedBenefit" ? sharedBenefitWeights : publicAgencyWeights;
+  const entries = Object.entries(weights) as Array<[AxisInputKey, number]>;
 
-  return protectiveKeys.map((key) => {
-    const contribution =
-      institutionalWeights[key] * (safe[key] - 50) * amplifier;
-    const direction =
-      contribution > 0.001
-        ? "protective"
-        : contribution < -0.001
-          ? "risk"
-          : "neutral";
-
-    return {
-      key,
-      value: safe[key],
-      contribution,
-      magnitude: Math.abs(contribution),
-      direction,
-    };
-  });
-}
-
-export function rankCounterfactualLevers(inputs: FutureInputs): LeverResult[] {
-  const safe = clampInputs(inputs);
-  const baseline = calculateOutcomePosition(safe);
-
-  return protectiveKeys
-    .map((key) => {
-      const after = clamp(safe[key] + 20);
-      const changed = { ...safe, [key]: after };
+  return entries
+    .map(([key, weight]) => {
+      const contribution = weight * (safe[key] - 50);
 
       return {
+        axis,
         key,
-        before: safe[key],
-        after,
-        improvement: calculateOutcomePosition(changed) - baseline,
+        value: safe[key],
+        contribution,
+        magnitude: Math.abs(contribution),
+        direction:
+          contribution > 0.001
+            ? ("higher" as const)
+            : contribution < -0.001
+              ? ("lower" as const)
+              : ("neutral" as const),
       };
     })
     .sort((first, second) => {
-      const difference = second.improvement - first.improvement;
-      return Math.abs(difference) > Number.EPSILON
-        ? difference
-        : protectiveKeys.indexOf(first.key) -
-            protectiveKeys.indexOf(second.key);
-    });
+      const magnitudeDifference = second.magnitude - first.magnitude;
+
+      return Math.abs(magnitudeDifference) > Number.EPSILON
+        ? magnitudeDifference
+        : entries.findIndex(([key]) => key === first.key) -
+            entries.findIndex(([key]) => key === second.key);
+    })
+    .slice(0, 2);
 }
 
 export function evaluateFuture(inputs: FutureInputs): FutureEvaluation {
   const safe = clampInputs(inputs);
-  const contributions = calculateContributions(safe);
+  const coordinates = calculateCoordinates(safe);
+  const rankedMatches = rankArchetypes(coordinates);
+  const primary = rankedMatches[0];
+  const secondary = rankedMatches[1];
+
+  if (!primary || !secondary) {
+    throw new Error("At least two archetypes are required for matching.");
+  }
+
+  const classification = classifyMatch(primary.distance, secondary.distance);
 
   return {
     inputs: safe,
-    institutionalCapacity: calculateInstitutionalCapacity(safe),
-    automationAmplifier: calculateAutomationAmplifier(safe.automation),
-    outcomePosition: calculateOutcomePosition(safe),
-    scenarioId: selectScenario(safe),
-    indicators: calculateIndicators(safe),
-    protectiveForces: contributions
-      .filter((item) => item.direction === "protective")
-      .sort((first, second) => second.magnitude - first.magnitude)
-      .slice(0, 3),
-    riskForces: contributions
-      .filter((item) => item.direction === "risk")
-      .sort((first, second) => second.magnitude - first.magnitude)
-      .slice(0, 3),
-    levers: rankCounterfactualLevers(safe),
+    coordinates,
+    match: {
+      primary,
+      secondary,
+      ...classification,
+    },
+    rankedMatches,
+    indicators: calculateIndicators(safe, coordinates),
+    sharedBenefitDrivers: calculateAxisContributions(safe, "sharedBenefit"),
+    publicAgencyDrivers: calculateAxisContributions(safe, "publicAgency"),
+    tailRisk: evaluateExtremeTailRisk(safe, coordinates),
   };
 }

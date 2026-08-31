@@ -1,18 +1,21 @@
-export type ScenarioId =
-  | "eliminationist-regime"
+export type ArchetypeId =
   | "authoritarian-exclusion"
   | "automated-neo-feudalism"
   | "corporate-dependency"
+  | "administered-abundance"
   | "unequal-abundance"
   | "broad-productivity-boom"
   | "shared-prosperity"
   | "optional-work-abundance";
+
+export type ScenarioId = ArchetypeId | "eliminationist-regime";
 
 export type AccentCategory =
   | "tail-risk"
   | "danger"
   | "rust"
   | "orange"
+  | "violet"
   | "amber"
   | "slate"
   | "blue-teal"
@@ -23,9 +26,6 @@ export interface Scenario {
   slug: ScenarioId;
   name: string;
   shortName: string;
-  range: string;
-  minimum: number;
-  maximum: number;
   summary: string;
   snapshot: string;
   employment: string;
@@ -45,16 +45,25 @@ export interface Scenario {
   };
 }
 
-/** Ordered from concentrated power to broadly shared power for the spectrum. */
-export const scenarios: readonly Scenario[] = [
+export interface ArchetypeCoordinates {
+  sharedBenefit: number;
+  publicAgency: number;
+  automation: number;
+}
+
+export interface Archetype extends Scenario {
+  id: ArchetypeId;
+  slug: ArchetypeId;
+  center: ArchetypeCoordinates;
+  labelAnchor: "aboveLeft" | "aboveRight" | "belowLeft" | "belowRight";
+}
+
+const scenarioRecords: readonly Scenario[] = [
   {
     id: "eliminationist-regime",
     slug: "eliminationist-regime",
     name: "Eliminationist Regime",
     shortName: "Tail risk",
-    range: "0–11.99, with every tail-risk guard satisfied",
-    minimum: 0,
-    maximum: 12,
     summary:
       "Near-total automation serves an eliminationist state after ownership, rights, democratic checks, and ordinary people’s leverage have collapsed.",
     snapshot:
@@ -98,9 +107,6 @@ export const scenarios: readonly Scenario[] = [
     slug: "authoritarian-exclusion",
     name: "Authoritarian Exclusion",
     shortName: "Exclusion",
-    range: "12–23.99, or below 12 without the full tail-risk guard",
-    minimum: 12,
-    maximum: 24,
     summary:
       "Automation, surveillance, and concentrated power suppress opposition and exclude disfavored groups from resources and public life.",
     snapshot:
@@ -144,9 +150,6 @@ export const scenarios: readonly Scenario[] = [
     slug: "automated-neo-feudalism",
     name: "Automated Neo-Feudalism",
     shortName: "Feudal",
-    range: "24–35.99",
-    minimum: 24,
-    maximum: 36,
     summary:
       "A narrow ownership class controls the automated foundations of life while formal rights survive without practical leverage.",
     snapshot:
@@ -188,9 +191,6 @@ export const scenarios: readonly Scenario[] = [
     slug: "corporate-dependency",
     name: "Corporate Dependency",
     shortName: "Depend.",
-    range: "36–47.99",
-    minimum: 36,
-    maximum: 48,
     summary:
       "Life is materially stable, but access and opportunity depend on a few firms or tightly integrated public-private systems.",
     snapshot:
@@ -228,13 +228,53 @@ export const scenarios: readonly Scenario[] = [
     },
   },
   {
+    id: "administered-abundance",
+    slug: "administered-abundance",
+    name: "Administered Abundance",
+    shortName: "Administered",
+    summary:
+      "Material security is broad, but allocation and life chances are managed by institutions people cannot meaningfully challenge.",
+    snapshot:
+      "Housing, healthcare, education, energy, and basic compute are guaranteed. A national allocation system keeps queues short and services reliable, but its models and priorities are not open to public contest. People can choose among approved paths, yet appealing a risk score, changing regions, or building an independent alternative is difficult. Most residents are secure and many are comfortable; the unresolved question is whether provision without voice can remain benign.",
+    employment:
+      "Paid work is less necessary, while public assignments and credentials still shape status.",
+    ownership:
+      "Major productive systems are socially or institutionally held, but control is highly centralized.",
+    politicalStructure:
+      "Expert administrators set priorities with weak electoral, civic, or judicial challenge.",
+    necessities:
+      "Essentials are universal and reliable, though allocation rules are difficult to contest.",
+    autonomy:
+      "Private choice exists inside boundaries set by opaque administrative systems.",
+    livingStandards:
+      "High material security coexists with limited political self-determination.",
+    primaryRisks: [
+      "Benevolent administration hardening into coercion",
+      "Allocation errors without meaningful appeal",
+      "Universal provision becoming a source of dependence",
+    ],
+    toward: [
+      "Broad provision through centralized systems",
+      "High automation with limited public contestability",
+      "Administrative expertise replacing participatory governance",
+    ],
+    away: [
+      "Independent oversight and due process",
+      "Plural providers, local control, and exit rights",
+      "Democratic ownership rather than provision alone",
+    ],
+    accent: {
+      category: "violet",
+      color: "#74648a",
+      soft: "#eee9f3",
+      ink: "#4b3e5f",
+    },
+  },
+  {
     id: "unequal-abundance",
     slug: "unequal-abundance",
     name: "Unequal Abundance",
     shortName: "Unequal",
-    range: "48–60.99",
-    minimum: 48,
-    maximum: 61,
     summary:
       "Production expands and many goods get cheaper while ownership, security, and decision-making power keep concentrating.",
     snapshot:
@@ -275,9 +315,6 @@ export const scenarios: readonly Scenario[] = [
     slug: "broad-productivity-boom",
     name: "Broad Productivity Boom",
     shortName: "Boom",
-    range: "61–73.99",
-    minimum: 61,
-    maximum: 74,
     summary:
       "AI augments workers and improves services, producing real but uneven gains while employment remains central.",
     snapshot:
@@ -319,9 +356,6 @@ export const scenarios: readonly Scenario[] = [
     slug: "shared-prosperity",
     name: "Shared Prosperity",
     shortName: "Shared",
-    range: "74–87.99",
-    minimum: 74,
-    maximum: 88,
     summary:
       "AI gains flow through wages, services, shorter hours, social dividends, and ownership beyond a narrow investor class.",
     snapshot:
@@ -363,9 +397,6 @@ export const scenarios: readonly Scenario[] = [
     slug: "optional-work-abundance",
     name: "Optional-Work Abundance",
     shortName: "Optional",
-    range: "88–100",
-    minimum: 88,
-    maximum: 100,
     summary:
       "Automation handles much undesirable labor while broad ownership and universal security make paid work genuinely optional.",
     snapshot:
@@ -404,8 +435,102 @@ export const scenarios: readonly Scenario[] = [
   },
 ] as const;
 
+export const archetypeOrder = [
+  "authoritarian-exclusion",
+  "automated-neo-feudalism",
+  "corporate-dependency",
+  "administered-abundance",
+  "unequal-abundance",
+  "broad-productivity-boom",
+  "shared-prosperity",
+  "optional-work-abundance",
+] as const satisfies readonly ArchetypeId[];
+
+export const archetypeCenters: Readonly<
+  Record<ArchetypeId, ArchetypeCoordinates>
+> = {
+  "authoritarian-exclusion": {
+    sharedBenefit: 21.25,
+    publicAgency: 13.35,
+    automation: 90,
+  },
+  "automated-neo-feudalism": {
+    sharedBenefit: 23.5,
+    publicAgency: 41.5,
+    automation: 90,
+  },
+  "corporate-dependency": {
+    sharedBenefit: 50.25,
+    publicAgency: 33.5,
+    automation: 85,
+  },
+  "administered-abundance": {
+    sharedBenefit: 77.25,
+    publicAgency: 21,
+    automation: 90,
+  },
+  "unequal-abundance": {
+    sharedBenefit: 34.95,
+    publicAgency: 65.65,
+    automation: 80,
+  },
+  "broad-productivity-boom": {
+    sharedBenefit: 56.55,
+    publicAgency: 75.75,
+    automation: 62,
+  },
+  "shared-prosperity": {
+    sharedBenefit: 78,
+    publicAgency: 80.5,
+    automation: 80,
+  },
+  "optional-work-abundance": {
+    sharedBenefit: 93,
+    publicAgency: 89,
+    automation: 95,
+  },
+};
+
+const labelAnchors: Readonly<Record<ArchetypeId, Archetype["labelAnchor"]>> = {
+  "authoritarian-exclusion": "aboveRight",
+  "automated-neo-feudalism": "aboveRight",
+  "corporate-dependency": "aboveLeft",
+  "administered-abundance": "aboveLeft",
+  "unequal-abundance": "aboveLeft",
+  "broad-productivity-boom": "aboveLeft",
+  "shared-prosperity": "belowLeft",
+  "optional-work-abundance": "aboveLeft",
+};
+
 export const scenarioById = Object.fromEntries(
-  scenarios.map((scenario) => [scenario.id, scenario]),
+  scenarioRecords.map((scenario) => [scenario.id, scenario]),
 ) as Record<ScenarioId, Scenario>;
 
-export const scenariosFromPositiveToSevere = [...scenarios].reverse();
+export const archetypes = archetypeOrder.map((id) => ({
+  ...scenarioById[id],
+  id,
+  slug: id,
+  center: archetypeCenters[id],
+  labelAnchor: labelAnchors[id],
+})) satisfies readonly Archetype[];
+
+export const archetypeById = Object.fromEntries(
+  archetypes.map((archetype) => [archetype.id, archetype]),
+) as Record<ArchetypeId, Archetype>;
+
+export const eliminationistScenario = scenarioById["eliminationist-regime"];
+
+export const archiveArchetypeOrder = [
+  "unequal-abundance",
+  "broad-productivity-boom",
+  "shared-prosperity",
+  "optional-work-abundance",
+  "automated-neo-feudalism",
+  "corporate-dependency",
+  "administered-abundance",
+  "authoritarian-exclusion",
+] as const satisfies readonly ArchetypeId[];
+
+export const archiveArchetypes = archiveArchetypeOrder.map(
+  (id) => archetypeById[id],
+);

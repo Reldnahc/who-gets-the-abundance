@@ -22,59 +22,59 @@ const inputDefinitions: Record<SliderKey, InputDefinition> = {
   },
   ownership: {
     key: "ownership",
-    label: "Distributed ownership",
-    left: "Concentrated",
-    right: "Broad",
+    label: "Ownership of productive systems",
+    left: "Narrowly held",
+    right: "Broadly held",
     description:
-      "How widely claims on automated firms, infrastructure, land, data, and investment returns are distributed.",
-  },
-  workerPower: {
-    key: "workerPower",
-    label: "Worker and citizen power",
-    left: "Weak",
-    right: "Strong",
-    description:
-      "How much practical leverage people have through organizing, participation, negotiation, and credible alternatives.",
+      "How widely durable claims on automated firms, infrastructure, land, data, and investment returns are distributed.",
   },
   socialDividend: {
     key: "socialDividend",
-    label: "Social dividend",
+    label: "Shared returns",
     left: "Private capture",
-    right: "Shared gains",
+    right: "Social claim",
     description:
-      "How much productivity returns to the public through dividends, services, transfers, or other shared claims.",
-  },
-  democracy: {
-    key: "democracy",
-    label: "Democratic accountability",
-    left: "Authoritarian",
-    right: "Accountable",
-    description:
-      "Whether people can contest decisions, replace leaders, audit powerful systems, and shape the rules.",
-  },
-  civilLiberties: {
-    key: "civilLiberties",
-    label: "Civil liberties",
-    left: "Surveillance",
-    right: "Protected",
-    description:
-      "How strongly privacy, expression, association, due process, and protection from coercion operate in practice.",
+      "How much productivity returns to the public through dividends, services, transfers, wages, or other shared claims.",
   },
   universalAccess: {
     key: "universalAccess",
-    label: "Universal access",
+    label: "Access to essentials",
     left: "Conditional",
     right: "Universal",
     description:
       "How reliably everyone can access housing, healthcare, education, food, energy, compute, and other foundations of participation.",
   },
+  democracy: {
+    key: "democracy",
+    label: "Democratic accountability",
+    left: "Centralized",
+    right: "Contestable",
+    description:
+      "Whether people can contest decisions, replace leaders, audit powerful systems, and shape the rules.",
+  },
+  civilLiberties: {
+    key: "civilLiberties",
+    label: "Civil liberties & due process",
+    left: "Weak",
+    right: "Protected",
+    description:
+      "How strongly privacy, expression, association, due process, and protection from coercion operate in practice.",
+  },
+  workerPower: {
+    key: "workerPower",
+    label: "Collective leverage",
+    left: "Fragmented",
+    right: "Organized",
+    description:
+      "How much practical leverage people have through organizing, participation, negotiation, and credible alternatives.",
+  },
   openInfrastructure: {
     key: "openInfrastructure",
-    label: "Open infrastructure",
-    left: "Monopoly",
-    right: "Open",
+    label: "Infrastructure openness",
+    left: "Gatekept",
+    right: "Interoperable",
     description:
-      "Whether people and institutions can switch providers, interoperate, and build without a single gatekeeper’s permission.",
+      "Whether people and institutions can switch providers, interoperate, inspect systems, and build without a single gatekeeper’s permission.",
   },
 };
 
@@ -84,12 +84,12 @@ const inputGroups: ReadonlyArray<{
 }> = [
   { label: "Technology", keys: ["automation"] },
   {
-    label: "Economics",
+    label: "Who gets the gains?",
     keys: ["ownership", "socialDividend", "universalAccess"],
   },
   {
-    label: "Power & rights",
-    keys: ["workerPower", "democracy", "civilLiberties", "openInfrastructure"],
+    label: "Who can shape the rules?",
+    keys: ["democracy", "civilLiberties", "workerPower", "openInfrastructure"],
   },
 ];
 
@@ -108,11 +108,18 @@ function qualitativeLevel(key: SliderKey, value: number): string {
     return "Near-total";
   }
 
-  if (value < 20) return "Very weak";
-  if (value < 40) return "Weak";
+  if (value < 20) return "Very low";
+  if (value < 40) return "Low";
   if (value < 60) return "Mixed";
-  if (value < 80) return "Strong";
-  return "Very strong";
+  if (value < 80) return "High";
+  return "Very high";
+}
+
+function groupId(label: string): string {
+  return `control-group-${label
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")}`;
 }
 
 export function SimulatorControls({
@@ -130,7 +137,9 @@ export function SimulatorControls({
     >
       <div className={styles.controlsIntro}>
         <h2 id="controls-heading">Change the assumptions</h2>
-        <p>Except automation, moving right strengthens shared institutions.</p>
+        <p>
+          Moving a slider changes one assumption—not a single good/bad score.
+        </p>
         <button
           type="button"
           className={styles.controlsToggle}
@@ -150,73 +159,70 @@ export function SimulatorControls({
       <div id={controlsId} className={styles.controlsReveal}>
         <div className={styles.controlsRevealInner}>
           <div className={styles.controlGroups}>
-            {inputGroups.map((group) => (
-              <section
-                className={styles.controlGroup}
-                aria-labelledby={`control-group-${group.label
-                  .toLowerCase()
-                  .replaceAll(" ", "-")
-                  .replace("&", "and")}`}
-                key={group.label}
-              >
-                <h3
-                  id={`control-group-${group.label
-                    .toLowerCase()
-                    .replaceAll(" ", "-")
-                    .replace("&", "and")}`}
+            {inputGroups.map((group) => {
+              const headingId = groupId(group.label);
+
+              return (
+                <section
+                  className={styles.controlGroup}
+                  aria-labelledby={headingId}
+                  key={group.label}
                 >
-                  {group.label}
-                </h3>
-                <div className={styles.controlList}>
-                  {group.keys.map((key) => {
-                    const definition = inputDefinitions[key];
-                    const value = inputs[key];
-                    const controlId = `simulator-${key}`;
-                    const descriptionId = `${controlId}-description`;
-                    return (
-                      <div className={styles.control} key={key}>
-                        <div className={styles.controlLabelRow}>
-                          <label htmlFor={controlId}>{definition.label}</label>
-                          <output
-                            htmlFor={controlId}
-                            className={styles.controlValue}
-                          >
-                            <span>{qualitativeLevel(key, value)}</span>
-                            <strong>{value}</strong>
-                          </output>
+                  <h3 id={headingId}>{group.label}</h3>
+                  <div className={styles.controlList}>
+                    {group.keys.map((key) => {
+                      const definition = inputDefinitions[key];
+                      const value = inputs[key];
+                      const controlId = `simulator-${key}`;
+                      const descriptionId = `${controlId}-description`;
+
+                      return (
+                        <div className={styles.control} key={key}>
+                          <div className={styles.controlLabelRow}>
+                            <label htmlFor={controlId}>
+                              {definition.label}
+                            </label>
+                            <output
+                              htmlFor={controlId}
+                              className={styles.controlValue}
+                            >
+                              <span>{qualitativeLevel(key, value)}</span>
+                              <strong>{value}</strong>
+                            </output>
+                          </div>
+                          <input
+                            id={controlId}
+                            className={styles.range}
+                            type="range"
+                            min="0"
+                            max="100"
+                            step="1"
+                            value={value}
+                            aria-describedby={descriptionId}
+                            aria-valuetext={`${value} out of 100, ${qualitativeLevel(key, value)}`}
+                            style={
+                              {
+                                "--range-fill": `${value}%`,
+                              } as React.CSSProperties
+                            }
+                            onChange={(event) =>
+                              onChange(key, Number(event.currentTarget.value))
+                            }
+                          />
+                          <div className={styles.endpoints} aria-hidden="true">
+                            <span>{definition.left}</span>
+                            <span>{definition.right}</span>
+                          </div>
+                          <p id={descriptionId} className={styles.srOnly}>
+                            {definition.description}
+                          </p>
                         </div>
-                        <input
-                          id={controlId}
-                          className={styles.range}
-                          type="range"
-                          min="0"
-                          max="100"
-                          step="1"
-                          value={value}
-                          aria-describedby={descriptionId}
-                          aria-valuetext={`${value} out of 100, ${qualitativeLevel(key, value)}`}
-                          style={
-                            {
-                              "--range-fill": `${value}%`,
-                            } as React.CSSProperties
-                          }
-                          onChange={(event) =>
-                            onChange(key, Number(event.currentTarget.value))
-                          }
-                        />
-                        <div className={styles.endpoints} aria-hidden="true">
-                          <span>{definition.left}</span>
-                          <span>{definition.right}</span>
-                        </div>
-                        <p id={descriptionId} className={styles.srOnly}>
-                          {definition.description}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </section>
-            ))}
+                      );
+                    })}
+                  </div>
+                </section>
+              );
+            })}
           </div>
 
           <button

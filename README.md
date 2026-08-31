@@ -1,8 +1,8 @@
 # Who Gets the Abundance?
 
-A single-page public-interest simulator for exploring how automation capability can combine with ownership, political power, rights, access, and infrastructure to produce very different social outcomes.
+A single-page public-interest simulator mapping how shared benefit, public agency, and automation capability can combine into very different social futures.
 
-The model is an illustrative thought tool. Its weights and scenario thresholds are explicit normative design choices, not empirically validated coefficients, probabilities, or policy forecasts.
+The model is an illustrative thought tool. Its axis weights, archetype centers, and match thresholds are explicit normative design choices, not empirically validated coefficients, probabilities, or policy forecasts.
 
 ## Local development
 
@@ -35,11 +35,14 @@ The production output is fully static in `dist/` and does not require a Node ser
 
 ## Architecture
 
-- Astro renders the header, complete eight-scenario archive, methodology, sources, and footer as static HTML.
+- Astro renders the header, eight-archetype archive, separate tail-risk essay, methodology, sources, and footer as static HTML.
 - React is used only for `src/components/FutureSimulator.tsx`, hydrated with `client:load`.
-- `src/lib/futureModel.ts` contains the pure scoring, indicator, driver, guard, and counterfactual functions.
+- `src/components/FutureMap.tsx` renders the interactive two-axis map and same-capability examples.
+- `src/lib/futureModel.ts` calculates shared benefit, public agency, indicators, nearest-archetype matches, and the separate extreme-tail-risk guard.
 - `src/lib/shareState.ts` owns compact query-string serialization and safe parsing.
 - Vitest covers the model and share-state edge cases.
+
+The two visible institutional axes carry most of archetype distance. Automation remains independent so capability cannot point toward a socially positive or negative result by itself. The interface shows the nearest and runner-up archetypes rather than forcing mixed states into exclusive bands.
 
 ## Initial GitHub Pages setup
 
