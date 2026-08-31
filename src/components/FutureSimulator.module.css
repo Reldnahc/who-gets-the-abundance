@@ -2,6 +2,11 @@
   --scenario-accent: #9a7b2f;
   --scenario-soft: #f2eddd;
   --scenario-ink: #5f4b1d;
+  overflow: clip;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.95rem;
+  background: var(--surface);
+  box-shadow: 0 14px 42px rgb(37 35 29 / 6%);
   color: var(--ink);
 }
 
@@ -21,11 +26,6 @@
   display: grid;
   grid-template-columns: minmax(22rem, 0.82fr) minmax(0, 1.68fr);
   align-items: start;
-  overflow: clip;
-  border: 1px solid var(--border-strong);
-  border-radius: 0.95rem;
-  background: var(--surface);
-  box-shadow: 0 14px 42px rgb(37 35 29 / 6%);
 }
 
 .outcome {
@@ -35,14 +35,14 @@
 }
 
 .outcomeDetailsSlot {
-  grid-column: 2;
-  grid-row: 2;
-  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(22rem, 0.82fr) minmax(0, 1.68fr);
+  background: var(--panel);
 }
 
 .controls {
   grid-column: 1;
-  grid-row: 1 / span 2;
+  grid-row: 1;
   position: sticky;
   top: 0.65rem;
   align-self: start;
@@ -57,7 +57,7 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 0.8rem;
-  padding-bottom: 0.65rem;
+  padding-bottom: 0.85rem;
 }
 
 .controlsIntro h2 {
@@ -77,66 +77,11 @@
   text-align: right;
 }
 
-.presetGroup {
-  padding: 0.65rem 0 0.7rem;
-  margin: 0;
-  border: 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.presetGroup legend {
-  padding: 0;
-  margin-bottom: 0.42rem;
-  color: var(--ink);
-  font-size: 0.76rem;
-  font-weight: 750;
-}
-
-.presetList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.32rem;
-}
-
-.presetButton {
-  min-height: 1.95rem;
-  padding: 0.3rem;
-  border: 1px solid var(--border-strong);
-  border-radius: 0.48rem;
-  background: rgb(255 255 255 / 66%);
-  color: var(--ink-muted);
-  font: inherit;
-  font-size: 0.69rem;
-  font-weight: 680;
-  line-height: 1.15;
-  cursor: pointer;
-  transition:
-    border-color 180ms ease,
-    background-color 180ms ease,
-    color 180ms ease,
-    transform 180ms ease;
-}
-
-.presetButton:hover {
-  border-color: var(--scenario-accent);
-  color: var(--ink);
-}
-
-.presetButton:active {
-  transform: translateY(1px);
-}
-
-.presetButton[aria-pressed="true"] {
-  border-color: var(--scenario-accent);
-  background: var(--scenario-soft);
-  color: var(--scenario-ink);
-}
-
 .controlGroups {
   display: grid;
-  gap: 0.25rem;
-  padding-top: 0.4rem;
+  gap: 0.5rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--border);
 }
 
 .controlGroup {
@@ -144,7 +89,7 @@
 }
 
 .controlGroup + .controlGroup {
-  padding-top: 0.3rem;
+  padding-top: 0.62rem;
   border-top: 1px solid var(--border);
 }
 
@@ -162,7 +107,7 @@
 
 .control {
   min-width: 0;
-  padding: 0.14rem 0 0.18rem;
+  padding: 0.26rem 0 0.34rem;
 }
 
 .controlLabelRow {
@@ -203,7 +148,7 @@
 .range {
   --range-fill: 50%;
   width: 100%;
-  height: 1.35rem;
+  height: 1.7rem;
   padding: 0;
   margin: 0.05rem 0 0;
   appearance: none;
@@ -227,9 +172,9 @@
 }
 
 .range::-webkit-slider-thumb {
-  width: 1.08rem;
-  height: 1.08rem;
-  margin-top: -0.4rem;
+  width: 1.16rem;
+  height: 1.16rem;
+  margin-top: -0.42rem;
   appearance: none;
   border: 3px solid var(--surface);
   border-radius: 50%;
@@ -267,8 +212,8 @@
 }
 
 .range::-moz-range-thumb {
-  width: 0.9rem;
-  height: 0.9rem;
+  width: 1rem;
+  height: 1rem;
   border: 3px solid var(--surface);
   border-radius: 50%;
   background: var(--scenario-ink);
@@ -440,7 +385,7 @@
 .currentSegment {
   background: var(--scenario-soft);
   color: var(--scenario-ink);
-  font-weight: 800;
+  font-weight: 630;
 }
 
 .currentSegment::after {
@@ -478,14 +423,16 @@
 }
 
 .outcomeHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1.2rem;
+  width: 100%;
+}
+
+.outcomeHeader > div {
+  width: 100%;
 }
 
 .outcomeHeader h2 {
-  max-width: 18ch;
+  width: 100%;
+  max-width: none;
   margin: 0;
   color: var(--ink);
   font-size: clamp(2rem, 3.6vw, 3.25rem);
@@ -503,24 +450,6 @@
   font-weight: 520;
   letter-spacing: -0.008em;
   line-height: 1.42;
-}
-
-.notForecast {
-  flex: 0 0 auto;
-  padding: 0.36rem 0.52rem;
-  border: 1px solid
-    color-mix(in srgb, var(--scenario-accent) 34%, var(--border));
-  border-radius: 99px;
-  background: var(--scenario-soft);
-  color: var(--scenario-ink);
-  font-size: 0.67rem;
-  font-weight: 740;
-  line-height: 1.2;
-  text-align: center;
-  transition:
-    color 220ms ease,
-    background-color 220ms ease,
-    border-color 220ms ease;
 }
 
 .tailRiskNote {
@@ -546,8 +475,7 @@
 
 .glanceSection h3,
 .indicatorSection h3,
-.forcesSection h3,
-.leversSection h3 {
+.forcesSection h3 {
   margin: 0;
   font-size: 0.82rem;
   letter-spacing: -0.01em;
@@ -653,42 +581,60 @@
     border-color 220ms ease;
 }
 
-.changeGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(17rem, 0.82fr);
-  gap: clamp(1.3rem, 3vw, 2.5rem);
+.forcesSection {
   padding-top: 1rem;
   margin-top: 1rem;
   border-top: 1px solid var(--border);
 }
 
 .driverChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.38rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 0.48rem;
   margin-top: 0.55rem;
 }
 
 .driverChip,
 .neutralChip {
   display: inline-flex;
-  align-items: center;
-  gap: 0.32rem;
-  min-height: 1.85rem;
-  padding: 0.3rem 0.48rem;
+  align-items: flex-start;
+  gap: 0.58rem;
+  min-height: 4.15rem;
+  padding: 0.62rem 0.72rem;
   border: 1px solid var(--border);
-  border-radius: 99px;
+  border-radius: 0.62rem;
   background: var(--wash);
   color: var(--ink-muted);
-  font-size: 0.68rem;
   font-weight: 670;
+  line-height: 1.25;
+}
+
+.driverArrow {
+  flex: 0 0 auto;
+  color: var(--scenario-ink);
+  font-size: 0.92rem;
+  font-weight: 850;
   line-height: 1.15;
 }
 
-.driverChip span {
-  color: var(--scenario-ink);
-  font-size: 0.8rem;
-  font-weight: 850;
+.driverCopy {
+  display: grid;
+  min-width: 0;
+  gap: 0.2rem;
+}
+
+.driverCopy strong {
+  color: var(--ink);
+  font-size: 0.74rem;
+  line-height: 1.2;
+}
+
+.driverCopy small {
+  color: var(--ink-muted);
+  font-size: 0.68rem;
+  font-weight: 520;
+  line-height: 1.35;
 }
 
 .protective {
@@ -699,6 +645,10 @@
   border-style: dashed;
 }
 
+.neutralChip {
+  grid-column: 1 / -1;
+}
+
 .capabilitySignal {
   margin: 0.42rem 0 0;
   color: var(--ink-muted);
@@ -706,88 +656,117 @@
   line-height: 1.35;
 }
 
-.compactHeading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.7rem;
+.outcomeDetails {
+  grid-column: 2;
+  min-width: 0;
+  border-top: 1px solid var(--border-strong);
+  border-left: 1px solid var(--border-strong);
+  background: var(--surface);
 }
 
-.compactHeading span {
-  color: var(--ink-muted);
-  font-size: 0.64rem;
-  line-height: 1.25;
-  text-align: right;
-}
-
-.leverButtons {
+.detailsReveal {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.45rem;
-  margin-top: 0.55rem;
+  grid-template-rows: 0fr;
+  overflow: clip;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows 300ms ease,
+    opacity 190ms ease,
+    visibility 0s linear 300ms;
 }
 
-.leverButtons button {
+.outcomeDetailsOpen .detailsReveal {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows 300ms ease,
+    opacity 220ms ease 30ms,
+    visibility 0s;
+}
+
+.detailsRevealInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.detailsToggle {
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
-  gap: 0.55rem;
-  min-height: 2.55rem;
-  padding: 0.45rem 0.55rem;
-  border: 1px solid var(--border-strong);
-  border-radius: 0.5rem;
-  background: var(--surface);
+  gap: 1rem;
+  min-height: 3.05rem;
+  padding: 0 1.65rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   color: var(--ink);
   font: inherit;
-  font-size: 0.7rem;
-  font-weight: 680;
+  font-size: 0.76rem;
+  font-weight: 760;
   line-height: 1.2;
   text-align: left;
   cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
   transition:
-    border-color 180ms ease,
-    background-color 180ms ease,
-    transform 180ms ease;
+    color 180ms ease,
+    background-color 180ms ease;
 }
 
-.leverButtons button:hover:not(:disabled) {
-  border-color: var(--scenario-accent);
-  background: var(--scenario-soft);
-  transform: translateY(-1px);
-}
-
-.leverButtons button:disabled {
-  cursor: not-allowed;
-  opacity: 0.58;
-}
-
-.leverButtons strong {
+.detailsChevron {
+  display: grid;
   flex: 0 0 auto;
+  width: 1.75rem;
+  height: 1.75rem;
+  place-items: center;
+  border: 1px solid
+    color-mix(in srgb, var(--scenario-accent) 34%, var(--border-strong));
+  border-radius: 50%;
+  background: var(--scenario-soft);
   color: var(--scenario-ink);
-  font-size: 0.73rem;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.outcomeDetails {
-  border-top: 1px solid var(--border-strong);
+.detailsChevron svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.outcomeDetails > summary {
-  display: flex;
-  align-items: center;
-  min-height: 3.05rem;
-  padding: 0 1.65rem;
-  color: var(--ink);
-  font-size: 0.76rem;
-  font-weight: 760;
-  cursor: pointer;
+.outcomeDetailsOpen .detailsToggle {
+  color: var(--scenario-ink);
+  background: color-mix(in srgb, var(--scenario-soft) 58%, transparent);
 }
 
-.outcomeDetails > summary::marker {
-  color: var(--scenario-accent);
+.outcomeDetailsOpen .detailsChevron {
+  transform: rotate(180deg);
+}
+
+@media (hover: hover) {
+  .detailsToggle:hover {
+    color: var(--scenario-ink);
+    background: var(--scenario-soft);
+  }
+
+  .detailsToggle:hover .detailsChevron {
+    border-color: var(--scenario-accent);
+    background: var(--surface);
+  }
 }
 
 .outcomeDetailsBody {
-  padding: 0 1.65rem 1.5rem;
+  padding: 0.85rem 1.65rem 1.5rem;
 }
 
 .detailSnapshot {
@@ -863,7 +842,8 @@
 }
 
 @media (max-width: 1080px) {
-  .simulatorGrid {
+  .simulatorGrid,
+  .outcomeDetailsSlot {
     grid-template-columns: minmax(18.5rem, 0.76fr) minmax(0, 1.5fr);
   }
 
@@ -884,18 +864,19 @@
     display: block;
   }
 
-  .outcomeDashboard,
-  .changeGrid {
+  .outcomeDashboard {
     gap: 1.25rem;
   }
 }
 
 @media (max-width: 860px) {
+  .simulator {
+    border-radius: 0.82rem;
+  }
+
   .simulatorGrid {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    border-radius: 0.82rem;
   }
 
   .outcome {
@@ -912,8 +893,13 @@
   }
 
   .outcomeDetailsSlot {
-    order: 3;
+    display: block;
     width: 100%;
+    background: var(--surface);
+  }
+
+  .outcomeDetails {
+    border-left: 0;
   }
 
   .controlsIntro {
@@ -925,7 +911,6 @@
     text-align: right;
   }
 
-  .presetButton,
   .resetButton {
     min-height: 2.75rem;
   }
@@ -995,6 +980,15 @@
     padding: 1.05rem 0.9rem 1.15rem;
   }
 
+  .driverChips {
+    grid-template-columns: 1fr;
+  }
+
+  .driverChip,
+  .neutralChip {
+    min-height: 3.75rem;
+  }
+
   .outcomeHeader {
     display: block;
   }
@@ -1003,19 +997,19 @@
     font-size: clamp(2rem, 10.5vw, 2.8rem);
   }
 
-  .notForecast {
-    display: inline-block;
-    margin-top: 0.7rem;
+  .outcomeHeader .longOutcomeTitle {
+    font-size: clamp(1.4rem, 7.7vw, 2rem);
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+    white-space: nowrap;
   }
 
-  .outcomeDashboard,
-  .changeGrid {
+  .outcomeDashboard {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
 
-  .indicatorSection,
-  .leversSection {
+  .indicatorSection {
     padding-top: 1rem;
     border-top: 1px solid var(--border);
   }
@@ -1063,7 +1057,7 @@
     font-size: 0.73rem;
   }
 
-  .outcomeDetails > summary {
+  .detailsToggle {
     min-height: 3.25rem;
     padding: 0 0.9rem;
   }
@@ -1106,17 +1100,7 @@
     padding-left: 0.72rem;
   }
 
-  .compactHeading {
-    display: block;
-  }
-
-  .compactHeading span {
-    display: block;
-    margin-top: 0.12rem;
-    text-align: left;
-  }
-
-  .leverButtons {
+  .driverChips {
     grid-template-columns: 1fr;
   }
 

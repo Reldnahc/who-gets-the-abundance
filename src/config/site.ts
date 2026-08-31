@@ -7,7 +7,7 @@ export const siteConfig = {
   socialImage: "og-image.png",
   author: "Who Gets the Abundance? project",
   attribution: "An independent public-interest technology project",
-  donationUrl: "https://buymeacoffee.com/REPLACE_ME",
+  donationUrl: "https://buymeacoffee.com/chandlerlee",
 } as const;
 
 export function resolveProductionUrl(environmentValue?: string): string {

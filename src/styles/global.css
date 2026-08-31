@@ -99,6 +99,43 @@ summary:focus-visible {
   line-height: 1.5;
 }
 
+[data-disclosure-reveal] {
+  overflow: clip;
+}
+
+[data-animated-details][data-enhanced="true"] > [data-disclosure-reveal] {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows 300ms ease,
+    opacity 190ms ease,
+    visibility 0s linear 300ms;
+}
+
+[data-animated-details][data-enhanced="true"][data-expanded="true"]
+  > [data-disclosure-reveal] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows 300ms ease,
+    opacity 220ms ease 30ms,
+    visibility 0s;
+}
+
+[data-disclosure-inner] {
+  min-height: 0;
+  overflow: hidden;
+}
+
+[data-animated-details][data-expanded="true"]
+  > summary
+  [data-disclosure-chevron] {
+  transform: rotate(180deg);
+}
+
 @media (max-width: 680px) {
   :root {
     font-size: 16px;

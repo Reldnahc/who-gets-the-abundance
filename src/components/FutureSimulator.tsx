@@ -7,7 +7,6 @@ import {
   evaluateFuture,
   inputKeys,
   type FutureInputs,
-  type ProtectiveKey,
   type SliderKey,
 } from "../lib/futureModel";
 import { buildShareUrl, parseState } from "../lib/shareState";
@@ -84,13 +83,6 @@ export default function FutureSimulator() {
     [cancelAnimation],
   );
 
-  const tryLever = useCallback(
-    (key: ProtectiveKey) => {
-      applyInputs({ ...inputs, [key]: clamp(inputs[key] + 20) });
-    },
-    [applyInputs, inputs],
-  );
-
   useEffect(() => {
     setInputs(parseState(window.location.search, businessAsUsual));
     setHasHydrated(true);
@@ -160,21 +152,16 @@ export default function FutureSimulator() {
             scenarioId={scenario.id}
             onSelect={applyInputs}
           />
-          <OutcomePanel
-            scenario={scenario}
-            evaluation={evaluation}
-            onTryLever={tryLever}
-          />
+          <OutcomePanel scenario={scenario} evaluation={evaluation} />
         </section>
         <SimulatorControls
           inputs={inputs}
           onChange={changeInput}
-          onApply={applyInputs}
           onReset={() => applyInputs(businessAsUsual)}
         />
-        <div className={styles.outcomeDetailsSlot}>
-          <OutcomeDetails scenario={scenario} />
-        </div>
+      </div>
+      <div className={styles.outcomeDetailsSlot}>
+        <OutcomeDetails scenario={scenario} />
       </div>
     </div>
   );

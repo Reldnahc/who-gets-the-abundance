@@ -1,9 +1,4 @@
-import { presets } from "../data/presets";
-import {
-  inputKeys,
-  type FutureInputs,
-  type SliderKey,
-} from "../lib/futureModel";
+import { type FutureInputs, type SliderKey } from "../lib/futureModel";
 import styles from "./FutureSimulator.module.css";
 
 interface InputDefinition {
@@ -99,12 +94,7 @@ const inputGroups: ReadonlyArray<{
 interface SimulatorControlsProps {
   inputs: FutureInputs;
   onChange: (key: SliderKey, value: number) => void;
-  onApply: (inputs: FutureInputs) => void;
   onReset: () => void;
-}
-
-function statesMatch(first: FutureInputs, second: FutureInputs): boolean {
-  return inputKeys.every((key) => first[key] === second[key]);
 }
 
 function qualitativeLevel(key: SliderKey, value: number): string {
@@ -126,36 +116,14 @@ function qualitativeLevel(key: SliderKey, value: number): string {
 export function SimulatorControls({
   inputs,
   onChange,
-  onApply,
   onReset,
 }: SimulatorControlsProps) {
-  const activePreset = presets.find((preset) =>
-    statesMatch(inputs, preset.values),
-  )?.id;
-
   return (
     <aside className={styles.controls} aria-labelledby="controls-heading">
       <div className={styles.controlsIntro}>
         <h2 id="controls-heading">Change the assumptions</h2>
         <p>Except automation, moving right strengthens shared institutions.</p>
       </div>
-
-      <fieldset className={styles.presetGroup}>
-        <legend>Examples</legend>
-        <div className={styles.presetList}>
-          {presets.map((preset) => (
-            <button
-              key={preset.id}
-              type="button"
-              aria-pressed={activePreset === preset.id}
-              className={styles.presetButton}
-              onClick={() => onApply(preset.values)}
-            >
-              {preset.name}
-            </button>
-          ))}
-        </div>
-      </fieldset>
 
       <div className={styles.controlGroups}>
         {inputGroups.map((group) => (
@@ -231,7 +199,7 @@ export function SimulatorControls({
         type="button"
         className={styles.resetButton}
         onClick={onReset}
-        aria-label="Reset to the Mixed Baseline example"
+        aria-label="Reset all assumptions to Mixed Baseline"
       >
         <svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17">
           <path
