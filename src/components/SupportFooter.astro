@@ -131,13 +131,26 @@ import { siteConfig } from "../config/site";
 
   @media (max-width: 440px) {
     .support {
-      grid-template-columns: 1fr;
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: 0.75rem;
       padding-right: 0;
       padding-left: 0;
     }
 
-    .support > a {
+    .support > svg {
       grid-column: 1;
+      grid-row: 1;
+      align-self: center;
+    }
+
+    .support > div {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .support > a {
+      grid-column: 1 / -1;
+      grid-row: 2;
       width: 100%;
     }
 
