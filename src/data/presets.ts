@@ -1,12 +1,6 @@
 import type { FutureInputs } from "../lib/futureModel";
 import type { ArchetypeId } from "./scenarios";
 
-export interface SimulatorPreset {
-  id: string;
-  name: string;
-  values: FutureInputs;
-}
-
 export const businessAsUsual: FutureInputs = {
   automation: 65,
   ownership: 45,
@@ -110,35 +104,3 @@ export const scenarioExamples: Record<ArchetypeId, FutureInputs> = {
     openInfrastructure: 85,
   },
 };
-
-export const sameCapabilityPresets: readonly SimulatorPreset[] = [
-  {
-    id: "exclusion",
-    name: "Exclusion",
-    values: scenarioExamples["authoritarian-exclusion"],
-  },
-  {
-    id: "dependency",
-    name: "Dependency",
-    values: {
-      ...scenarioExamples["corporate-dependency"],
-      automation: 90,
-    },
-  },
-  {
-    id: "unequal-pluralism",
-    name: "Unequal pluralism",
-    values: {
-      ...scenarioExamples["unequal-abundance"],
-      automation: 90,
-    },
-  },
-  {
-    id: "shared-abundance",
-    name: "Shared abundance",
-    values: {
-      ...scenarioExamples["shared-prosperity"],
-      automation: 90,
-    },
-  },
-];

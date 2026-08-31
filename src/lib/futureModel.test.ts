@@ -1,10 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  businessAsUsual,
-  sameCapabilityPresets,
-  scenarioExamples,
-} from "../data/presets";
+import { businessAsUsual, scenarioExamples } from "../data/presets";
 import { archetypeCenters, archetypeOrder } from "../data/scenarios";
 import {
   calculateCoordinates,
@@ -136,15 +132,6 @@ describe("two-axis future model", () => {
       "broad-productivity-boom",
     );
     expect(evaluation.match.relation).toBe("leaning");
-  });
-
-  it("keeps same-capability presets at 90 while selecting different archetypes", () => {
-    const primaryIds = sameCapabilityPresets.map((preset) => {
-      expect(preset.values.automation).toBe(90);
-      return evaluateFuture(preset.values).match.primary.scenarioId;
-    });
-
-    expect(new Set(primaryIds).size).toBe(4);
   });
 
   it("ranks Eliminationist Regime as an ordinary bottom-left archetype", () => {
